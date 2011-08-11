@@ -48,10 +48,7 @@ public class Circle extends View {
 
 				// ¦L¥X
 				if (time != p.startTime)
-					canvas.drawText(p.clickCnt + "=>" + p.hz,
-					// (int) ((float)p.clickCnt / ((time - p.startTime) /
-					// 1000f)),
-							p.x, p.y, paint);
+					canvas.drawText(p.clickCnt + "=>" + p.hz, p.x, p.y, paint);
 			}
 		}
 
