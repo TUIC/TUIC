@@ -2,6 +2,7 @@
 {
 	import flash.display.MovieClip;
 	import id.core.Application;
+	import org.ntumobile.TUIC2D.TUICContainerSprite;
 	import org.ntumobile.TUIC2D.TUICSprite;
 	import org.ntumobile.TUIC2D.TUICEvent;
 
@@ -18,15 +19,15 @@
 
 		override protected function initialize():void
 		{
-			var sprite = new TUICSprite();
+			var sprite = new TUICContainerSprite();
 			sprite.graphics.beginFill(0x336699);
 			sprite.graphics.drawRect(0,0,400,400);
-			
+			/*
 			sprite.addEventListener(TUICEvent.DOWN, debugHandler);
 			sprite.addEventListener(TUICEvent.UP, debugHandler);
 			sprite.addEventListener(TUICEvent.ROTATE, debugHandler);
 			sprite.addEventListener(TUICEvent.MOVE, debugHandler);
-
+			*/
 			addChild(sprite);
 		}
 

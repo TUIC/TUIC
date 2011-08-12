@@ -9,18 +9,24 @@
 
 	public class TUICSprite extends TouchSprite
 	{
+		private var _orientation:Number;
 		public function TUICSprite()
 		{
 			super();
-			this.addEventListener(GestureEvent.GESTURE_DRAG, generalHandler);
+			
+			this.addEventListener(GestureEvent.GESTURE_DRAG, dragEventHandler);
 			this.addEventListener(GestureEvent.GESTURE_ROTATE, generalHandler);
-			this.addEventListener(TouchEvent.TOUCH_DOWN, generalHandler);
 			this.addEventListener(TouchEvent.TOUCH_UP, generalHandler);
+			this.blobContainerEnabled = true;
 		}
-		private function generalHandler(event:Event)
+		private function generalHandler(event:Event):void
 		{
 			this.dispatchEvent(new TUICEvent(event));
 		}
+		private function dragEventHandler(event:GestureEvent):void
+    	{
+          trace("n point drag", event.dx,event.dy);
+    	}    
 
 	}
 

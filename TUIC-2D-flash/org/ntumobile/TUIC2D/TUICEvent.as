@@ -13,6 +13,7 @@
 		public static const MOVE:String = "TUIC_tagMove";
 		public static const ROTATE:String = "TUIC_tagRotate";		
 		
+		public var value:*;
 		private var _originalEvent:Event;
 		public function TUICEvent(old_evt:Event)
 		{
