@@ -39,6 +39,11 @@
 					return UP;
 				case GestureEvent.GESTURE_ROTATE :
 					return ROTATE;
+				case TUICEvent.DOWN:
+				case TUICEvent.UP:
+				case TUICEvent.ROTATE:
+				case TUICEvent.MOVE:
+					return old_evt.type;
 				default :
 					throw new Error("Unsupported event type");
 			}

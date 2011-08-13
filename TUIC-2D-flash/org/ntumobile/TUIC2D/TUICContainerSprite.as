@@ -39,17 +39,32 @@
 			});
 
 			// create TUICEvent and the TUIC tag.
-			var event = new TUICEvent(_touchDownEvents[0]);
-			_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
+			var event = new TUICEvent(_touchDownEvents[0]); 
+			// FIXME: localX and localY should be changed after we figure out 
 			event.value = createTag(points);
 
 			if (event.value !== null)
 			{
+				this.addChild(event.value);
+				
+				// copy touch states
+				event.value.blobContainer = this.blobContainer;
+				event.value.descriptorContainer = this.descriptorContainer;
+				event.value.tactualObjectManager = this.tactualObjectManager;
+				event.value.
+
 				this.dispatchEvent(new TUICEvent(event));
 			}
+			
+			// the side length of the tag and center coordinate of the tag.
+			_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
 		}
 		private function createTag(points:Array):TUICSprite
 		{
+			var point:Object = points[0];
+			return new TUICSprite(point.x, point.y, 70, 0);
+			//-----
+			
 			// test if the points form a valid TUIC tag, and
 			// create a TUICSprite when a new tag is found.
 
