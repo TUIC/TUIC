@@ -20,20 +20,21 @@
 		override protected function initialize():void
 		{
 			var sprite = new TUICContainerSprite();
-			sprite.graphics.beginFill(0x336699);
-			sprite.graphics.drawRect(0,0,400,400);
-			/*
+			sprite.graphics.beginFill(0x0000ff, 0);
+			sprite.graphics.drawRect(0,0,width,height);
+			sprite.graphics.endFill();
+			
 			sprite.addEventListener(TUICEvent.DOWN, debugHandler);
 			sprite.addEventListener(TUICEvent.UP, debugHandler);
 			sprite.addEventListener(TUICEvent.ROTATE, debugHandler);
 			sprite.addEventListener(TUICEvent.MOVE, debugHandler);
-			*/
+			
 			addChild(sprite);
 		}
 
 		private function debugHandler(event:TUICEvent)
 		{
-			Console.log(event);
+			Console.log(event.type);
 		}
 	}
 

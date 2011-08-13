@@ -1,16 +1,17 @@
 ﻿package org.ntumobile.TUIC2D
 {
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	import flash.utils.clearTimeout;
-	
+
 	import gl.events.GestureEvent;
 	import gl.events.TouchEvent;
 	import id.core.TouchSprite;
 
 	import com.actionscript_flash_guru.fireflashlite.Console;
 
-	public class TUICContainerSprite extends TouchSprite
+	public class TUICContainerSprite extends TUICSprite
 	{
 
 		private var _touchThreshold:Number = 1;
@@ -18,53 +19,90 @@
 
 		private var _newPointTimeoutHandler:uint;
 		private var _touchDownEvents:Array;
-
+		private var _overlay:TUICSprite;
 		public function TUICContainerSprite()
 		{
 			super();
+			// initialize private variables
 			_touchDownEvents = [];
-			this.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+		}
+		override protected function initialize():void
+		{
+			// set dimensions and listeners
+			addChild(makeOverlay());
+			_overlay.graphics.beginFill(0xff00ff,1);
+			_overlay.graphics.drawRect(0,0,width,height);
+			_overlay.graphics.endFill();
+
+			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
 		}
 		private function newPointHandler(event:Event):void
 		{
 			clearTimeout(_newPointTimeoutHandler);
 			_touchDownEvents.push(event);
-			_newPointTimeoutHandler = setTimeout(newSpriteHandler,_touchThreshold * 1000);
+			_newPointTimeoutHandler = setTimeout(newTagHandler,_touchThreshold * 1000);
 		}
-		private function newSpriteHandler():void
+		private function newTagHandler():void
 		{
 			// extract points from the events collected in the last _touchThreshold seconds.
 			var points = _touchDownEvents.map(function(event:TouchEvent, index:int, arr:Array):Object{
 			return {x: event.localX, y:event.localY};
 			});
 
-			// create TUICEvent and the TUIC tag.
-			var event = new TUICEvent(_touchDownEvents[0]); 
-			// FIXME: localX and localY should be changed after we figure out 
-			event.value = createTag(points);
-
-			if (event.value !== null)
+			// validate tag
+			var tag:Object = calcTag(points);
+			if (! tag.valid)
 			{
-				this.addChild(event.value);
-				
-				// copy touch states
-				event.value.blobContainer = this.blobContainer;
-				event.value.descriptorContainer = this.descriptorContainer;
-				event.value.tactualObjectManager = this.tactualObjectManager;
-				event.value.
-
-				this.dispatchEvent(new TUICEvent(event));
+				return;
 			}
-			
-			// the side length of the tag and center coordinate of the tag.
+
+			// create TUICEvent and the TUIC tag.
+			var event = new TUICEvent(_touchDownEvents[0]);
+			// FIXME: localX and localY of the event should be changed after we figure out 
+			// assign old overlay to event.value and make a new overlay.
+			event.value = _overlay;
+			this.addChild(makeOverlay());
+
+			// resize the old overlay to the size of a TUIC tag.
+			event.value.x = tag.x - tag.side / 2;
+			event.value.y = tag.y - tag.side / 2;
+			event.value.width = tag.width;
+			event.value.height = tag.height;
+			event.value.graphics.beginFill(0x000000);
+			event.value.graphics.drawRect(0,0,tag.side,tag.side);
+			event.value.graphics.endFill();
+			event.value.enableTUICEvents();
+
+			// dispatch the event so that the sprite(old overlay) is available;
+			// to the developers.
+			this.dispatchEvent(new TUICEvent(event));
+
+			// cleanup
 			_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
+		}
+		private function makeOverlay():TUICSprite
+		{
+			_overlay = new TUICSprite();
+			return _overlay;
+		}
+
+		private function calcTag(points:Array):Object
+		{
+			// TODO: finish this from createTag code
+			return {
+				valid:true,
+				x: (points[0]).x,
+				y: (points[0]).y,
+				side: 50
+			};
 		}
 		private function createTag(points:Array):TUICSprite
 		{
+			// TODO: this is obsolete now.
 			var point:Object = points[0];
-			return new TUICSprite(point.x, point.y, 70, 0);
+			return new TUICSprite();
 			//-----
-			
+
 			// test if the points form a valid TUIC tag, and
 			// create a TUICSprite when a new tag is found.
 
@@ -106,6 +144,9 @@
 			return Math.sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
 		}
 
+		private function debugHandler(event:Event)
+		{
+			Console.log(event);
+		}
 	}
-
 }
