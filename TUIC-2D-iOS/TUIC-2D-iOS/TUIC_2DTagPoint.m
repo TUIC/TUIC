@@ -11,15 +11,16 @@
 @implementation TUIC_2DTagPoint
 @synthesize locationInView_X, locationInView_Y;
 @synthesize type, serialNumber;
-
+@synthesize touchObject;
 - (id)init
 {
     self = [super init];
     if (self) {
         locationInView_X = 0.0;
         locationInView_Y = 0.0;
-        type = @"Payload";
-        serialNumber = -1;
+        type = TUIC_2DTagTypeUnknown;
+        serialNumber = 0;
+        
     }
     
     return self;
@@ -27,6 +28,7 @@
 
 -(void)dealloc
 {
+    [touchObject release];
     [super dealloc];
 }
 

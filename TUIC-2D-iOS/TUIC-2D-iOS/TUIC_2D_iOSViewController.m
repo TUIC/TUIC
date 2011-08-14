@@ -45,7 +45,6 @@
 {
     self.view = [[TUIC_2DTrackingView alloc] init];
 	[self.view setNeedsDisplay];
-	[self.view clearAllTouches:self];
 }
 
 

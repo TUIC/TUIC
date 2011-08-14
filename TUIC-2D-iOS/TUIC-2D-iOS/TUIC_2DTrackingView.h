@@ -12,17 +12,17 @@
 
 @interface TUIC_2DTrackingView : UIView {
     
-    // Used to keep track of all current touches.
-    NSMutableArray *ActiveTouches;      
     // Use timestamp to identify different object
 	float lastTouchtime;
     
     // Store the TUIC_2DView objects
     NSMutableArray *TUIC2DtagArray;
+    
+    // Map touch events to touch-point-clusters
+	CFMutableDictionaryRef tagMap;
 
 }
 
-@property (nonatomic, retain) NSMutableArray *ActiveTouches;
 @property (nonatomic, retain) NSMutableArray *TUIC2DtagArray;
 
 -(void)clearAll;

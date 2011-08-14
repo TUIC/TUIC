@@ -13,6 +13,8 @@
 @interface TUIC_2DView : UIView {
     int tagID;
     float orientationAngle;
+    CGPoint location;
+    CGSize  size;
     NSMutableArray *tagPoints;
     
     // UI element
@@ -22,7 +24,10 @@
 }
 
 @property (nonatomic, retain) NSMutableArray *tagPoints;
+@property (assign) CGPoint location;
+@property (assign) CGSize  size;
 
 -(void)decodeTag;
+-(void)upDateLocation;
 
 @end

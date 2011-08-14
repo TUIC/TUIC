@@ -7,17 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
+typedef enum {
+    TUIC_2DTagTypeCorner  = 0,
+    TUIC_2DTagTypePayload = 1,
+    TUIC_2DTagTypeUnknown = 2,
+} TUIC_2DTagType;
+
 
 @interface TUIC_2DTagPoint : NSObject {
+    UITouch    *touchObject;
     CGFloat    locationInView_X;
     CGFloat    locationInView_Y;
-    NSString   *type;
+    TUIC_2DTagType  type;
     int        serialNumber;
 }
-
+@property (nonatomic, retain) UITouch *touchObject;
 @property (assign) CGFloat locationInView_X;
 @property (assign) CGFloat locationInView_Y;
-@property (nonatomic, retain) NSString *type;
+@property (assign) TUIC_2DTagType type;
 @property (assign) int serialNumber;
 
 @end
