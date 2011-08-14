@@ -20,25 +20,29 @@
 			// adding event listeners when the sprite
 			// transforms from an overlay to a tag.
 			
-			this.addEventListener(GestureEvent.GESTURE_DRAG, dragEventHandler);
-			this.addEventListener(GestureEvent.GESTURE_ROTATE, generalHandler);
+			this.addEventListener(GestureEvent.GESTURE_ROTATE, rotateHandler);
+			this.addEventListener(GestureEvent.GESTURE_DRAG, dragHandler);
 			this.addEventListener(TouchEvent.TOUCH_DOWN, touchDownHandler);
-			this.addEventListener(TouchEvent.TOUCH_UP, generalHandler);		
+			this.addEventListener(TouchEvent.TOUCH_UP, touchUpHandler);
 		}
-		private function generalHandler(event:Event):void
-		{
-			this.dispatchEvent(new TUICEvent(event));
+		private function rotateHandler(event:GestureEvent){
+			this.rotation += event.value;
+			this.dispatchEvent(new TUICEvent(event, TUICEvent.ROTATE));
 		}
-		private function dragEventHandler(event:GestureEvent):void
-    	{
-			trace("n point drag", event.dx,event.dy);
+		private function dragHandler(event:GestureEvent){
 			this.x += event.dx; this.y +=event.dy;
-    	}
-		private function touchDownHandler(event:TouchEvent):void{
+			this.dispatchEvent(new TUICEvent(event, TUICEvent.MOVE));
+		}
+		private function touchDownHandler(event:TouchEvent){
 			// handles the sprite's own touchDown, do not propagate
 			// to TUICContainerSprite
-			//Console.log(event);
+
 			event.stopPropagation();
+			this.dispatchEvent(new TUICEvent(event, TUICEvent.DOWN));
 		}
+		private function touchUpHandler(event:TouchEvent){
+			this.dispatchEvent(new TUICEvent(event, TUICEvent.UP));
+		}
+
 	}
 }

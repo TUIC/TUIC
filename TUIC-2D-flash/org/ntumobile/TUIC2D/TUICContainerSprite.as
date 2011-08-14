@@ -33,9 +33,6 @@
 		}
 		private function newPointHandler(event:Event):void
 		{
-			// only catches events that occurs on the overlay.
-			if(event.target !== _overlay) return; 
-			
 			clearTimeout(_newPointTimeoutHandler);
 			_touchDownEvents.push(event);
 			_newPointTimeoutHandler = setTimeout(newTagHandler,_touchThreshold * 1000);
@@ -55,7 +52,7 @@
 			}
 
 			// create TUICEvent and the TUIC tag.
-			var event = new TUICEvent(_touchDownEvents[0]);
+			var event = new TUICEvent(_touchDownEvents[0], TUICEvent.DOWN);
 			// FIXME: localX and localY of the event should be changed after we figure out 
 			// assign old overlay to event.value and make a new overlay.
 			event.value = _overlay; // save the old overlay into event.value
@@ -69,11 +66,13 @@
 			event.value.graphics.beginFill(0x000000);
 			event.value.graphics.drawRect(0,0,tag.side,tag.side);
 			event.value.graphics.endFill();
+			event.value.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			// only currently active overlay needs this event listener.
 			event.value.enableTUICEvents();
 			
 			// dispatch the event so that the sprite(old overlay) is available;
 			// to the developers.
-			this.dispatchEvent(new TUICEvent(event));
+			this.dispatchEvent(event);
 
 			// cleanup
 			_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?

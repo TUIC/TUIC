@@ -15,39 +15,18 @@
 		
 		public var value:*;
 		private var _originalEvent:Event;
-		public function TUICEvent(old_evt:Event)
+		public function TUICEvent(old_evt:Event, eventType:String)
 		{
 			_originalEvent = old_evt;
-			var eventType = determineEventType(old_evt);
-			super(eventType);
+			
+			// TUIC Events should bubble so that users can register 
+			// their event listeners on TUICContainerSprite.
+			super(eventType, true);
 		}
 
 		public function get originalEvent():Event
 		{
 			return _originalEvent;
 		}
-
-		private function determineEventType(old_evt:Event):String
-		{
-			switch (old_evt.type)
-			{
-				case GestureEvent.GESTURE_DRAG :
-					return MOVE;
-				case TouchEvent.TOUCH_DOWN :
-					return DOWN;
-				case TouchEvent.TOUCH_UP :
-					return UP;
-				case GestureEvent.GESTURE_ROTATE :
-					return ROTATE;
-				case TUICEvent.DOWN:
-				case TUICEvent.UP:
-				case TUICEvent.ROTATE:
-				case TUICEvent.MOVE:
-					return old_evt.type;
-				default :
-					throw new Error("Unsupported event type");
-			}
-		}
 	}
-
 }
