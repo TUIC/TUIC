@@ -33,6 +33,9 @@
 		}
 		private function newPointHandler(event:Event):void
 		{
+			// only catches events that occurs on the overlay.
+			if(event.target !== _overlay) return; 
+			
 			clearTimeout(_newPointTimeoutHandler);
 			_touchDownEvents.push(event);
 			_newPointTimeoutHandler = setTimeout(newTagHandler,_touchThreshold * 1000);
