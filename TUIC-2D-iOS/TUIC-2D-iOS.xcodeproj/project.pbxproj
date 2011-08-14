@@ -16,6 +16,10 @@
 		3724A9C213F7793A009ACFA8 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724A9C013F7793A009ACFA8 /* MainWindow.xib */; };
 		3724A9C513F7793A009ACFA8 /* TUIC_2D_iOSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */; };
 		3724A9C813F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724A9C613F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib */; };
+		3724A9D713F77DAC009ACFA8 /* TUIC_2DView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9D613F77DAC009ACFA8 /* TUIC_2DView.m */; };
+		3724A9DB13F784FD009ACFA8 /* TUIC_2DTrackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9DA13F784FD009ACFA8 /* TUIC_2DTrackingView.m */; };
+		3724A9DE13F79802009ACFA8 /* myMathFormulaUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9DD13F79802009ACFA8 /* myMathFormulaUtil.m */; };
+		3724A9E513F7BCE6009ACFA8 /* TUIC_2DTagPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9E413F7BCE6009ACFA8 /* TUIC_2DTagPoint.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +37,14 @@
 		3724A9C313F7793A009ACFA8 /* TUIC_2D_iOSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIC_2D_iOSViewController.h; sourceTree = "<group>"; };
 		3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIC_2D_iOSViewController.m; sourceTree = "<group>"; };
 		3724A9C713F7793A009ACFA8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TUIC_2D_iOSViewController.xib; sourceTree = "<group>"; };
+		3724A9D513F77DAC009ACFA8 /* TUIC_2DView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2DView.h; sourceTree = "<group>"; };
+		3724A9D613F77DAC009ACFA8 /* TUIC_2DView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_2DView.m; sourceTree = "<group>"; };
+		3724A9D913F784FD009ACFA8 /* TUIC_2DTrackingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2DTrackingView.h; sourceTree = "<group>"; };
+		3724A9DA13F784FD009ACFA8 /* TUIC_2DTrackingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_2DTrackingView.m; sourceTree = "<group>"; };
+		3724A9DC13F79802009ACFA8 /* myMathFormulaUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myMathFormulaUtil.h; sourceTree = "<group>"; };
+		3724A9DD13F79802009ACFA8 /* myMathFormulaUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myMathFormulaUtil.m; sourceTree = "<group>"; };
+		3724A9E313F7BCE6009ACFA8 /* TUIC_2DTagPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2DTagPoint.h; sourceTree = "<group>"; };
+		3724A9E413F7BCE6009ACFA8 /* TUIC_2DTagPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_2DTagPoint.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +91,10 @@
 		3724A9B413F7793A009ACFA8 /* TUIC-2D-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				3724A9E313F7BCE6009ACFA8 /* TUIC_2DTagPoint.h */,
+				3724A9E413F7BCE6009ACFA8 /* TUIC_2DTagPoint.m */,
+				3724A9D813F784DB009ACFA8 /* TUIC_2DTrackingView */,
+				3724A9D113F77D4E009ACFA8 /* TUIC_2DView */,
 				3724A9BD13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.h */,
 				3724A9BE13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m */,
 				3724A9C013F7793A009ACFA8 /* MainWindow.xib */,
@@ -86,6 +102,8 @@
 				3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */,
 				3724A9C613F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib */,
 				3724A9B513F7793A009ACFA8 /* Supporting Files */,
+				3724A9DC13F79802009ACFA8 /* myMathFormulaUtil.h */,
+				3724A9DD13F79802009ACFA8 /* myMathFormulaUtil.m */,
 			);
 			path = "TUIC-2D-iOS";
 			sourceTree = "<group>";
@@ -99,6 +117,24 @@
 				3724A9BC13F7793A009ACFA8 /* TUIC-2D-iOS-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3724A9D113F77D4E009ACFA8 /* TUIC_2DView */ = {
+			isa = PBXGroup;
+			children = (
+				3724A9D513F77DAC009ACFA8 /* TUIC_2DView.h */,
+				3724A9D613F77DAC009ACFA8 /* TUIC_2DView.m */,
+			);
+			name = TUIC_2DView;
+			sourceTree = "<group>";
+		};
+		3724A9D813F784DB009ACFA8 /* TUIC_2DTrackingView */ = {
+			isa = PBXGroup;
+			children = (
+				3724A9D913F784FD009ACFA8 /* TUIC_2DTrackingView.h */,
+				3724A9DA13F784FD009ACFA8 /* TUIC_2DTrackingView.m */,
+			);
+			name = TUIC_2DTrackingView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,6 +200,10 @@
 				3724A9BB13F7793A009ACFA8 /* main.m in Sources */,
 				3724A9BF13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m in Sources */,
 				3724A9C513F7793A009ACFA8 /* TUIC_2D_iOSViewController.m in Sources */,
+				3724A9D713F77DAC009ACFA8 /* TUIC_2DView.m in Sources */,
+				3724A9DB13F784FD009ACFA8 /* TUIC_2DTrackingView.m in Sources */,
+				3724A9DE13F79802009ACFA8 /* myMathFormulaUtil.m in Sources */,
+				3724A9E513F7BCE6009ACFA8 /* TUIC_2DTagPoint.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

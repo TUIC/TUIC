@@ -2,8 +2,8 @@
 //  TUIC_2D_iOSViewController.m
 //  TUIC-2D-iOS
 //
-//  Created by  on 11/8/14.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by Daniel Tsai on 11/8/14.
+//  Copyright 2011 NTU Mobile HCI Lab. All rights reserved.
 //
 
 #import "TUIC_2D_iOSViewController.h"
@@ -40,5 +40,13 @@
     // Return YES for supported orientations
     return YES;
 }
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    self.view = [[TUIC_2DTrackingView alloc] init];
+	[self.view setNeedsDisplay];
+	[self.view clearAllTouches:self];
+}
+
 
 @end
