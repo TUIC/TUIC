@@ -1,0 +1,290 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3724A9AF13F7793A009ACFA8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724A9AE13F77939009ACFA8 /* UIKit.framework */; };
+		3724A9B113F7793A009ACFA8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724A9B013F7793A009ACFA8 /* Foundation.framework */; };
+		3724A9B313F7793A009ACFA8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724A9B213F7793A009ACFA8 /* CoreGraphics.framework */; };
+		3724A9B913F7793A009ACFA8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3724A9B713F7793A009ACFA8 /* InfoPlist.strings */; };
+		3724A9BB13F7793A009ACFA8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9BA13F7793A009ACFA8 /* main.m */; };
+		3724A9BF13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9BE13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m */; };
+		3724A9C213F7793A009ACFA8 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724A9C013F7793A009ACFA8 /* MainWindow.xib */; };
+		3724A9C513F7793A009ACFA8 /* TUIC_2D_iOSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */; };
+		3724A9C813F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724A9C613F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3724A9AA13F77939009ACFA8 /* TUIC-2D-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TUIC-2D-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3724A9AE13F77939009ACFA8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		3724A9B013F7793A009ACFA8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3724A9B213F7793A009ACFA8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		3724A9B613F7793A009ACFA8 /* TUIC-2D-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TUIC-2D-iOS-Info.plist"; sourceTree = "<group>"; };
+		3724A9B813F7793A009ACFA8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3724A9BA13F7793A009ACFA8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3724A9BC13F7793A009ACFA8 /* TUIC-2D-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TUIC-2D-iOS-Prefix.pch"; sourceTree = "<group>"; };
+		3724A9BD13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIC_2D_iOSAppDelegate.h; sourceTree = "<group>"; };
+		3724A9BE13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIC_2D_iOSAppDelegate.m; sourceTree = "<group>"; };
+		3724A9C113F7793A009ACFA8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		3724A9C313F7793A009ACFA8 /* TUIC_2D_iOSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIC_2D_iOSViewController.h; sourceTree = "<group>"; };
+		3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIC_2D_iOSViewController.m; sourceTree = "<group>"; };
+		3724A9C713F7793A009ACFA8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TUIC_2D_iOSViewController.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3724A9A713F77939009ACFA8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3724A9AF13F7793A009ACFA8 /* UIKit.framework in Frameworks */,
+				3724A9B113F7793A009ACFA8 /* Foundation.framework in Frameworks */,
+				3724A9B313F7793A009ACFA8 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3724A99F13F77939009ACFA8 = {
+			isa = PBXGroup;
+			children = (
+				3724A9B413F7793A009ACFA8 /* TUIC-2D-iOS */,
+				3724A9AD13F77939009ACFA8 /* Frameworks */,
+				3724A9AB13F77939009ACFA8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3724A9AB13F77939009ACFA8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3724A9AA13F77939009ACFA8 /* TUIC-2D-iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3724A9AD13F77939009ACFA8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3724A9AE13F77939009ACFA8 /* UIKit.framework */,
+				3724A9B013F7793A009ACFA8 /* Foundation.framework */,
+				3724A9B213F7793A009ACFA8 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3724A9B413F7793A009ACFA8 /* TUIC-2D-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				3724A9BD13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.h */,
+				3724A9BE13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m */,
+				3724A9C013F7793A009ACFA8 /* MainWindow.xib */,
+				3724A9C313F7793A009ACFA8 /* TUIC_2D_iOSViewController.h */,
+				3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */,
+				3724A9C613F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib */,
+				3724A9B513F7793A009ACFA8 /* Supporting Files */,
+			);
+			path = "TUIC-2D-iOS";
+			sourceTree = "<group>";
+		};
+		3724A9B513F7793A009ACFA8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3724A9B613F7793A009ACFA8 /* TUIC-2D-iOS-Info.plist */,
+				3724A9B713F7793A009ACFA8 /* InfoPlist.strings */,
+				3724A9BA13F7793A009ACFA8 /* main.m */,
+				3724A9BC13F7793A009ACFA8 /* TUIC-2D-iOS-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3724A9A913F77939009ACFA8 /* TUIC-2D-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3724A9CB13F7793A009ACFA8 /* Build configuration list for PBXNativeTarget "TUIC-2D-iOS" */;
+			buildPhases = (
+				3724A9A613F77939009ACFA8 /* Sources */,
+				3724A9A713F77939009ACFA8 /* Frameworks */,
+				3724A9A813F77939009ACFA8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TUIC-2D-iOS";
+			productName = "TUIC-2D-iOS";
+			productReference = 3724A9AA13F77939009ACFA8 /* TUIC-2D-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3724A9A113F77939009ACFA8 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 3724A9A413F77939009ACFA8 /* Build configuration list for PBXProject "TUIC-2D-iOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 3724A99F13F77939009ACFA8;
+			productRefGroup = 3724A9AB13F77939009ACFA8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3724A9A913F77939009ACFA8 /* TUIC-2D-iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3724A9A813F77939009ACFA8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3724A9B913F7793A009ACFA8 /* InfoPlist.strings in Resources */,
+				3724A9C213F7793A009ACFA8 /* MainWindow.xib in Resources */,
+				3724A9C813F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3724A9A613F77939009ACFA8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3724A9BB13F7793A009ACFA8 /* main.m in Sources */,
+				3724A9BF13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m in Sources */,
+				3724A9C513F7793A009ACFA8 /* TUIC_2D_iOSViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		3724A9B713F7793A009ACFA8 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3724A9B813F7793A009ACFA8 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		3724A9C013F7793A009ACFA8 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3724A9C113F7793A009ACFA8 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		3724A9C613F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3724A9C713F7793A009ACFA8 /* en */,
+			);
+			name = TUIC_2D_iOSViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3724A9C913F7793A009ACFA8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		3724A9CA13F7793A009ACFA8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3724A9CC13F7793A009ACFA8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TUIC-2D-iOS/TUIC-2D-iOS-Prefix.pch";
+				INFOPLIST_FILE = "TUIC-2D-iOS/TUIC-2D-iOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		3724A9CD13F7793A009ACFA8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TUIC-2D-iOS/TUIC-2D-iOS-Prefix.pch";
+				INFOPLIST_FILE = "TUIC-2D-iOS/TUIC-2D-iOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3724A9A413F77939009ACFA8 /* Build configuration list for PBXProject "TUIC-2D-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3724A9C913F7793A009ACFA8 /* Debug */,
+				3724A9CA13F7793A009ACFA8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3724A9CB13F7793A009ACFA8 /* Build configuration list for PBXNativeTarget "TUIC-2D-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3724A9CC13F7793A009ACFA8 /* Debug */,
+				3724A9CD13F7793A009ACFA8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3724A9A113F77939009ACFA8 /* Project object */;
+}
