@@ -30,11 +30,6 @@
 		{
 			// set dimensions and listeners
 			addChild(makeOverlay());
-			_overlay.graphics.beginFill(0xff00ff,1);
-			_overlay.graphics.drawRect(0,0,width,height);
-			_overlay.graphics.endFill();
-
-			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
 		}
 		private function newPointHandler(event:Event):void
 		{
@@ -46,7 +41,7 @@
 		{
 			// extract points from the events collected in the last _touchThreshold seconds.
 			var points = _touchDownEvents.map(function(event:TouchEvent, index:int, arr:Array):Object{
-			return {x: event.localX, y:event.localY};
+				return {x: event.localX, y:event.localY};
 			});
 
 			// validate tag
@@ -60,19 +55,19 @@
 			var event = new TUICEvent(_touchDownEvents[0]);
 			// FIXME: localX and localY of the event should be changed after we figure out 
 			// assign old overlay to event.value and make a new overlay.
-			event.value = _overlay;
+			event.value = _overlay; // save the old overlay into event.value
 			this.addChild(makeOverlay());
-
+			this.setChildIndex(_overlay, 0); // push the new layout to bottom
+			
 			// resize the old overlay to the size of a TUIC tag.
 			event.value.x = tag.x - tag.side / 2;
 			event.value.y = tag.y - tag.side / 2;
-			event.value.width = tag.width;
-			event.value.height = tag.height;
+			event.value.graphics.clear();
 			event.value.graphics.beginFill(0x000000);
 			event.value.graphics.drawRect(0,0,tag.side,tag.side);
 			event.value.graphics.endFill();
 			event.value.enableTUICEvents();
-
+			
 			// dispatch the event so that the sprite(old overlay) is available;
 			// to the developers.
 			this.dispatchEvent(new TUICEvent(event));
@@ -82,7 +77,14 @@
 		}
 		private function makeOverlay():TUICSprite
 		{
+			// this modifies _overlay property
+			
 			_overlay = new TUICSprite();
+			_overlay.graphics.beginFill(0xff00ff,1);
+			_overlay.graphics.drawRect(0,0,width,height);
+			_overlay.graphics.endFill();
+			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			
 			return _overlay;
 		}
 
