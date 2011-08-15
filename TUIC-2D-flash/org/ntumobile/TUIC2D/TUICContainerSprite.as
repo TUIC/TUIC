@@ -1,0 +1,315 @@
+﻿package org.ntumobile.TUIC2D
+{
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.utils.setTimeout;
+	import flash.utils.clearTimeout;
+
+	import gl.events.GestureEvent;
+	import gl.events.TouchEvent;
+	import id.core.TouchSprite;
+
+	import com.actionscript_flash_guru.fireflashlite.Console;
+
+	public class TUICContainerSprite extends TUICSprite
+	{
+
+		private var _touchThreshold:Number = 1;
+		// time threshold for all points to be detected on screen, in seconds
+
+		private var _newPointTimeoutHandler:uint;
+		private var _touchDownEvents:Array;
+		private var _overlay:TUICSprite;
+		public function TUICContainerSprite()
+		{
+			super();
+			// initialize private variables
+			_touchDownEvents = [];
+		}
+		override protected function initialize():void
+		{
+			// set dimensions and listeners
+			addChild(makeOverlay());
+		}
+		private function makeOverlay():TUICSprite
+		{
+			// this modifies _overlay property
+			
+			_overlay = new TUICSprite();
+			_overlay.graphics.beginFill(0xff00ff,1);
+			_overlay.graphics.drawRect(0,0,width,height);
+			_overlay.graphics.endFill();
+			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			
+			return _overlay;
+		}
+		private function newPointHandler(event:Event):void
+		{
+			clearTimeout(_newPointTimeoutHandler);
+			_touchDownEvents.push(event);
+			_newPointTimeoutHandler = setTimeout(newTagHandler,_touchThreshold * 1000);
+		}
+		private function newTagHandler():void
+		{
+			// extract points from the events collected in the last _touchThreshold seconds.
+			var points = _touchDownEvents.map(function(event:TouchEvent, index:int, arr:Array):Object{				
+				return {x: event.localX, y:event.localY};
+			});
+
+			// validate tag
+			var tag:Object = calcTag(points);
+			if (! tag.valid)
+			{
+				_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
+				return;
+			}
+
+			// create TUICEvent and the TUIC tag.
+			var event = new TUICEvent(_touchDownEvents[0], TUICEvent.DOWN);
+			// FIXME: localX and localY of the event should be changed after we figure out 
+			// assign old overlay to event.value and make a new overlay.
+			event.value = _overlay; // save the old overlay into event.value
+			this.addChild(makeOverlay());
+			this.setChildIndex(_overlay, 0); // push the new layout to bottom
+			
+			// resize the old overlay to the size of a TUIC tag.
+			/*
+			   Coordinates of a TUIC tag sprite:
+			   
+			(-tag.side/2, -tag.side/2) O----------------O (tag.side/2, -tag.side/2)
+			                           |                |
+			                           |                |
+			                           |                |
+			                           |     (0,0)      |  O: Reference points.
+			                           |                |     The one on the top left
+			                           |                |     determines the orientation
+			                           |                |     of the tag.
+			 (-tag.side/2, tag.side/2) O----------------/  
+			                                                                            */
+												  
+			var halfSide = tag.side / 2;
+			event.value.x = tag.x;
+			event.value.y = tag.y;
+			event.value.rotation = 135 - tag.orientation;
+			event.value.graphics.clear();
+			event.value.graphics.beginFill(0x000000, 1); // TODO: change this to invisible hitArea
+			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side, tag.side);
+			event.value.graphics.beginFill(0xffffff, 1); // TODO: change this to invisible hitArea
+			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side/4,tag.side/4);
+			event.value.graphics.endFill();
+			event.value.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			// only currently active overlay needs this event listener.
+			event.value.enableTUICEvents();
+			
+			// dispatch the event so that the sprite(old overlay) is available;
+			// to the developers.
+			this.dispatchEvent(event);
+
+			// cleanup
+			_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
+		}
+
+
+		private function calcTag(points:Array):Object
+		{
+			// test if the points form a valid TUIC tag.
+			// If the points form a valud TUIC tag, the information of
+			// the tag is calculated and returned.
+			var ret:Object = {};
+			
+			// step0: basic point number check
+			if (points.length < 3)
+			{
+				ret.valid = false;
+				return ret;
+			}
+			
+			// step1: find max distance pair.
+			//        these are diagonal reference points.
+			//
+			var refPoints:Array, maxDist:Number = 0;
+
+			for (var i:uint = 0; i < points.length - 1; ++i)
+			{
+				for (var j:uint=i; j<points.length; ++j)
+				{
+					var d:Number = dist(points[i],points[j]);
+					if (d > maxDist)
+					{
+						maxDist = d;
+						refPoints = [points[i],points[j]];
+					}
+				}
+			}
+			
+			// remove reference points out of points[]
+			points = points.filter(function(elem:Object, i:int, arr:Array):Boolean{
+				return !( elem === refPoints[0] || elem === refPoints[1] );
+			});
+			if(refPoints[0].y > refPoints[1].y){ 
+				// keep refPoints[0] 'higher' than refPoints[1]
+				var tmp = refPoints[0]; refPoints[0] = refPoints[1]; refPoints[1] = tmp;
+			}
+			// calculate center of the tag
+			ret = midPointOf(refPoints[0], refPoints[1]);
+			ret.side = Math.SQRT2 / 2 * maxDist;
+
+			// step2: Create the possible position of third reference points and the 
+			//        payload bits.
+			//
+			/*               refPoints[0]
+			   ret.side . `/ 
+			       . `    /
+			A . `        /    A-refPoints[0]-refPoints[1] is a 45-45-90 Right Triangle
+			  \         /     We wish to test whether point A is also touched down.
+			   \       /` .   
+			    \     /     ` (ret.x, ret.y)
+			     \   /        
+			      \ / theta
+			-------+----------------- Horizon
+			       refPoints[1]                                                      */
+			
+			var possibleRefPoints:Array,
+				possiblePayloads:Array,
+				dy:Number = ret.y - refPoints[0].y, 
+				dx:Number = refPoints[0].x - ret.x,
+				theta = 180 * Math.atan(dy/dx) / Math.PI; // in degrees
+			if(dx<0){ 
+				// refPoints[0] is the higher one so dy is always > 0
+				// thus dx < 0 indicates refPoints[0]-refPoints[1] forms
+				// a negative-sloped line.
+				// For negative sloped line Math.atan gives negative angles.
+				// We want to normalize it so it matches the figure above
+				// for simplicity.
+				theta += 180;
+			}
+			
+			// For positive-sloped lines,
+			// possibleRefPoint[0] is the ref point above the line;
+			// For negative-sloped lines,
+			// possible_ref_point[1] is the ref point below the line;
+			possibleRefPoints = [
+				{ x: ret.x - dy, y: ret.y - dx },
+				{ x: ret.x + dy, y: ret.y + dx }
+			];
+			
+			/*           * refPoint[0]
+			           ↗- payloadVec <dx/2, dy/2>
+			    0  1  2
+			        ↗
+			    3  4  5
+				    `(ret.x, ret.y)
+				6  7  8                     #: possiblePayloads
+			
+			 * 
+			 refPoint[1]
+			*/
+			var payloadVec = {x: dx / 2, y: dy / 2};
+			possiblePayloads = [ // FIXME: 9-bit only. And this IS ugly.
+				{ x: ret.x - payloadVec.y, y: ret.y - payloadVec.x},
+				{},
+				{ x: ret.x + payloadVec.x, y: ret.y - payloadVec.y},
+				{},
+				{ x: ret.x, y: ret.y},
+				{},
+				{ x: ret.x - payloadVec.x, y: ret.y + payloadVec.y},
+				{},
+				{x: ret.x + payloadVec.y, y: ret.y + payloadVec.x}
+			];
+			possiblePayloads[1] = midPointOf(possiblePayloads[0], possiblePayloads[2]);
+			possiblePayloads[3] = midPointOf(possiblePayloads[0], possiblePayloads[6]);
+			possiblePayloads[5] = midPointOf(possiblePayloads[2], possiblePayloads[8]);
+			possiblePayloads[7] = midPointOf(possiblePayloads[6], possiblePayloads[8]);
+			
+			var toleranceRadius:Number = ret.side / 8;
+			// TODO: this is for 9-bit TUIC tag.
+			// for 4-bit TUIC tags, the tolerance radius should be ret.side / 6
+
+			ret.valid = false; // used as a flag here 
+
+			/*
+			drawCircle(possibleRefPoints[0], 0x0000ff, toleranceRadius);
+			drawCircle(possibleRefPoints[1], 0x00ff00, toleranceRadius);
+			var debugColor:uint = 0x000000;
+			for each(var point in possiblePayloads){
+				drawCircle(point, debugColor, toleranceRadius);
+				debugColor += 0x181818;
+			}
+			*/
+
+			// Step 3: Find the third reference & payloads by testing points against
+			//        the tolerance radius one-by-one.
+			//        The third reference point determines the orientation of the tag,
+			//        as well as the index of payload bits
+			//
+					
+			var reverseBits:Boolean = false;
+			ret.payloads = [0,0,0,0,0,0,0,0,0]; // TODO: 4-bit TUIC support
+			
+			points.forEach(function(point:Object, index:int, arr:Array){
+				if( dist(point, possibleRefPoints[0]) < toleranceRadius ){
+					ret.orientation = theta + 90;
+					ret.valid = true;
+				}else if(dist(point, possibleRefPoints[1]) < toleranceRadius){
+					ret.orientation = theta + 270;
+					reverseBits = true;
+					ret.valid = true;
+				}else{ // not in the two possible ref point area
+					// test if the point is a payload bit
+					possiblePayloads.every(
+					function(possiblePayload:Object, index:int, arr:Array){
+						if(dist(point, possiblePayload) < toleranceRadius){
+							// payload bit found.
+							ret.payloads[index] = 1;
+							
+							// stop this for-loop
+							return false; 
+						}
+						return true;
+					});
+				}
+			});
+			
+			if(ret.valid){ // the third ref point is successfully found
+				ret.orientation %= 360;
+				if(reverseBits){
+					ret.payloads.reverse();
+				}
+				ret.value = 0;
+				ret.payloads.forEach(function(payload:int, index:int, arr:Array){
+					ret.value = ret.value * 2 + payload;
+				});
+				//refPoints.push(points[index]); // insert the new ref point
+				// points.splice(index,1); // remove the ref point from points[]
+			}else{	// no third point is found
+				return ret;
+			}
+			
+			//Console.log(ret);
+			//ret.valid=false;
+			return ret;
+		}
+		private function dist(a:Object, b:Object):Number
+		{
+			return Math.sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+		}
+		private function midPointOf(a:Object, b:Object):Object{
+			return {
+				x: 0.5 * (a.x + b.x),
+				y: 0.5 * (a.y + b.y)
+			}
+		}
+		
+		private function drawCircle(point:Object, color:uint = 0xffffff, size:Number = 20):void{
+			// debugging purpose
+			_overlay.graphics.lineStyle(1, color, 1);
+			_overlay.graphics.drawCircle(point.x, point.y, size);
+			
+		}
+		
+		private function debugHandler(event:Event)
+		{
+			Console.log(event);
+		}
+	}
+}
