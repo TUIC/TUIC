@@ -73,11 +73,29 @@
 			this.setChildIndex(_overlay, 0); // push the new layout to bottom
 			
 			// resize the old overlay to the size of a TUIC tag.
-			event.value.x = tag.x - tag.side / 2;
-			event.value.y = tag.y - tag.side / 2;
+			/*
+			   Coordinates of a TUIC tag sprite:
+			   
+			(-tag.side/2, -tag.side/2) O----------------O (tag.side/2, -tag.side/2)
+			                           |                |
+			                           |                |
+			                           |                |
+			                           |     (0,0)      |  O: Reference points.
+			                           |                |     The one on the top left
+			                           |                |     determines the orientation
+			                           |                |     of the tag.
+			 (-tag.side/2, tag.side/2) O----------------/  
+			                                                                            */
+												  
+			var halfSide = tag.side / 2;
+			event.value.x = tag.x;
+			event.value.y = tag.y;
+			event.value.rotation = 135 - tag.orientation;
 			event.value.graphics.clear();
-			event.value.graphics.beginFill(0x000000, 0);
-			event.value.graphics.drawRect(0,0,tag.side,tag.side);
+			event.value.graphics.beginFill(0x000000, 1); // TODO: change this to invisible hitArea
+			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side, tag.side);
+			event.value.graphics.beginFill(0xffffff, 1); // TODO: change this to invisible hitArea
+			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side/4,tag.side/4);
 			event.value.graphics.endFill();
 			event.value.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
 			// only currently active overlay needs this event listener.
@@ -148,7 +166,7 @@
 			    \     /     ` (ret.x, ret.y)
 			     \   /        
 			      \ / theta
-			------------------------- Horizon
+			-------+----------------- Horizon
 			       refPoints[1]                                                      */
 			
 			var possibleRefPoints:Array,
@@ -165,8 +183,6 @@
 				// for simplicity.
 				theta += 180;
 			}
-			Console.log("(dy,dx): ", dy,dx);
-			Console.log("Theta: ", theta);
 			
 			// For positive-sloped lines,
 			// possibleRefPoint[0] is the ref point above the line;
@@ -211,6 +227,7 @@
 
 			ret.valid = false; // used as a flag here 
 
+			/*
 			drawCircle(possibleRefPoints[0], 0x0000ff, toleranceRadius);
 			drawCircle(possibleRefPoints[1], 0x00ff00, toleranceRadius);
 			var debugColor:uint = 0x000000;
@@ -218,6 +235,7 @@
 				drawCircle(point, debugColor, toleranceRadius);
 				debugColor += 0x181818;
 			}
+			*/
 
 			// Step 3: Find the third reference & payloads by testing points against
 			//        the tolerance radius one-by-one.
@@ -267,8 +285,8 @@
 				return ret;
 			}
 			
-			Console.log(ret);
-			ret.valid=false;
+			//Console.log(ret);
+			//ret.valid=false;
 			return ret;
 		}
 		private function dist(a:Object, b:Object):Number
