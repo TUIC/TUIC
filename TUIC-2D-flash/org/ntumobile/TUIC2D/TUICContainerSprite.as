@@ -147,8 +147,8 @@
 			  \         /     We wish to test whether point A is also touched down.
 			   \       /` .   
 			    \     /     ` (ret.x, ret.y)
-				 \   /        
-				  \ / theta
+			     \   /        
+			      \ / theta
 			------------------------- Horizon
 			       refPoints[1]                                                      */
 			
