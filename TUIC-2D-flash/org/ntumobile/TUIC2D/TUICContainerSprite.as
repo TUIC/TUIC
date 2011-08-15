@@ -133,12 +133,11 @@
 				var tmp = refPoints[0]; refPoints[0] = refPoints[1]; refPoints[1] = tmp;
 			}
 			// calculate center of the tag
-			ret.x = (refPoints[0].x + refPoints[1].x)/2;
-			ret.y = (refPoints[0].y + refPoints[1].y)/2;
+			ret = midPointOf(refPoints[0], refPoints[1]);
 			ret.side = Math.SQRT2 / 2 * maxDist;
 
-			// step2: find the third reference points.
-			//        this reference point determines the orientation of the tag.
+			// step2: Create the possible position of third reference points and the 
+			//        payload bits.
 			//
 			/*               refPoints[0]
 			   ret.side . `/ 
@@ -153,6 +152,7 @@
 			       refPoints[1]                                                      */
 			
 			var possibleRefPoints:Array,
+				possiblePayloads:Array,
 				dy:Number = ret.y - refPoints[0].y, 
 				dx:Number = refPoints[0].x - ret.x,
 				theta = 180 * Math.atan(dy/dx) / Math.PI; // in degrees
@@ -176,39 +176,97 @@
 				{ x: ret.x - dy, y: ret.y - dx },
 				{ x: ret.x + dy, y: ret.y + dx }
 			];
-						
-			var toleranceRadius:Number = ret.side * Math.SQRT2 / 4, index:String;
+			
+			/*           * refPoint[0]
+			           ↗- payloadVec <dx/2, dy/2>
+			    0  1  2
+			        ↗
+			    3  4  5
+				    `(ret.x, ret.y)
+				6  7  8                     #: possiblePayloads
+			
+			 * 
+			 refPoint[1]
+			*/
+			var payloadVec = {x: dx / 2, y: dy / 2};
+			possiblePayloads = [ // FIXME: 9-bit only. And this IS ugly.
+				{ x: ret.x - payloadVec.y, y: ret.y - payloadVec.x},
+				{},
+				{ x: ret.x + payloadVec.x, y: ret.y - payloadVec.y},
+				{},
+				{ x: ret.x, y: ret.y},
+				{},
+				{ x: ret.x - payloadVec.x, y: ret.y + payloadVec.y},
+				{},
+				{x: ret.x + payloadVec.y, y: ret.y + payloadVec.x}
+			];
+			possiblePayloads[1] = midPointOf(possiblePayloads[0], possiblePayloads[2]);
+			possiblePayloads[3] = midPointOf(possiblePayloads[0], possiblePayloads[6]);
+			possiblePayloads[5] = midPointOf(possiblePayloads[2], possiblePayloads[8]);
+			possiblePayloads[7] = midPointOf(possiblePayloads[6], possiblePayloads[8]);
+			
+			var toleranceRadius:Number = ret.side / 8;
 			// TODO: this is for 9-bit TUIC tag.
-			// for 4-bit TUIC tags, the tolerance radius should be ret.side*sqrt(2)/3
+			// for 4-bit TUIC tags, the tolerance radius should be ret.side / 6
 
 			ret.valid = false; // used as a flag here 
 
 			drawCircle(possibleRefPoints[0], 0x0000ff, toleranceRadius);
 			drawCircle(possibleRefPoints[1], 0x00ff00, toleranceRadius);
+			var debugColor:uint = 0x000000;
+			for each(var point in possiblePayloads){
+				drawCircle(point, debugColor, toleranceRadius);
+				debugColor += 0x181818;
+			}
 
-			// actually find third refPoint
-			// by testing which point is within the tolerance radius one-by-one
-			for (index in points){
-				if( dist(points[index], possibleRefPoints[0]) < toleranceRadius ){
+			// Step 3: Find the third reference & payloads by testing points against
+			//        the tolerance radius one-by-one.
+			//        The third reference point determines the orientation of the tag,
+			//        as well as the index of payload bits
+			//
+					
+			var reverseBits:Boolean = false;
+			ret.payloads = [0,0,0,0,0,0,0,0,0]; // TODO: 4-bit TUIC support
+			
+			points.forEach(function(point:Object, index:int, arr:Array){
+				if( dist(point, possibleRefPoints[0]) < toleranceRadius ){
 					ret.orientation = theta + 90;
 					ret.valid = true;
-					break;
-				}else if(dist(points[index], possibleRefPoints[1]) < toleranceRadius){
+				}else if(dist(point, possibleRefPoints[1]) < toleranceRadius){
 					ret.orientation = theta + 270;
+					reverseBits = true;
 					ret.valid = true;
-					break;
+				}else{ // not in the two possible ref point area
+					// test if the point is a payload bit
+					possiblePayloads.every(
+					function(possiblePayload:Object, index:int, arr:Array){
+						if(dist(point, possiblePayload) < toleranceRadius){
+							// payload bit found.
+							ret.payloads[index] = 1;
+							
+							// stop this for-loop
+							return false; 
+						}
+						return true;
+					});
 				}
-			}
-			if(ret.valid){
-				ret.orientation %= 360; 
-				refPoints.push(points[index]); // insert the new ref point
-				points.splice(index,1); // remove the ref point from points[]
+			});
+			
+			if(ret.valid){ // the third ref point is successfully found
+				ret.orientation %= 360;
+				if(reverseBits){
+					ret.payloads.reverse();
+				}
+				ret.value = 0;
+				ret.payloads.forEach(function(payload:int, index:int, arr:Array){
+					ret.value = ret.value * 2 + payload;
+				});
+				//refPoints.push(points[index]); // insert the new ref point
+				// points.splice(index,1); // remove the ref point from points[]
 			}else{	// no third point is found
 				return ret;
 			}
 			
-			// step 3: detemine the payload bits
-			//
 			Console.log(ret);
 			ret.valid=false;
 			return ret;
@@ -217,6 +275,12 @@
 		{
 			return Math.sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
 		}
+		private function midPointOf(a:Object, b:Object):Object{
+			return {
+				x: 0.5 * (a.x + b.x),
+				y: 0.5 * (a.y + b.y)
+			}
+		}
 		
 		private function drawCircle(point:Object, color:uint = 0xffffff, size:Number = 20):void{
 			// debugging purpose
@@ -224,6 +288,7 @@
 			_overlay.graphics.drawCircle(point.x, point.y, size);
 			
 		}
+		
 		private function debugHandler(event:Event)
 		{
 			Console.log(event);
