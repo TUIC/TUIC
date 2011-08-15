@@ -2,6 +2,8 @@ package com.cta;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class ClickedPoint {
 	ArrayList<Pointer> list = new ArrayList<Pointer>();
 
@@ -12,10 +14,12 @@ public class ClickedPoint {
 		} else {
 			boolean flag = true;
 			// 清除不要的紀錄
+			long now = System.currentTimeMillis();
 			while (flag) {
 				flag = false;
+
 				for (Pointer p : list) {
-					if (inP.startTime - p.startTime > 1000) {
+					if (now - p.startTime > 1000) {
 						flag = true;
 						list.remove(p);
 						break;
@@ -38,18 +42,19 @@ public class ClickedPoint {
 
 	}
 
-	int getPoint(long inTime, float inX, float inY) {
-		// 回傳此座標附近的點擊次數
-		int r = 0;
+	Pointer getPoint(float inX, float inY) {
+
+		Pointer r = null;
+		Long now = System.currentTimeMillis();
 		for (Pointer p : list) {
 
 			if (((p.x - inX) * (p.x - inX) + (p.y - inY) * (p.y - inY)) < 1000
-					&& inTime - p.startTime <= 1000) {
-				r = p.clickCnt;
+					&& now - p.startTime <= 1000) {
+				r = new Pointer(p);
 				break;
 			}
 		}
 
-		return r + 1;
+		return r;
 	}
 }
