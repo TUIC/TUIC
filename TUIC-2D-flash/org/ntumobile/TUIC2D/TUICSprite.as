@@ -9,6 +9,10 @@
 
 	public dynamic class TUICSprite extends TouchSprite
 	{
+		protected var _sideLength:Number;
+		protected var _payloads:Array;
+		protected var _value:uint;
+		
 		// x, y: center position
 		public function TUICSprite()
 		{
@@ -16,6 +20,16 @@
 			// enable multi-touch gesture analysis
 			this.blobContainerEnabled = true;
 		}
+		public function get sideLength():Number{
+			return _sideLength;
+		}
+		public function get payloads():Array{
+			return _payloads;
+		}
+		public function get value():uint{
+			return _value;
+		}
+		
 		public function enableTUICEvents():void{
 			// adding event listeners when the sprite
 			// transforms from an overlay to a tag.

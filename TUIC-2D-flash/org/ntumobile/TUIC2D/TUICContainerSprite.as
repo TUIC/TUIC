@@ -14,7 +14,7 @@
 	public class TUICContainerSprite extends TUICSprite
 	{
 
-		private var _touchThreshold:Number = 1;
+		private var _touchThreshold:Number = 0.3;
 		// time threshold for all points to be detected on screen, in seconds
 
 		private var _newPointTimeoutHandler:uint;
@@ -93,6 +93,9 @@
 			event.value.y = tag.y;
 			event.value.rotation = 135 - tag.orientation;
 			event.value.orientation = tag.orientation;
+			event.value._sideLength = tag.side;
+			event.value._value = tag.value;
+			event.value._payloads = tag.payloads;
 			event.value.graphics.clear();
 			
 			event.value.graphics.beginFill(0x000000, _spriteAlpha);
@@ -123,6 +126,21 @@
 			// If the points form a valud TUIC tag, the information of
 			// the tag is calculated and returned.
 			var ret:Object = {};
+			/*
+				returned tag object:
+				{
+					valid: Boolean, // whether the tag is valid or not
+					side: Number,   // side length of th tag
+					orientation:Number, // orientation of the tag in degrees,
+										// left horizon = 0
+					x:Number,		// center x coordinate
+					y:Number		// center y coordinate
+					payloads:Array(n),  // payloads of n-bit TUIC tag
+					value:uint		// payloads represented in decimal value
+									// (p[0]p[1]....p[n])_2
+				}
+			
+			*/
 			
 			// step0: basic point number check
 			if (points.length < 3)

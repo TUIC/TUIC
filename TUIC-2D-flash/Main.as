@@ -58,8 +58,8 @@
 		
 		private function debugHandler(event:TUICEvent)
 		{
-			Console.log(event.type);
-			drawCircleOn(event.target, 0,0);
+			Console.log(event.type, event.target.value);
+			//drawCircleOn(event.target, 0,0);
 		}
 		
 		private function drawCircleOn(sprite:*, x:Number, y:Number, color:uint = 0xffffff, size:Number = 20):void{
