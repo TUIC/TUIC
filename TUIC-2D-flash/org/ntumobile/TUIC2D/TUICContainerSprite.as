@@ -20,9 +20,13 @@
 		private var _newPointTimeoutHandler:uint;
 		private var _touchDownEvents:Array;
 		private var _overlay:TUICSprite;
-		public function TUICContainerSprite()
+		private var _spriteAlpha:Number;
+		public function TUICContainerSprite(debug:Boolean = false)
 		{
+			// TODO: set tag size limit so that tag creation will be harder to trigger
+			
 			super();
+			_spriteAlpha = debug? 1:0;
 			// initialize private variables
 			_touchDownEvents = [];
 		}
@@ -30,18 +34,6 @@
 		{
 			// set dimensions and listeners
 			addChild(makeOverlay());
-		}
-		private function makeOverlay():TUICSprite
-		{
-			// this modifies _overlay property
-			
-			_overlay = new TUICSprite();
-			_overlay.graphics.beginFill(0xff00ff,1);
-			_overlay.graphics.drawRect(0,0,width,height);
-			_overlay.graphics.endFill();
-			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
-			
-			return _overlay;
 		}
 		private function newPointHandler(event:Event):void
 		{
@@ -91,14 +83,20 @@
 			event.value.x = tag.x;
 			event.value.y = tag.y;
 			event.value.rotation = 135 - tag.orientation;
+			event.value.orientation = tag.orientation;
 			event.value.graphics.clear();
-			event.value.graphics.beginFill(0x000000, 1); // TODO: change this to invisible hitArea
+			
+			event.value.graphics.beginFill(0x000000, _spriteAlpha);
 			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side, tag.side);
-			event.value.graphics.beginFill(0xffffff, 1); // TODO: change this to invisible hitArea
+			event.value.graphics.beginFill(0xffffff, _spriteAlpha);
 			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side/4,tag.side/4);
 			event.value.graphics.endFill();
-			event.value.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			
 			// only currently active overlay needs this event listener.
+			// since event.value is becoming a new TUIC tag, it cannot be bound with
+			// this handler anymore.
+			event.value.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			
 			event.value.enableTUICEvents();
 			
 			// dispatch the event so that the sprite(old overlay) is available;
@@ -193,33 +191,7 @@
 				{ x: ret.x + dy, y: ret.y + dx }
 			];
 			
-			/*           * refPoint[0]
-			           ↗- payloadVec <dx/2, dy/2>
-			    0  1  2
-			        ↗
-			    3  4  5
-				    `(ret.x, ret.y)
-				6  7  8                     #: possiblePayloads
-			
-			 * 
-			 refPoint[1]
-			*/
-			var payloadVec = {x: dx / 2, y: dy / 2};
-			possiblePayloads = [ // FIXME: 9-bit only. And this IS ugly.
-				{ x: ret.x - payloadVec.y, y: ret.y - payloadVec.x},
-				{},
-				{ x: ret.x + payloadVec.x, y: ret.y - payloadVec.y},
-				{},
-				{ x: ret.x, y: ret.y},
-				{},
-				{ x: ret.x - payloadVec.x, y: ret.y + payloadVec.y},
-				{},
-				{x: ret.x + payloadVec.y, y: ret.y + payloadVec.x}
-			];
-			possiblePayloads[1] = midPointOf(possiblePayloads[0], possiblePayloads[2]);
-			possiblePayloads[3] = midPointOf(possiblePayloads[0], possiblePayloads[6]);
-			possiblePayloads[5] = midPointOf(possiblePayloads[2], possiblePayloads[8]);
-			possiblePayloads[7] = midPointOf(possiblePayloads[6], possiblePayloads[8]);
+			possiblePayloads = makePossiblePayloads( {x: dx / 2, y: dy / 2}, ret );
 			
 			var toleranceRadius:Number = ret.side / 8;
 			// TODO: this is for 9-bit TUIC tag.
@@ -289,6 +261,52 @@
 			//ret.valid=false;
 			return ret;
 		}
+		
+		private function makeOverlay():TUICSprite
+		{
+			// this modifies _overlay property
+			
+			_overlay = new TUICSprite();
+			_overlay.graphics.beginFill(0xff00ff,_spriteAlpha);
+			_overlay.graphics.drawRect(0,0,width,height);
+			_overlay.graphics.endFill();
+			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			
+			return _overlay;
+		}
+		
+		private function makePossiblePayloads(payloadVec:Object, ret:Object):Array{
+			// ret: the tag returned by calcTag.
+			/*           * refPoint[0]
+			           ↗- payloadVec <dx/2, dy/2>
+			    0  1  2
+			        ↗
+			    3  4  5
+				    `(ret.x, ret.y)
+				6  7  8                     #: possiblePayloads
+			
+			 * 
+			 refPoint[1]
+			*/
+			var possiblePayloads = [ // FIXME: 9-bit only. And this IS ugly.
+				{ x: ret.x - payloadVec.y, y: ret.y - payloadVec.x},
+				{},
+				{ x: ret.x + payloadVec.x, y: ret.y - payloadVec.y},
+				{},
+				{ x: ret.x, y: ret.y},
+				{},
+				{ x: ret.x - payloadVec.x, y: ret.y + payloadVec.y},
+				{},
+				{x: ret.x + payloadVec.y, y: ret.y + payloadVec.x}
+			];
+			possiblePayloads[1] = midPointOf(possiblePayloads[0], possiblePayloads[2]);
+			possiblePayloads[3] = midPointOf(possiblePayloads[0], possiblePayloads[6]);
+			possiblePayloads[5] = midPointOf(possiblePayloads[2], possiblePayloads[8]);
+			possiblePayloads[7] = midPointOf(possiblePayloads[6], possiblePayloads[8]);
+		
+			return possiblePayloads;
+		}
+		
 		private function dist(a:Object, b:Object):Number
 		{
 			return Math.sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
