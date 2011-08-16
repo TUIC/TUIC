@@ -35,6 +35,15 @@
 			// set dimensions and listeners
 			addChild(makeOverlay());
 		}
+		
+		// Extends the overlay to be the same size as the container.
+		// If the overlay is not yet constructed, this function does nothing.
+		public function resizeOverlay():void{
+			if(_overlay){
+				_overlay.graphics.copyFrom(this.graphics);
+			}
+		}
+		
 		private function newPointHandler(event:Event):void
 		{
 			clearTimeout(_newPointTimeoutHandler);
@@ -267,9 +276,8 @@
 			// this modifies _overlay property
 			
 			_overlay = new TUICSprite();
-			_overlay.graphics.beginFill(0xff00ff,_spriteAlpha);
-			_overlay.graphics.drawRect(0,0,width,height);
-			_overlay.graphics.endFill();
+			resizeOverlay();
+			
 			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
 			
 			return _overlay;
