@@ -20,9 +20,14 @@
 		private var _newPointTimeoutHandler:uint;
 		private var _touchDownEvents:Array;
 		private var _overlay:TUICSprite;
-		public function TUICContainerSprite()
+		private var _spriteAlpha:Number;
+		public function TUICContainerSprite(sideLength:Number = 0, debug:Boolean = false)
 		{
 			super();
+			
+			// sideLength: target tag side length. If 0, side length is unlimited.
+			_sideLength = sideLength;
+			_spriteAlpha = debug? 1:0;
 			// initialize private variables
 			_touchDownEvents = [];
 		}
@@ -31,18 +36,15 @@
 			// set dimensions and listeners
 			addChild(makeOverlay());
 		}
-		private function makeOverlay():TUICSprite
-		{
-			// this modifies _overlay property
-			
-			_overlay = new TUICSprite();
-			_overlay.graphics.beginFill(0xff00ff,1);
-			_overlay.graphics.drawRect(0,0,width,height);
-			_overlay.graphics.endFill();
-			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
-			
-			return _overlay;
+		
+		// Extends the overlay to be the same size as the container.
+		// If the overlay is not yet constructed, this function does nothing.
+		public function resizeOverlay():void{
+			if(_overlay){
+				_overlay.graphics.copyFrom(this.graphics);
+			}
 		}
+		
 		private function newPointHandler(event:Event):void
 		{
 			clearTimeout(_newPointTimeoutHandler);
@@ -65,10 +67,10 @@
 			}
 
 			// create TUICEvent and the TUIC tag.
-			var event = new TUICEvent(_touchDownEvents[0], TUICEvent.DOWN);
+			var event = new TUICEvent(_touchDownEvents[0], TUICEvent.DOWN),
+				oldOverlay = _overlay; // save the old overlay
 			// FIXME: localX and localY of the event should be changed after we figure out 
-			// assign old overlay to event.value and make a new overlay.
-			event.value = _overlay; // save the old overlay into event.value
+			// assign old overlay to oldOverlay and make a new overlay.
 			this.addChild(makeOverlay());
 			this.setChildIndex(_overlay, 0); // push the new layout to bottom
 			
@@ -88,19 +90,30 @@
 			                                                                            */
 												  
 			var halfSide = tag.side / 2;
-			event.value.x = tag.x;
-			event.value.y = tag.y;
-			event.value.rotation = 135 - tag.orientation;
-			event.value.graphics.clear();
-			event.value.graphics.beginFill(0x000000, 1); // TODO: change this to invisible hitArea
-			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side, tag.side);
-			event.value.graphics.beginFill(0xffffff, 1); // TODO: change this to invisible hitArea
-			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side/4,tag.side/4);
-			event.value.graphics.endFill();
-			event.value.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
-			// only currently active overlay needs this event listener.
-			event.value.enableTUICEvents();
+			oldOverlay.x = tag.x;
+			oldOverlay.y = tag.y;
+			oldOverlay.rotation = 135 - tag.orientation;
+			//oldOverlay.orientation = tag.orientation;
+			oldOverlay._sideLength = tag.side;
+			oldOverlay._value = tag.value;
+			oldOverlay._payloads = tag.payloads;
+			oldOverlay._numPoints = tag.numPoints;
+			oldOverlay.graphics.clear();
 			
+			oldOverlay.graphics.beginFill(0x000000, _spriteAlpha);
+			oldOverlay.graphics.drawRect(-halfSide,-halfSide,tag.side, tag.side);
+			oldOverlay.graphics.beginFill(0xffffff, _spriteAlpha);
+			oldOverlay.graphics.drawRect(-halfSide,-halfSide,tag.side/4,tag.side/4);
+			oldOverlay.graphics.endFill();
+			
+			// only currently active overlay needs this event listener.
+			// since oldOverlay is becoming a new TUIC tag, it cannot be bound with
+			// this handler anymore.
+			oldOverlay.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			
+			oldOverlay.enableTUICEvents();
+			
+			event.value = oldOverlay;
 			// dispatch the event so that the sprite(old overlay) is available;
 			// to the developers.
 			this.dispatchEvent(event);
@@ -116,6 +129,22 @@
 			// If the points form a valud TUIC tag, the information of
 			// the tag is calculated and returned.
 			var ret:Object = {};
+			/*
+				returned tag object:
+				{
+					valid: Boolean, // whether the tag is valid or not
+					side: Number,   // side length of th tag
+					orientation:Number, // orientation of the tag in degrees,
+										// left horizon = 0
+					x:Number,		// center x coordinate
+					y:Number		// center y coordinate
+					payloads:Array(n),  // payloads of n-bit TUIC tag
+					value:uint		// payloads represented in decimal value
+									// (p[0]p[1]....p[n])_2
+					numPoints:uint	// number of valid touch points
+				}
+			
+			*/
 			
 			// step0: basic point number check
 			if (points.length < 3)
@@ -153,6 +182,14 @@
 			// calculate center of the tag
 			ret = midPointOf(refPoints[0], refPoints[1]);
 			ret.side = Math.SQRT2 / 2 * maxDist;
+
+			// side length filter
+			// tolerance = 1/10 * sideLength (5 bits per side for 9-bit TUIC tag)
+			if(_sideLength !== 0 && !(0.9*_sideLength < ret.side && ret.side < 1.1*_sideLength) ){
+				trace('invalid side length:', ret.side);
+				ret.valid = false;
+				return ret;
+			}
 
 			// step2: Create the possible position of third reference points and the 
 			//        payload bits.
@@ -193,33 +230,7 @@
 				{ x: ret.x + dy, y: ret.y + dx }
 			];
 			
-			/*           * refPoint[0]
-			           ↗- payloadVec <dx/2, dy/2>
-			    0  1  2
-			        ↗
-			    3  4  5
-				    `(ret.x, ret.y)
-				6  7  8                     #: possiblePayloads
-			
-			 * 
-			 refPoint[1]
-			*/
-			var payloadVec = {x: dx / 2, y: dy / 2};
-			possiblePayloads = [ // FIXME: 9-bit only. And this IS ugly.
-				{ x: ret.x - payloadVec.y, y: ret.y - payloadVec.x},
-				{},
-				{ x: ret.x + payloadVec.x, y: ret.y - payloadVec.y},
-				{},
-				{ x: ret.x, y: ret.y},
-				{},
-				{ x: ret.x - payloadVec.x, y: ret.y + payloadVec.y},
-				{},
-				{x: ret.x + payloadVec.y, y: ret.y + payloadVec.x}
-			];
-			possiblePayloads[1] = midPointOf(possiblePayloads[0], possiblePayloads[2]);
-			possiblePayloads[3] = midPointOf(possiblePayloads[0], possiblePayloads[6]);
-			possiblePayloads[5] = midPointOf(possiblePayloads[2], possiblePayloads[8]);
-			possiblePayloads[7] = midPointOf(possiblePayloads[6], possiblePayloads[8]);
+			possiblePayloads = makePossiblePayloads( {x: dx / 2, y: dy / 2}, ret );
 			
 			var toleranceRadius:Number = ret.side / 8;
 			// TODO: this is for 9-bit TUIC tag.
@@ -243,7 +254,8 @@
 			//        as well as the index of payload bits
 			//
 					
-			var reverseBits:Boolean = false;
+			var reverseBits:Boolean = false, 
+				numPoints = 3; // there must be 3 ref points for valid tags
 			ret.payloads = [0,0,0,0,0,0,0,0,0]; // TODO: 4-bit TUIC support
 			
 			points.forEach(function(point:Object, index:int, arr:Array){
@@ -261,7 +273,7 @@
 						if(dist(point, possiblePayload) < toleranceRadius){
 							// payload bit found.
 							ret.payloads[index] = 1;
-							
+							++numPoints;
 							// stop this for-loop
 							return false; 
 						}
@@ -276,6 +288,7 @@
 					ret.payloads.reverse();
 				}
 				ret.value = 0;
+				ret.numPoints = numPoints;
 				ret.payloads.forEach(function(payload:int, index:int, arr:Array){
 					ret.value = ret.value * 2 + payload;
 				});
@@ -289,6 +302,51 @@
 			//ret.valid=false;
 			return ret;
 		}
+		
+		private function makeOverlay():TUICSprite
+		{
+			// this modifies _overlay property
+			
+			_overlay = new TUICSprite();
+			resizeOverlay();
+			
+			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			
+			return _overlay;
+		}
+		
+		private function makePossiblePayloads(payloadVec:Object, ret:Object):Array{
+			// ret: the tag returned by calcTag.
+			/*           * refPoint[0]
+			           ↗- payloadVec <dx/2, dy/2>
+			    0  1  2
+			        ↗
+			    3  4  5
+				    `(ret.x, ret.y)
+				6  7  8                     #: possiblePayloads
+			
+			 * 
+			 refPoint[1]
+			*/
+			var possiblePayloads = [ // FIXME: 9-bit only. And this IS ugly.
+				{ x: ret.x - payloadVec.y, y: ret.y - payloadVec.x},
+				{},
+				{ x: ret.x + payloadVec.x, y: ret.y - payloadVec.y},
+				{},
+				{ x: ret.x, y: ret.y},
+				{},
+				{ x: ret.x - payloadVec.x, y: ret.y + payloadVec.y},
+				{},
+				{x: ret.x + payloadVec.y, y: ret.y + payloadVec.x}
+			];
+			possiblePayloads[1] = midPointOf(possiblePayloads[0], possiblePayloads[2]);
+			possiblePayloads[3] = midPointOf(possiblePayloads[0], possiblePayloads[6]);
+			possiblePayloads[5] = midPointOf(possiblePayloads[2], possiblePayloads[8]);
+			possiblePayloads[7] = midPointOf(possiblePayloads[6], possiblePayloads[8]);
+		
+			return possiblePayloads;
+		}
+		
 		private function dist(a:Object, b:Object):Number
 		{
 			return Math.sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
