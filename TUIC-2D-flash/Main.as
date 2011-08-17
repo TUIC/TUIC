@@ -30,7 +30,7 @@
 
 		override protected function initialize():void
 		{
-			container = new TUICContainerSprite(true);
+			container = new TUICContainerSprite(0, true);
 			fillScreen();
 			container.addEventListener(TUICEvent.DOWN, downHandler);
 			container.addEventListener(TUICEvent.UP, upHandler);
@@ -40,9 +40,13 @@
 			addChild(container);
 		}
 		private function downHandler(event:TUICEvent){
-			var sprite = event.target;
-			//sprite.graphics.lineStyle(2, 0xCCCCCC, 1);
-			//sprite.graphics.drawRect(sprite.width/2, sprite.height/2, sprite.width, sprite.height);
+			var sprite = event.value; // only has values when TUICContainer fires new tag.
+			if(sprite){
+				sprite.graphics.lineStyle(2, 0xCCCCCC, 1);
+				sprite.graphics.drawRect(-sprite.width/2, -sprite.height/2, sprite.width, sprite.height);
+				trace('New tag value: ', sprite.value);
+				trace('New tag side length: ', sprite.sideLength);
+			}
 		}
 		private function upHandler(event:TUICEvent){
 			var sprite = event.target;

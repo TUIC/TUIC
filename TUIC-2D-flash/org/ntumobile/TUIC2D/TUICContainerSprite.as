@@ -21,11 +21,12 @@
 		private var _touchDownEvents:Array;
 		private var _overlay:TUICSprite;
 		private var _spriteAlpha:Number;
-		public function TUICContainerSprite(debug:Boolean = false)
+		public function TUICContainerSprite(sideLength:Number = 0, debug:Boolean = false)
 		{
-			// TODO: set tag size limit so that tag creation will be harder to trigger
-			
 			super();
+			
+			// sideLength: target tag side length. If 0, side length is unlimited.
+			_sideLength = sideLength;
 			_spriteAlpha = debug? 1:0;
 			// initialize private variables
 			_touchDownEvents = [];
@@ -181,6 +182,14 @@
 			// calculate center of the tag
 			ret = midPointOf(refPoints[0], refPoints[1]);
 			ret.side = Math.SQRT2 / 2 * maxDist;
+
+			// side length filter
+			// tolerance = 1/10 * sideLength (5 bits per side for 9-bit TUIC tag)
+			if(_sideLength !== 0 && !(0.9*_sideLength < ret.side && ret.side < 1.1*_sideLength) ){
+				trace('invalid side length:', ret.side);
+				ret.valid = false;
+				return ret;
+			}
 
 			// step2: Create the possible position of third reference points and the 
 			//        payload bits.
