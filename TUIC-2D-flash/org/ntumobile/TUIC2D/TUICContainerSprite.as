@@ -14,7 +14,7 @@
 	public class TUICContainerSprite extends TUICSprite
 	{
 
-		private var _touchThreshold:Number = 0.3;
+		private var _touchThreshold:Number = 1;
 		// time threshold for all points to be detected on screen, in seconds
 
 		private var _newPointTimeoutHandler:uint;
@@ -66,10 +66,10 @@
 			}
 
 			// create TUICEvent and the TUIC tag.
-			var event = new TUICEvent(_touchDownEvents[0], TUICEvent.DOWN);
+			var event = new TUICEvent(_touchDownEvents[0], TUICEvent.DOWN),
+				oldOverlay = _overlay; // save the old overlay
 			// FIXME: localX and localY of the event should be changed after we figure out 
-			// assign old overlay to event.value and make a new overlay.
-			event.value = _overlay; // save the old overlay into event.value
+			// assign old overlay to oldOverlay and make a new overlay.
 			this.addChild(makeOverlay());
 			this.setChildIndex(_overlay, 0); // push the new layout to bottom
 			
@@ -89,28 +89,30 @@
 			                                                                            */
 												  
 			var halfSide = tag.side / 2;
-			event.value.x = tag.x;
-			event.value.y = tag.y;
-			event.value.rotation = 135 - tag.orientation;
-			event.value.orientation = tag.orientation;
-			event.value._sideLength = tag.side;
-			event.value._value = tag.value;
-			event.value._payloads = tag.payloads;
-			event.value.graphics.clear();
+			oldOverlay.x = tag.x;
+			oldOverlay.y = tag.y;
+			oldOverlay.rotation = 135 - tag.orientation;
+			//oldOverlay.orientation = tag.orientation;
+			oldOverlay._sideLength = tag.side;
+			oldOverlay._value = tag.value;
+			oldOverlay._payloads = tag.payloads;
+			oldOverlay._numPoints = tag.numPoints;
+			oldOverlay.graphics.clear();
 			
-			event.value.graphics.beginFill(0x000000, _spriteAlpha);
-			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side, tag.side);
-			event.value.graphics.beginFill(0xffffff, _spriteAlpha);
-			event.value.graphics.drawRect(-halfSide,-halfSide,tag.side/4,tag.side/4);
-			event.value.graphics.endFill();
+			oldOverlay.graphics.beginFill(0x000000, _spriteAlpha);
+			oldOverlay.graphics.drawRect(-halfSide,-halfSide,tag.side, tag.side);
+			oldOverlay.graphics.beginFill(0xffffff, _spriteAlpha);
+			oldOverlay.graphics.drawRect(-halfSide,-halfSide,tag.side/4,tag.side/4);
+			oldOverlay.graphics.endFill();
 			
 			// only currently active overlay needs this event listener.
-			// since event.value is becoming a new TUIC tag, it cannot be bound with
+			// since oldOverlay is becoming a new TUIC tag, it cannot be bound with
 			// this handler anymore.
-			event.value.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			oldOverlay.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
 			
-			event.value.enableTUICEvents();
+			oldOverlay.enableTUICEvents();
 			
+			event.value = oldOverlay;
 			// dispatch the event so that the sprite(old overlay) is available;
 			// to the developers.
 			this.dispatchEvent(event);
@@ -138,6 +140,7 @@
 					payloads:Array(n),  // payloads of n-bit TUIC tag
 					value:uint		// payloads represented in decimal value
 									// (p[0]p[1]....p[n])_2
+					numPoints:uint	// number of valid touch points
 				}
 			
 			*/
@@ -242,7 +245,8 @@
 			//        as well as the index of payload bits
 			//
 					
-			var reverseBits:Boolean = false;
+			var reverseBits:Boolean = false, 
+				numPoints = 3; // there must be 3 ref points for valid tags
 			ret.payloads = [0,0,0,0,0,0,0,0,0]; // TODO: 4-bit TUIC support
 			
 			points.forEach(function(point:Object, index:int, arr:Array){
@@ -260,7 +264,7 @@
 						if(dist(point, possiblePayload) < toleranceRadius){
 							// payload bit found.
 							ret.payloads[index] = 1;
-							
+							++numPoints;
 							// stop this for-loop
 							return false; 
 						}
@@ -275,6 +279,7 @@
 					ret.payloads.reverse();
 				}
 				ret.value = 0;
+				ret.numPoints = numPoints;
 				ret.payloads.forEach(function(payload:int, index:int, arr:Array){
 					ret.value = ret.value * 2 + payload;
 				});

@@ -7,11 +7,12 @@
 
 	import com.actionscript_flash_guru.fireflashlite.Console;
 
-	public dynamic class TUICSprite extends TouchSprite
+	public class TUICSprite extends TouchSprite
 	{
-		protected var _sideLength:Number;
-		protected var _payloads:Array;
-		protected var _value:uint;
+		internal var _sideLength:Number;
+		internal var _payloads:Array;
+		internal var _value:uint;
+		internal var _numPoints:uint; // number of touch points
 		
 		// x, y: center position
 		public function TUICSprite()
@@ -29,7 +30,9 @@
 		public function get value():uint{
 			return _value;
 		}
-		
+		public function get numPoints():uint{
+			return _numPoints;
+		}
 		public function enableTUICEvents():void{
 			// adding event listeners when the sprite
 			// transforms from an overlay to a tag.
@@ -50,12 +53,15 @@
 		private function touchDownHandler(event:TouchEvent){
 			// handles the sprite's own touchDown, do not propagate
 			// to TUICContainerSprite
-
+			++_numPoints;
 			event.stopPropagation();
 			this.dispatchEvent(new TUICEvent(event, TUICEvent.DOWN));
 		}
 		private function touchUpHandler(event:TouchEvent){
-			this.dispatchEvent(new TUICEvent(event, TUICEvent.UP));
+			trace('numPoints:', _numPoints);
+			if(--_numPoints == 0){
+				this.dispatchEvent(new TUICEvent(event, TUICEvent.UP));
+			}
 		}
 
 	}

@@ -33,7 +33,7 @@
 			container = new TUICContainerSprite(true);
 			fillScreen();
 			container.addEventListener(TUICEvent.DOWN, downHandler);
-			container.addEventListener(TUICEvent.UP, debugHandler);
+			container.addEventListener(TUICEvent.UP, upHandler);
 			container.addEventListener(TUICEvent.ROTATE, debugHandler);
 			container.addEventListener(TUICEvent.MOVE, debugHandler);
 			
@@ -43,6 +43,11 @@
 			var sprite = event.target;
 			//sprite.graphics.lineStyle(2, 0xCCCCCC, 1);
 			//sprite.graphics.drawRect(sprite.width/2, sprite.height/2, sprite.width, sprite.height);
+		}
+		private function upHandler(event:TUICEvent){
+			var sprite = event.target;
+			debugHandler(event);
+			container.removeChild(sprite);
 		}
 		// fills the container with the screen
 		private function fillScreen(event:Event = undefined){
