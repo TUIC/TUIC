@@ -18,7 +18,10 @@
 		// time threshold for all points to be detected on screen, in seconds
 
 		private var _newPointTimeoutHandler:uint;
-		private var _touchDownEvents:Array;
+		private var _isolatedPoints:Object; 
+		// isolated touch points that is not mapped to a TUIC tag yet
+		// in a form of tactualObject->Point map.
+		
 		private var _overlay:TUICSprite;
 		private var _spriteAlpha:Number;
 		public function TUICContainerSprite(sideLength:Number = 0, debug:Boolean = false)
@@ -29,7 +32,7 @@
 			_sideLength = sideLength;
 			_spriteAlpha = debug? 1:0;
 			// initialize private variables
-			_touchDownEvents = [];
+			_isolatedPoints = {};
 		}
 		override protected function initialize():void
 		{
@@ -45,21 +48,18 @@
 			}
 		}
 		
-		private function newPointHandler(event:Event):void
+		/*private function newPointHandler(event:Event):void
 		{
 			clearTimeout(_newPointTimeoutHandler);
 			_touchDownEvents.push(event);
 			_newPointTimeoutHandler = setTimeout(newTagHandler,_touchThreshold * 1000);
-		}
-		private function newTagHandler():void
+		}*/
+		private function newTagHandler(event:TouchEvent):void
 		{
-			// extract points from the events collected in the last _touchThreshold seconds.
-			var points = _touchDownEvents.map(function(event:TouchEvent, index:int, arr:Array):Object{				
-				return {x: event.localX, y:event.localY};
-			});
+			_isolatedPoints[event.tactualObject] = {'x': event.localX, 'y': event.localY};
 
 			// validate tag
-			var tag:Object = calcTag(points);
+			var tag:Object = calcTag();
 			if (! tag.valid)
 			{
 				_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
@@ -117,9 +117,9 @@
 			// dispatch the event so that the sprite(old overlay) is available;
 			// to the developers.
 			this.dispatchEvent(event);
-
+			
 			// cleanup
-			_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
+			//_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
 		}
 
 
@@ -147,7 +147,7 @@
 			*/
 			
 			// step0: basic point number check
-			if (points.length < 3)
+			if (_isolatedPoints.length < 3)
 			{
 				ret.valid = false;
 				return ret;
@@ -310,7 +310,7 @@
 			_overlay = new TUICSprite();
 			resizeOverlay();
 			
-			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newTagHandler);
 			
 			return _overlay;
 		}
