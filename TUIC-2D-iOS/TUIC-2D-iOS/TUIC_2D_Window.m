@@ -10,7 +10,7 @@
 #import "TUIC_Object.h"
 #import "myMathFormulaUtil.h"
 
-#define kTouchDelayTimer 0.3
+#define kTouchDelayTimer 0.5
 
 #define kTUICObjectSize 200.0
 #define kTUICObjectTolerance 20
@@ -72,10 +72,12 @@
                 }
         }
         else{
-            if (touch.phase == UITouchPhaseEnded || touch.phase == UITouchPhaseCancelled)
+            if (touch.phase == UITouchPhaseEnded || touch.phase == UITouchPhaseCancelled){
                 [unknownTouchSet removeObject:touch];
-            else
+            }
+            else{
                 [unknownTouchSet addObject:touch];
+            }
         }
 
     }
@@ -90,29 +92,22 @@
     //NSArray* V = [[NSArray alloc] initWithArray:[unknownTouchSet allObjects]];
     //NSMutableArray* convexHull = [self simpleHull_2DwithV:V andN:[V count]];
     //[convexHull removeObjectAtIndex:[convexHull count]-1];
-    
+    NSLog(@"++++++++++++++Touches: %d",[unknownTouchSet count]);
     int numMatchDistance=0;
     NSMutableArray* registPoint = [[NSMutableArray alloc] initWithCapacity:4];
     //Finding regist points
     for (UITouch* touch1 in unknownTouchSet) {
-        NSLog(@"-----------");
+        NSLog(@"-----------touch location: %f,%f",[touch1 locationInView:nil].x,[touch1 locationInView:nil].y);
         CGFloat distances[2]={0,0};
+        CGPoint P0 = [touch1 locationInView:nil];
         for (UITouch* touch2 in unknownTouchSet) {
             if (touch1 != touch2) {
-                CGPoint P0 = [touch1 locationInView:nil];
+                
                 CGPoint P1 = [touch2 locationInView:nil];
                 CGFloat distance = [myMathFormulaUtil calculatePtDistance:P0 andPoint2:P1];
-                if (numMatchDistance ==2){
-                    if (fabsf(distance-kTUICObjectSize) < fabsf(distances[0]-kTUICObjectSize)) {
-                        [registPoint replaceObjectAtIndex:0 withObject:touch2];
-                    }
-                    else if (fabsf(distance-kTUICObjectSize) < fabsf(distances[1]-kTUICObjectSize)){
-                        [registPoint replaceObjectAtIndex:1 withObject:touch2];
-                    }
-                }
-                else if (distance<=kTUICObjectSize+kTUICObjectTolerance &&
+                NSLog(@"distance: %f",distance);
+                if (distance<=kTUICObjectSize+kTUICObjectTolerance &&
                     distance>=kTUICObjectSize-kTUICObjectTolerance) {
-                    NSLog(@"distance: %f",distance);
                     distances[numMatchDistance] = distance;
                     numMatchDistance++;
                     [registPoint addObject:touch2];
@@ -121,33 +116,44 @@
             }
         }
         //Two corners were finded
-        if (numMatchDistance == 2){
-            CGPoint C0 = [ touch1 locationInView:nil];
-            CGPoint C1 = [[registPoint objectAtIndex:0] locationInView:nil];
-            CGPoint C2 = [[registPoint objectAtIndex:1] locationInView:nil];
-            CGFloat distance = [myMathFormulaUtil calculatePtDistance:C1 andPoint2:C2];
-            //Only right triangle would be recognize
-            if (distance<=kTUICObjectSize*sqrt(2.0)+kTUICObjectTolerance &&
-                distance>=kTUICObjectSize*sqrt(2.0)-kTUICObjectTolerance) {
-                
-                TUIC_Object* newTag = [[TUIC_Object alloc] init];
-                newTag.location = [myMathFormulaUtil calculateCenterWithC1:C1 andC2:C2];
-                newTag.tagID = 0;
-                [newTag.touchPoints addObject:touch1];
-                //Sort by clockwise direction
-                if ([self isLeftwithP0:C0 andP1:C1 andP2:C2]<0) {
-                    [newTag.touchPoints addObject:[registPoint objectAtIndex:1]];
-                    [newTag.touchPoints addObject:[registPoint objectAtIndex:0]];
+        if (numMatchDistance >= 2){
+            CGPoint C1,C2;
+            CGFloat distance;
+            BOOL find = NO;
+            int i,j;
+            for (i =0 ; i<[registPoint count]-1; i++) {
+                for (j=i+1; j<[registPoint count]; j++) {
+                    C1 = [[registPoint objectAtIndex:i] locationInView:nil];
+                    C2 = [[registPoint objectAtIndex:j] locationInView:nil];
+                    distance = [myMathFormulaUtil calculatePtDistance:C1 andPoint2:C2];
+                    NSLog(@"c1c2 distance:%f",distance);
+                    //Only right triangle would be recognize
+                    if (distance<=(kTUICObjectSize+kTUICObjectTolerance)*sqrt(2.0) &&
+                        distance>=(kTUICObjectSize-kTUICObjectTolerance)*sqrt(2.0)){ 
+                        find = YES;
+                        break;
+                    }
                 }
-                else{
-                    [newTag.touchPoints addObject:[registPoint objectAtIndex:0]];
-                    [newTag.touchPoints addObject:[registPoint objectAtIndex:1]];
+
+                if (find) {
+                    TUIC_Object* newTag = [[TUIC_Object alloc] init];
+                    newTag.tagID = 0;
+                    [newTag.touchPoints addObject:touch1];
+                    //Sort by clockwise direction
+                    if ([self isLeftwithP0:P0 andP1:C1 andP2:C2]<0) {
+                        [newTag.touchPoints addObject:[registPoint objectAtIndex:j]];
+                        [newTag.touchPoints addObject:[registPoint objectAtIndex:i]];
+                    }
+                    else{
+                        [newTag.touchPoints addObject:[registPoint objectAtIndex:i]];
+                        [newTag.touchPoints addObject:[registPoint objectAtIndex:j]];
+                    }
+                    [TUICObjects addObject:newTag];
+                    NSLog(@"New Object Found!");
                 }
-                [TUICObjects addObject:newTag];
-                NSLog(@"New Object Found!");
+                else
+                    NSLog(@"C1, C2 not found");
             }
-            else
-                NSLog(@"C1, C2 not found, distance:%f",distance);
         }
         else
             NSLog(@"numMatchDistance:%d",numMatchDistance);
@@ -177,7 +183,7 @@
                 if ([self isLeftwithP0:C0 andP1:C1 andP2:P]>0 && [self isLeftwithP0:C0 andP1:C2 andP2:P]<0) {
                     int product1 = roundf([self isLeftwithP0:C0 andP1:C1 andP2:P]/kGridSize);
                     int product2 = -roundf([self isLeftwithP0:C0 andP1:C2 andP2:P]/kGridSize);
-                    NSLog(@"product1: %d, product2: %d",product1,product2);
+                    //NSLog(@"product1: %d, product2: %d",product1,product2);
                     switch (product2) {
                         case 1:
                             switch (product1) {
@@ -228,7 +234,7 @@
                             break;
                     }
                     
-                    NSLog(@"c0c1: %f, c0c2:%f",[self isLeftwithP0:C0 andP1:C1 andP2:P],[self isLeftwithP0:C0 andP1:C2 andP2:P]);
+                    //NSLog(@"c0c1: %f, c0c2:%f",[self isLeftwithP0:C0 andP1:C1 andP2:P],[self isLeftwithP0:C0 andP1:C2 andP2:P]);
                     [tag.touchPoints addObject:touch];
                     [checkedTouchSet removeObject:touch];
                 }
