@@ -11,8 +11,11 @@
 #import "myMathFormulaUtil.h"
 
 #define kTouchDelayTimer 0.3
+
 #define kTUICObjectSize 200.0
 #define kTUICObjectTolerance 9
+
+#define kGridSize 10000
 
 #define B0 1
 #define B1 2
@@ -118,6 +121,7 @@
                 
                 TUIC_Object* newTag = [[TUIC_Object alloc] init];
                 newTag.location = [myMathFormulaUtil calculateCenterWithC1:C1 andC2:C2];
+                newTag.tagID = 0;
                 [newTag.touchPoints addObject:touch1];
                 //Sort by clockwise direction
                 if ([self isLeftwithP0:C0 andP1:C1 andP2:C2]<0) {
@@ -160,12 +164,66 @@
             
             if (distance<=kTUICObjectSize*sqrt(2.0)+kTUICObjectTolerance) {
                 if ([self isLeftwithP0:C0 andP1:C1 andP2:P]>0 && [self isLeftwithP0:C0 andP1:C2 andP2:P]<0) {
+                    int product1 = roundf([self isLeftwithP0:C0 andP1:C1 andP2:P]/kGridSize);
+                    int product2 = -roundf([self isLeftwithP0:C0 andP1:C2 andP2:P]/kGridSize);
+                    NSLog(@"product1: %d, product2: %d",product1,product2);
+                    switch (product1) {
+                        case 1:
+                            switch (product2) {
+                                case 1:
+                                    tag.tagID |= B0;
+                                    break;
+                                case 2:
+                                    tag.tagID |= B1;
+                                    break;
+                                case 3:
+                                    tag.tagID |= B2;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            switch (product2) {
+                                case 1:
+                                    tag.tagID |= B3;
+                                    break;
+                                case 2:
+                                    tag.tagID |= B4;
+                                    break;
+                                case 3:
+                                    tag.tagID |= B5;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            switch (product2) {
+                                case 1:
+                                    tag.tagID |= B6;
+                                    break;
+                                case 2:
+                                    tag.tagID |= B7;
+                                    break;
+                                case 3:
+                                    tag.tagID |= B8;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    
                     NSLog(@"c0c1: %f, c0c2:%f",[self isLeftwithP0:C0 andP1:C1 andP2:P],[self isLeftwithP0:C0 andP1:C2 andP2:P]);
                     [tag.touchPoints addObject:touch];
                     [checkedTouchSet removeObject:touch];
                 }
             }
         }
+        NSLog(@"tagID: %d", tag.tagID);
     }
     [unknownTouchSet removeAllObjects];
     
