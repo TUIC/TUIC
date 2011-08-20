@@ -13,7 +13,7 @@
 #define kTouchDelayTimer 0.3
 
 #define kTUICObjectSize 200.0
-#define kTUICObjectTolerance 9
+#define kTUICObjectTolerance 20
 
 #define kGridSize 10000
 
@@ -91,29 +91,40 @@
     //NSMutableArray* convexHull = [self simpleHull_2DwithV:V andN:[V count]];
     //[convexHull removeObjectAtIndex:[convexHull count]-1];
     
-    int matchDistance=0;
+    int numMatchDistance=0;
     NSMutableArray* registPoint = [[NSMutableArray alloc] initWithCapacity:4];
     //Finding regist points
     for (UITouch* touch1 in unknownTouchSet) {
         NSLog(@"-----------");
+        CGFloat distances[2]={0,0};
         for (UITouch* touch2 in unknownTouchSet) {
             if (touch1 != touch2) {
-                CGPoint P0 = [touch1 locationInView:self.rootViewController.view];
-                CGPoint P1 = [touch2 locationInView:self.rootViewController.view];
+                CGPoint P0 = [touch1 locationInView:nil];
+                CGPoint P1 = [touch2 locationInView:nil];
                 CGFloat distance = [myMathFormulaUtil calculatePtDistance:P0 andPoint2:P1];
-                NSLog(@"distance: %f",distance);
-                if (distance<=kTUICObjectSize+kTUICObjectTolerance &&
+                if (numMatchDistance ==2){
+                    if (fabsf(distance-kTUICObjectSize) < fabsf(distances[0]-kTUICObjectSize)) {
+                        [registPoint replaceObjectAtIndex:0 withObject:touch2];
+                    }
+                    else if (fabsf(distance-kTUICObjectSize) < fabsf(distances[1]-kTUICObjectSize)){
+                        [registPoint replaceObjectAtIndex:1 withObject:touch2];
+                    }
+                }
+                else if (distance<=kTUICObjectSize+kTUICObjectTolerance &&
                     distance>=kTUICObjectSize-kTUICObjectTolerance) {
-                    matchDistance++;
+                    NSLog(@"distance: %f",distance);
+                    distances[numMatchDistance] = distance;
+                    numMatchDistance++;
                     [registPoint addObject:touch2];
+                    NSLog(@"insert index: %d",[registPoint indexOfObject:touch2]);
                 }
             }
         }
         //Two corners were finded
-        if (matchDistance == 2){
-            CGPoint C0 = [ touch1 locationInView:self.rootViewController.view];
-            CGPoint C1 = [[registPoint objectAtIndex:0] locationInView:self.rootViewController.view];
-            CGPoint C2 = [[registPoint objectAtIndex:1] locationInView:self.rootViewController.view];
+        if (numMatchDistance == 2){
+            CGPoint C0 = [ touch1 locationInView:nil];
+            CGPoint C1 = [[registPoint objectAtIndex:0] locationInView:nil];
+            CGPoint C2 = [[registPoint objectAtIndex:1] locationInView:nil];
             CGFloat distance = [myMathFormulaUtil calculatePtDistance:C1 andPoint2:C2];
             //Only right triangle would be recognize
             if (distance<=kTUICObjectSize*sqrt(2.0)+kTUICObjectTolerance &&
@@ -136,13 +147,13 @@
                 NSLog(@"New Object Found!");
             }
             else
-                NSLog(@"C1, C2 not found");
+                NSLog(@"C1, C2 not found, distance:%f",distance);
         }
         else
-            NSLog(@"Not Corner");
+            NSLog(@"numMatchDistance:%d",numMatchDistance);
         //Reset for next point
         [registPoint removeAllObjects];
-        matchDistance = 0;
+        numMatchDistance = 0;
     }
     
     for (TUIC_Object* tag in TUICObjects) {
@@ -156,10 +167,10 @@
     //Find payLoad points
     for (TUIC_Object* tag in TUICObjects) {
         for (UITouch* touch in unknownTouchSet) {
-            CGPoint C0 = [[tag.touchPoints objectAtIndex:0] locationInView:self.rootViewController.view];
-            CGPoint C1 = [[tag.touchPoints objectAtIndex:1] locationInView:self.rootViewController.view];
-            CGPoint C2 = [[tag.touchPoints objectAtIndex:2] locationInView:self.rootViewController.view];
-            CGPoint P = [touch locationInView:self.rootViewController.view];
+            CGPoint C0 = [[tag.touchPoints objectAtIndex:0] locationInView:nil];
+            CGPoint C1 = [[tag.touchPoints objectAtIndex:1] locationInView:nil];
+            CGPoint C2 = [[tag.touchPoints objectAtIndex:2] locationInView:nil];
+            CGPoint P = [touch locationInView:nil];
             CGFloat distance = [myMathFormulaUtil calculatePtDistance:C0 andPoint2:P];
             
             if (distance<=kTUICObjectSize*sqrt(2.0)+kTUICObjectTolerance) {
@@ -167,9 +178,9 @@
                     int product1 = roundf([self isLeftwithP0:C0 andP1:C1 andP2:P]/kGridSize);
                     int product2 = -roundf([self isLeftwithP0:C0 andP1:C2 andP2:P]/kGridSize);
                     NSLog(@"product1: %d, product2: %d",product1,product2);
-                    switch (product1) {
+                    switch (product2) {
                         case 1:
-                            switch (product2) {
+                            switch (product1) {
                                 case 1:
                                     tag.tagID |= B0;
                                     break;
@@ -228,7 +239,7 @@
     [unknownTouchSet removeAllObjects];
     
     [registPoint release];
-    
+    NSLog(@"Recognizer finish++++++++++++");
     //[V release];
 }
 
@@ -261,9 +272,9 @@
     [D replaceObjectAtIndex:top withObject:[V objectAtIndex:2]];
     [D replaceObjectAtIndex:bot withObject:[D objectAtIndex:top]];
     
-    CGPoint P0 = [[V objectAtIndex:0] locationInView:self.rootViewController.view];
-    CGPoint P1 = [[V objectAtIndex:1] locationInView:self.rootViewController.view];
-    CGPoint P2 = [[V objectAtIndex:2] locationInView:self.rootViewController.view];
+    CGPoint P0 = [[V objectAtIndex:0] locationInView:nil];
+    CGPoint P1 = [[V objectAtIndex:1] locationInView:nil];
+    CGPoint P2 = [[V objectAtIndex:2] locationInView:nil];
     
     if ([self isLeftwithP0:P0 andP1:P1 andP2:P2]<0) {
         [D replaceObjectAtIndex:bot+1 withObject:[V objectAtIndex:0]];
@@ -286,11 +297,11 @@
     // compute the hull on the deque D[]
     for (int i=3; i < n; i++) {   // process the rest of vertices
         // test if next vertex is inside the deque hull
-        CGPoint D_bot = [[D objectAtIndex:bot] locationInView:self.rootViewController.view];
-        CGPoint D_bot_1 = [[D objectAtIndex:bot+1] locationInView:self.rootViewController.view];
-        CGPoint V_i = [[V objectAtIndex:i] locationInView:self.rootViewController.view];
-        CGPoint D_top_1 = [[D objectAtIndex:top-1] locationInView:self.rootViewController.view];
-        CGPoint D_top = [[D objectAtIndex:top] locationInView:self.rootViewController.view];
+        CGPoint D_bot = [[D objectAtIndex:bot] locationInView:nil];
+        CGPoint D_bot_1 = [[D objectAtIndex:bot+1] locationInView:nil];
+        CGPoint V_i = [[V objectAtIndex:i] locationInView:nil];
+        CGPoint D_top_1 = [[D objectAtIndex:top-1] locationInView:nil];
+        CGPoint D_top = [[D objectAtIndex:top] locationInView:nil];
         
         if ([self isLeftwithP0:D_bot andP1:D_bot_1 andP2:V_i]<0 &&
             [self isLeftwithP0:D_top_1 andP1:D_top andP2:V_i]<0) {
@@ -305,8 +316,8 @@
         // get the rightmost tangent at the deque bot
         while ([self isLeftwithP0:D_bot andP1:D_bot_1 andP2:V_i]>=0) {
             ++bot;
-            D_bot = [[D objectAtIndex:bot] locationInView:self.rootViewController.view];
-            D_bot_1 = [[D objectAtIndex:bot+1] locationInView:self.rootViewController.view];
+            D_bot = [[D objectAtIndex:bot] locationInView:nil];
+            D_bot_1 = [[D objectAtIndex:bot+1] locationInView:nil];
         }
         //while (isLeft(D[bot], D[bot+1], V[i]) <= 0)
         //    ++bot;                // remove bot of deque
@@ -315,8 +326,8 @@
         
         while ([self isLeftwithP0:D_top_1 andP1:D_top andP2:V_i]>=0) {
             --top;
-            D_top_1 = [[D objectAtIndex:top-1] locationInView:self.rootViewController.view];
-            D_top = [[D objectAtIndex:top] locationInView:self.rootViewController.view];
+            D_top_1 = [[D objectAtIndex:top-1] locationInView:nil];
+            D_top = [[D objectAtIndex:top] locationInView:nil];
         }
         // get the leftmost tangent at the deque top
        // while (isLeft(D[top-1], D[top], V[i]) <= 0)
