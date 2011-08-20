@@ -16,6 +16,8 @@
     CGPoint location;
     CGSize  size;
     NSMutableArray *tagPoints;
+    NSMutableArray *cornerPoints;
+    NSMutableArray *payloadPoints;
     
     // UI element
     UILabel *tagInfolabel;
@@ -24,10 +26,12 @@
 }
 
 @property (nonatomic, retain) NSMutableArray *tagPoints;
+@property (nonatomic, retain) NSArray *cornerPoints;
+@property (nonatomic, retain) NSArray *payloadPoints;
 @property (assign) CGPoint location;
 @property (assign) CGSize  size;
 
 -(void)decodeTag;
 -(void)upDateLocation;
-
+-(void)tagUnknownPoints;
 @end

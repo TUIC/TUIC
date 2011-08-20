@@ -9,11 +9,18 @@
 #import "TUIC_2DView.h"
 
 #define DIAGNO_LENGTH 200.0
+#define EDGE_LENGTH 300
+#define TOLERANCE 30
+
+
+NSMutableArray* unknownPoints; 
 
 @implementation TUIC_2DView
 @synthesize tagPoints;
 @synthesize location;
 @synthesize size;
+@synthesize cornerPoints;
+@synthesize payloadPoints;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -21,10 +28,13 @@
         tagID = 0;
         orientationAngle = 0.0;
         tagPoints = [[NSMutableArray alloc] initWithCapacity:0];
+        payloadPoints = [[NSMutableArray alloc] initWithCapacity:9];
+        cornerPoints = [[NSMutableArray alloc] initWithCapacity:3];
         location = CGPointMake(0.0, 0.0);
         size = CGSizeMake(200, 200);
         tagInfolabel = [[UILabel alloc] initWithFrame:CGRectMake(location.x+size.width/2 , location.y + size.height/2 , 100, 30)];
         [tagInfolabel setText:[NSString stringWithFormat:@"Tag id is %d",tagID]];
+        unknownPoints = [[NSMutableArray alloc] initWithCapacity:0];
         [self addSubview:tagInfolabel];
     }
     
@@ -34,6 +44,7 @@
 
 - (void)dealloc
 {
+    [unknownPoints release];
     [tagPoints release];
     [tagInfolabel release];
 	[super dealloc];
@@ -58,19 +69,21 @@
                     break;
                 }
                 case TUIC_2DTagTypeUnknown: {
-                    //TODO: Identify its type
-                    
+                    [unknownPoints addObject:tagPt];
                     break;
                 }
-                    
             }
-
         }
-        
+        [self tagUnknownPoints];
     }
-
 }
 
+- (void)tagUnknownPoints
+{
+    for (TUIC_2DTagPoint* tagPt in unknownPoints) {
+        
+    }
+}
 
 -(void)upDateLocation
 {

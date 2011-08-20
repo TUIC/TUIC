@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1036CE7913F9449F00791BDB /* TUIC_2D_Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 1036CE7813F9449E00791BDB /* TUIC_2D_Window.m */; };
+		1036CE7D13F95F2E00791BDB /* TUIC_Object.m in Sources */ = {isa = PBXBuildFile; fileRef = 1036CE7C13F95F2D00791BDB /* TUIC_Object.m */; };
 		3724A9AF13F7793A009ACFA8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724A9AE13F77939009ACFA8 /* UIKit.framework */; };
 		3724A9B113F7793A009ACFA8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724A9B013F7793A009ACFA8 /* Foundation.framework */; };
 		3724A9B313F7793A009ACFA8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724A9B213F7793A009ACFA8 /* CoreGraphics.framework */; };
@@ -23,6 +25,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1036CE7713F9449E00791BDB /* TUIC_2D_Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2D_Window.h; sourceTree = "<group>"; };
+		1036CE7813F9449E00791BDB /* TUIC_2D_Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_2D_Window.m; sourceTree = "<group>"; };
+		1036CE7B13F95F2D00791BDB /* TUIC_Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_Object.h; sourceTree = "<group>"; };
+		1036CE7C13F95F2D00791BDB /* TUIC_Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_Object.m; sourceTree = "<group>"; };
 		3724A9AA13F77939009ACFA8 /* TUIC-2D-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TUIC-2D-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3724A9AE13F77939009ACFA8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3724A9B013F7793A009ACFA8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -104,6 +110,10 @@
 				3724A9B513F7793A009ACFA8 /* Supporting Files */,
 				3724A9DC13F79802009ACFA8 /* myMathFormulaUtil.h */,
 				3724A9DD13F79802009ACFA8 /* myMathFormulaUtil.m */,
+				1036CE7713F9449E00791BDB /* TUIC_2D_Window.h */,
+				1036CE7813F9449E00791BDB /* TUIC_2D_Window.m */,
+				1036CE7B13F95F2D00791BDB /* TUIC_Object.h */,
+				1036CE7C13F95F2D00791BDB /* TUIC_Object.m */,
 			);
 			path = "TUIC-2D-iOS";
 			sourceTree = "<group>";
@@ -162,6 +172,9 @@
 /* Begin PBXProject section */
 		3724A9A113F77939009ACFA8 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 3724A9A413F77939009ACFA8 /* Build configuration list for PBXProject "TUIC-2D-iOS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -204,6 +217,8 @@
 				3724A9DB13F784FD009ACFA8 /* TUIC_2DTrackingView.m in Sources */,
 				3724A9DE13F79802009ACFA8 /* myMathFormulaUtil.m in Sources */,
 				3724A9E513F7BCE6009ACFA8 /* TUIC_2DTagPoint.m in Sources */,
+				1036CE7913F9449F00791BDB /* TUIC_2D_Window.m in Sources */,
+				1036CE7D13F95F2E00791BDB /* TUIC_Object.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +338,7 @@
 				3724A9CD13F7793A009ACFA8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

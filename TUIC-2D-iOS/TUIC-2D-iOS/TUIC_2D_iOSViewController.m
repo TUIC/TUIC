@@ -20,13 +20,16 @@
 
 #pragma mark - View lifecycle
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view = [[TUIC_2DTrackingView alloc] init];
+	[self.view setNeedsDisplay];
+
 }
-*/
+
 
 - (void)viewDidUnload
 {
@@ -40,12 +43,4 @@
     // Return YES for supported orientations
     return YES;
 }
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    self.view = [[TUIC_2DTrackingView alloc] init];
-	[self.view setNeedsDisplay];
-}
-
-
 @end

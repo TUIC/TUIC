@@ -11,6 +11,13 @@
 #import "myMathFormulaUtil.h"
 
 @implementation myMathFormulaUtil
++(CGPoint)calculateCenterWithC1:(CGPoint)point1 andC2:(CGPoint)point2
+{
+    CGFloat x = (point2.x + point1.x)/2;
+    CGFloat y = (point2.y + point1.y)/2;
+    return CGPointMake(x, y);
+}
+
 
 +(CGFloat)calculatePtDistance:(CGPoint)point1 andPoint2:(CGPoint)point2
 {
@@ -44,5 +51,4 @@
 	
 	return -1.0;
 }
-
 @end
