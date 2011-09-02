@@ -14,10 +14,10 @@
 	public class TUICContainerSprite extends TUICSprite
 	{
 
-		private var _touchThreshold:Number = 1;
-		// time threshold for all points to be detected on screen, in seconds
+		private var _touchThreshold:Number = 50;
+		// time threshold for all points to be detected on screen, in milliseconds
 
-		private var _newPointTimeoutHandler:uint;
+		private var _newTagTimeoutHandler:uint;
 		private var _isolatedPoints:Object; 
 		// isolated touch points that is not mapped to a TUIC tag yet
 		// in a form of tactualObject->Point map.
@@ -56,18 +56,24 @@
 		}*/
 		private function newTagHandler(event:TouchEvent):void
 		{
-			_isolatedPoints[event.tactualObject] = {'x': event.localX, 'y': event.localY};
+			_isolatedPoints[event.tactualObject] = {
+				'x': event.localX, 
+				'y': event.localY, 
+				'obj': event.tactualObject
+			};
 
 			// validate tag
 			var tag:Object = calcTag();
-			if (! tag.valid)
-			{
-				_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
-				return;
+			if (tag.valid){
+				tag.validPoints.forEach(function(point:Object, index:int, arr:Array){
+					delete _isolatedPoints[point.obj];
+				});
+			} else { // invalid tag
+				return; // abort this handler
 			}
 
 			// create TUICEvent and the TUIC tag.
-			var event = new TUICEvent(_touchDownEvents[0], TUICEvent.DOWN),
+			var newEvent = new TUICEvent(event, TUICEvent.DOWN),
 				oldOverlay = _overlay; // save the old overlay
 			// FIXME: localX and localY of the event should be changed after we figure out 
 			// assign old overlay to oldOverlay and make a new overlay.
@@ -109,26 +115,27 @@
 			// only currently active overlay needs this event listener.
 			// since oldOverlay is becoming a new TUIC tag, it cannot be bound with
 			// this handler anymore.
-			oldOverlay.removeEventListener(TouchEvent.TOUCH_DOWN, newPointHandler);
+			oldOverlay.removeEventListener(TouchEvent.TOUCH_DOWN, newTagHandler);
+			oldOverlay.removeEventListener(TouchEvent.TOUCH_UP, touchUpHandler)
 			
 			oldOverlay.enableTUICEvents();
 			
-			event.value = oldOverlay;
+			newEvent.value = oldOverlay;
 			// dispatch the event so that the sprite(old overlay) is available;
 			// to the developers.
-			this.dispatchEvent(event);
+			this.dispatchEvent(newEvent);
 			
 			// cleanup
 			//_touchDownEvents = [];// FIXME: is AS GC aggresive enough to collect this?
 		}
 
 
-		private function calcTag(points:Array):Object
+		private function calcTag():Object
 		{
 			// test if the points form a valid TUIC tag.
 			// If the points form a valud TUIC tag, the information of
 			// the tag is calculated and returned.
-			var ret:Object = {};
+			var ret:Object = {validPoints:[]}, points:Array = [];
 			/*
 				returned tag object:
 				{
@@ -141,13 +148,16 @@
 					payloads:Array(n),  // payloads of n-bit TUIC tag
 					value:uint		// payloads represented in decimal value
 									// (p[0]p[1]....p[n])_2
-					numPoints:uint	// number of valid touch points
+					validPoints:Array // array of valid touch points
+										each point has x, y coordinate and its TouchObject
 				}
-			
 			*/
 			
 			// step0: basic point number check
-			if (_isolatedPoints.length < 3)
+			for each (var point in _isolatedPoints){
+				points.push(point);
+			}
+			if (points.length < 3)
 			{
 				ret.valid = false;
 				return ret;
@@ -157,7 +167,7 @@
 			//        these are diagonal reference points.
 			//
 			var refPoints:Array, maxDist:Number = 0;
-
+			
 			for (var i:uint = 0; i < points.length - 1; ++i)
 			{
 				for (var j:uint=i; j<points.length; ++j)
@@ -185,11 +195,14 @@
 
 			// side length filter
 			// tolerance = 1/10 * sideLength (5 bits per side for 9-bit TUIC tag)
-			if(_sideLength !== 0 && !(0.9*_sideLength < ret.side && ret.side < 1.1*_sideLength) ){
+			if(_sideLength !== 0 && 
+			   	!(0.9*_sideLength < ret.side && ret.side < 1.1*_sideLength) ){
 				trace('invalid side length:', ret.side);
 				ret.valid = false;
 				return ret;
 			}
+			
+			ret.validPoints = refPoints.slice(); // clone of refPoints
 
 			// step2: Create the possible position of third reference points and the 
 			//        payload bits.
@@ -261,10 +274,12 @@
 			points.forEach(function(point:Object, index:int, arr:Array){
 				if( dist(point, possibleRefPoints[0]) < toleranceRadius ){
 					ret.orientation = theta + 90;
+					ret.validPoints.push(point);
 					ret.valid = true;
 				}else if(dist(point, possibleRefPoints[1]) < toleranceRadius){
 					ret.orientation = theta + 270;
 					reverseBits = true;
+					ret.validPoints.push(point);
 					ret.valid = true;
 				}else{ // not in the two possible ref point area
 					// test if the point is a payload bit
@@ -273,6 +288,7 @@
 						if(dist(point, possiblePayload) < toleranceRadius){
 							// payload bit found.
 							ret.payloads[index] = 1;
+							ret.validPoints.push(point);
 							++numPoints;
 							// stop this for-loop
 							return false; 
@@ -294,13 +310,19 @@
 				});
 				//refPoints.push(points[index]); // insert the new ref point
 				// points.splice(index,1); // remove the ref point from points[]
-			}else{	// no third point is found
-				return ret;
 			}
 			
 			//Console.log(ret);
 			//ret.valid=false;
 			return ret;
+		}
+		private function touchDownHandler(event:TouchEvent){
+			clearTimeout(_newTagTimeoutHandler);
+			_newTagTimeoutHandler = setTimeout(function(){newTagHandler(event)}, _touchThreshold);
+		
+		}
+		private function touchUpHandler(event:TouchEvent){
+			delete _isolatedPoints[event.tactualObject];
 		}
 		
 		private function makeOverlay():TUICSprite
@@ -310,7 +332,8 @@
 			_overlay = new TUICSprite();
 			resizeOverlay();
 			
-			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, newTagHandler);
+			_overlay.addEventListener(TouchEvent.TOUCH_DOWN, touchDownHandler);
+			_overlay.addEventListener(TouchEvent.TOUCH_UP, touchUpHandler);
 			
 			return _overlay;
 		}
