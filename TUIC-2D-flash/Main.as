@@ -9,6 +9,7 @@
 	import flash.display.Stage;
 	import flash.display.StageScaleMode;
 	import flash.display.StageAlign;
+	import flash.text.TextField;
 
 	import com.actionscript_flash_guru.fireflashlite.Console;
 
@@ -30,7 +31,7 @@
 
 		override protected function initialize():void
 		{
-			container = new TUICContainerSprite(0, true);
+			container = new TUICContainerSprite(0,true);
 			fillScreen();
 			container.addEventListener(TUICEvent.DOWN, downHandler);
 			container.addEventListener(TUICEvent.UP, upHandler);
@@ -44,8 +45,14 @@
 			if(sprite){
 				sprite.graphics.lineStyle(2, 0xCCCCCC, 1);
 				sprite.graphics.drawRect(-sprite.width/2, -sprite.height/2, sprite.width, sprite.height);
-				trace('New tag value: ', sprite.value);
-				trace('New tag side length: ', sprite.sideLength);
+				var textField = new TextField();
+				textField.text = sprite.name + '\npayload = [' + sprite.value + ']';
+				textField.embedFonts = true;
+				sprite.addChild(textField);
+				
+				//trace('New tag value: ', sprite.value);
+				//trace('New tag side length: ', sprite.sideLength);
+				
 			}
 		}
 		private function upHandler(event:TUICEvent){
@@ -79,8 +86,5 @@
 			sprite.graphics.drawCircle(x,y,5);
 			sprite.graphics.endFill();
 		}
-		
-		
 	}
-
 }
