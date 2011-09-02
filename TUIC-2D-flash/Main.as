@@ -55,11 +55,13 @@
 				
 			}
 		}
+		
 		private function upHandler(event:TUICEvent){
 			var sprite = event.target;
 			debugHandler(event);
 			container.removeChild(sprite);
 		}
+		
 		// fills the container with the screen
 		private function fillScreen(event:Event = undefined){
 			// 'this' refers to main
