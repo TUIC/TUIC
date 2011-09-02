@@ -66,7 +66,7 @@
 			var tag:Object = calcTag();
 			if (tag.valid){
 				tag.validPoints.forEach(function(point:Object, index:int, arr:Array){
-					delete _isolatedPoints[point.obj];
+					delete _isolatedPoints[point];
 				});
 			} else { // invalid tag
 				return; // abort this handler
@@ -104,6 +104,7 @@
 			oldOverlay._value = tag.value;
 			oldOverlay._payloads = tag.payloads;
 			oldOverlay._numPoints = tag.numPoints;
+			oldOverlay._validPoints = tag.validPoints;
 			oldOverlay.graphics.clear();
 			
 			oldOverlay.graphics.beginFill(0x000000, _spriteAlpha);
@@ -148,8 +149,7 @@
 					payloads:Array(n),  // payloads of n-bit TUIC tag
 					value:uint		// payloads represented in decimal value
 									// (p[0]p[1]....p[n])_2
-					validPoints:Array // array of valid touch points
-										each point has x, y coordinate and its TouchObject
+					validPoints:Array // array of valid touch points as TactualObjects
 				}
 			*/
 			
@@ -202,7 +202,7 @@
 				return ret;
 			}
 			
-			ret.validPoints = refPoints.slice(); // clone of refPoints
+			ret.validPoints = [refPoints[0].obj, refPoints[1].obj]; 
 
 			// step2: Create the possible position of third reference points and the 
 			//        payload bits.
@@ -274,12 +274,12 @@
 			points.forEach(function(point:Object, index:int, arr:Array){
 				if( dist(point, possibleRefPoints[0]) < toleranceRadius ){
 					ret.orientation = theta + 90;
-					ret.validPoints.push(point);
+					ret.validPoints.push(point.obj);
 					ret.valid = true;
 				}else if(dist(point, possibleRefPoints[1]) < toleranceRadius){
 					ret.orientation = theta + 270;
 					reverseBits = true;
-					ret.validPoints.push(point);
+					ret.validPoints.push(point.obj);
 					ret.valid = true;
 				}else{ // not in the two possible ref point area
 					// test if the point is a payload bit
@@ -288,7 +288,7 @@
 						if(dist(point, possiblePayload) < toleranceRadius){
 							// payload bit found.
 							ret.payloads[index] = 1;
-							ret.validPoints.push(point);
+							ret.validPoints.push(point.obj);
 							++numPoints;
 							// stop this for-loop
 							return false; 
