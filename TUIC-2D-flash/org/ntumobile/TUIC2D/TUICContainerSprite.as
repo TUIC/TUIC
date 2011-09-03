@@ -60,7 +60,7 @@
 			var tag:Object = calcTag();
 			if (tag.valid){
 				tag.validPoints.forEach(function(point:Object, index:int, arr:Array){
-					delete _isolatedPoints[point];
+					delete _isolatedPoints[point.id];
 				});
 			} else { // invalid tag
 				return; // abort this handler
@@ -196,7 +196,7 @@
 				return ret;
 			}
 			
-			ret.validPoints = [refPoints[0].obj, refPoints[1].obj]; 
+			ret.validPoints = [refPoints[0], refPoints[1]]; 
 
 			// step2: Create the possible position of third reference points and the 
 			//        payload bits.
@@ -268,12 +268,12 @@
 			points.forEach(function(point:Object, index:int, arr:Array){
 				if( dist(point, possibleRefPoints[0]) < toleranceRadius ){
 					ret.orientation = theta + 90;
-					ret.validPoints.push(point.obj);
+					ret.validPoints.push(point);
 					reverseBits = true;
 					ret.valid = true;
 				}else if(dist(point, possibleRefPoints[1]) < toleranceRadius){
 					ret.orientation = theta + 270;
-					ret.validPoints.push(point.obj);
+					ret.validPoints.push(point);
 					ret.valid = true;
 				}else{ // not in the two possible ref point area
 					// test if the point is a payload bit
@@ -282,7 +282,7 @@
 						if(dist(point, possiblePayload) < toleranceRadius){
 							// payload bit found.
 							ret.payloads[index] = 1;
-							ret.validPoints.push(point.obj);
+							ret.validPoints.push(point);
 							++numPoints;
 							// stop this for-loop
 							return false; 
@@ -291,7 +291,7 @@
 					});
 				}
 			});
-			
+			 
 			if(ret.valid){ // the third ref point is successfully found
 				ret.orientation %= 360;
 				if(reverseBits){
@@ -311,16 +311,14 @@
 			return ret;
 		}
 		private function touchDownHandler(event:TouchEvent){
-			_isolatedPoints[event.tactualObject] = {
-				'x': event.localX, 
-				'y': event.localY, 
-				'obj': event.tactualObject
-			};
+			_isolatedPoints[event.tactualObject.id] = event.tactualObject;
+			trace('container.touchDown: ' + event.tactualObject.id);
 			clearTimeout(_newTagTimeoutHandler);
 			_newTagTimeoutHandler = setTimeout(newTagHandler, _touchThreshold);		
 		}
 		private function touchUpHandler(event:TouchEvent){
-			delete _isolatedPoints[event.tactualObject];
+			trace('container.touchUp: ' + event.tactualObject.id);
+			delete _isolatedPoints[event.tactualObject.id];
 		}
 		
 		private function makeOverlay():TUICSprite
