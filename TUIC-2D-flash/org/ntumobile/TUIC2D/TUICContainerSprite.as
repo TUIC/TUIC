@@ -10,6 +10,7 @@
 	import id.core.TouchSprite;
 
 	import com.actionscript_flash_guru.fireflashlite.Console;
+	import id.core.ITactualObject;
 
 	public class TUICContainerSprite extends TUICSprite
 	{
@@ -20,7 +21,7 @@
 		private var _newTagTimeoutHandler:uint;
 		private var _isolatedPoints:Object;
 		// isolated touch points that is not mapped to a TUIC tag yet
-		// in a form of tactualObject->Point map.
+		// in a form of tactualObject id->Point map.
 
 		private var _overlay:TUICSprite;
 		private var _spriteAlpha:Number;
@@ -326,7 +327,7 @@
 		}
 		private function touchDownHandler(event:TouchEvent)
 		{
-			_isolatedPoints[event.tactualObject.id] = event.tactualObject;
+			addIsolatedPoint(event.tactualObject);
 			trace('container.touchDown: ' + event.tactualObject.id + ", curretTarget = " + (event.currentTarget == this) );
 			clearTimeout(_newTagTimeoutHandler);
 			_newTagTimeoutHandler = setTimeout(newTagHandler,_touchThreshold);
@@ -383,6 +384,13 @@
 			return possiblePayloads;
 		}
 
+		// add new point to _isolatedPoints[]
+		internal function addIsolatedPoint(point:ITactualObject):void{
+			var id = point.id;
+			while(_isolatedPoints[id]) ++id; // prevent id duplication
+			_isolatedPoints[point.id] = point;
+		}
+
 		private function dist(a:Object, b:Object):Number
 		{
 			return Math.sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
@@ -390,8 +398,8 @@
 		private function midPointOf(a:Object, b:Object):Object
 		{
 			return {
-			x: 0.5 * (a.x + b.x),
-			y: 0.5 * (a.y + b.y)
+				x: 0.5 * (a.x + b.x),
+				y: 0.5 * (a.y + b.y)
 			};
 		}
 

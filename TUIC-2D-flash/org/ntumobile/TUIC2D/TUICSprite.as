@@ -4,6 +4,7 @@
 	import gl.events.GestureEvent;
 	import gl.events.TouchEvent;
 	import id.core.TouchSprite;
+	import id.core.TactualObject;
 
 	import com.actionscript_flash_guru.fireflashlite.Console;
 
@@ -65,12 +66,28 @@
 			// handles the sprite's own touchDown, do not propagate
 			// to TUICContainerSprite
 			++_numPoints;
+			
+			//TODO: how about updateing the valid points?
+			
+			// recalculate all points to determine the reference points.
 			trace('sprite.touchDown: ' + event.tactualObject.id + ", curretTarget = " + (event.currentTarget == this) );
 			event.stopImmediatePropagation();
 			this.dispatchEvent(new TUICEvent(event, TUICEvent.DOWN));
 		}
 		private function touchUpHandler(event:TouchEvent){
 			trace('sprite.touchUp: ' + event.tactualObject.id);
+			var pointIndex = _validPoints.indexOf(event.tactualObject);
+			if(pointIndex > 1){
+				// remove the point form _validPoints[] only if the removed point is not
+				// one of the reference points (_validPoints[0|1])
+				_validPoints.splice(pointIndex,1); 
+			}else if(pointIndex == 0 || pointIndex == 1){
+				// the reference point is lost.
+				// TODO: Do something dude!
+				
+				this.dispatchEvent(new TUICEvent(event, TUICEvent.UP));
+			}
+			
 			if(--_numPoints == 0){
 				this.dispatchEvent(new TUICEvent(event, TUICEvent.UP));
 			}
