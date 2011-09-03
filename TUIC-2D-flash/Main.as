@@ -35,8 +35,8 @@
 			fillScreen();
 			container.addEventListener(TUICEvent.DOWN, downHandler);
 			container.addEventListener(TUICEvent.UP, upHandler);
-			container.addEventListener(TUICEvent.ROTATE, debugHandler);
-			container.addEventListener(TUICEvent.MOVE, debugHandler);
+			//container.addEventListener(TUICEvent.ROTATE, debugHandler);
+			//container.addEventListener(TUICEvent.MOVE, debugHandler);
 			
 			addChild(container);
 		}
@@ -50,8 +50,8 @@
 				textField.embedFonts = true;
 				sprite.addChild(textField);
 				
-				//trace('New tag value: ', sprite.value);
-				//trace('New tag side length: ', sprite.sideLength);
+				trace('New tag value: ', sprite.value);
+				trace('New tag side length: ', sprite.sideLength);
 				
 			}
 		}

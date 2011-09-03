@@ -49,10 +49,7 @@
 		private function rotateHandler(event:GestureEvent){
 			this.rotation += event.value;
 			//Console.log(this.tactualObjectManager.tactualObjects);
-			trace('rotate: (x,y)',
-				  _validPoints[0].x, _validPoints[0].y,
-				  _validPoints[1].x, _validPoints[1].y);
-				  
+			  
 			// use the reference points (_validPoints[0] and _validPoints[1])
 			// to fix the drifting problem
 			this.x = (_validPoints[0].x + _validPoints[1].x) / 2;

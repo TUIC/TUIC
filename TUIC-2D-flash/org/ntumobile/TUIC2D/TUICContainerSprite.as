@@ -54,14 +54,8 @@
 			_touchDownEvents.push(event);
 			_newPointTimeoutHandler = setTimeout(newTagHandler,_touchThreshold * 1000);
 		}*/
-		private function newTagHandler(event:TouchEvent):void
+		private function newTagHandler():void
 		{
-			_isolatedPoints[event.tactualObject] = {
-				'x': event.localX, 
-				'y': event.localY, 
-				'obj': event.tactualObject
-			};
-
 			// validate tag
 			var tag:Object = calcTag();
 			if (tag.valid){
@@ -73,7 +67,7 @@
 			}
 
 			// create TUICEvent and the TUIC tag.
-			var newEvent = new TUICEvent(event, TUICEvent.DOWN),
+			var newEvent = new TUICEvent(new TouchEvent(TouchEvent.TOUCH_DOWN), TUICEvent.DOWN),
 				oldOverlay = _overlay; // save the old overlay
 			// FIXME: localX and localY of the event should be changed after we figure out 
 			// assign old overlay to oldOverlay and make a new overlay.
@@ -141,7 +135,7 @@
 				returned tag object:
 				{
 					valid: Boolean, // whether the tag is valid or not
-					side: Number,   // side length of th tag
+						side: Number,   // side length of th tag
 					orientation:Number, // orientation of the tag in degrees,
 										// left horizon = 0
 					x:Number,		// center x coordinate
@@ -259,7 +253,7 @@
 				drawCircle(point, debugColor, toleranceRadius);
 				debugColor += 0x181818;
 			}
-			*/
+			//*/
 
 			// Step 3: Find the third reference & payloads by testing points against
 			//        the tolerance radius one-by-one.
@@ -275,10 +269,10 @@
 				if( dist(point, possibleRefPoints[0]) < toleranceRadius ){
 					ret.orientation = theta + 90;
 					ret.validPoints.push(point.obj);
+					reverseBits = true;
 					ret.valid = true;
 				}else if(dist(point, possibleRefPoints[1]) < toleranceRadius){
 					ret.orientation = theta + 270;
-					reverseBits = true;
 					ret.validPoints.push(point.obj);
 					ret.valid = true;
 				}else{ // not in the two possible ref point area
@@ -317,9 +311,13 @@
 			return ret;
 		}
 		private function touchDownHandler(event:TouchEvent){
+			_isolatedPoints[event.tactualObject] = {
+				'x': event.localX, 
+				'y': event.localY, 
+				'obj': event.tactualObject
+			};
 			clearTimeout(_newTagTimeoutHandler);
-			_newTagTimeoutHandler = setTimeout(function(){newTagHandler(event)}, _touchThreshold);
-		
+			_newTagTimeoutHandler = setTimeout(newTagHandler, _touchThreshold);		
 		}
 		private function touchUpHandler(event:TouchEvent){
 			delete _isolatedPoints[event.tactualObject];
