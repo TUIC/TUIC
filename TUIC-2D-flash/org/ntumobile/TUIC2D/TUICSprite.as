@@ -65,8 +65,8 @@
 			// handles the sprite's own touchDown, do not propagate
 			// to TUICContainerSprite
 			++_numPoints;
-			trace('sprite.touchDown: ' + event.tactualObject.id);
-			event.stopPropagation();
+			trace('sprite.touchDown: ' + event.tactualObject.id + ", curretTarget = " + (event.currentTarget == this) );
+			event.stopImmediatePropagation();
 			this.dispatchEvent(new TUICEvent(event, TUICEvent.DOWN));
 		}
 		private function touchUpHandler(event:TouchEvent){
