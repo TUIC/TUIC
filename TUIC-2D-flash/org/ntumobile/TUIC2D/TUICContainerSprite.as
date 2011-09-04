@@ -104,7 +104,6 @@
 			oldOverlay._sideLength = tag.side;
 			oldOverlay._value = tag.value;
 			oldOverlay._payloads = tag.payloads;
-			oldOverlay._numPoints = tag.numPoints;
 			oldOverlay._validPoints = tag.validPoints;
 			oldOverlay.graphics.clear();
 
@@ -120,7 +119,7 @@
 			oldOverlay.removeEventListener(TouchEvent.TOUCH_DOWN, touchDownHandler);
 			oldOverlay.removeEventListener(TouchEvent.TOUCH_UP, touchUpHandler);
 
-			oldOverlay.enableTUICEvents();
+			oldOverlay.enableTUICSprite();
 
 			newEvent.value = oldOverlay;
 			// dispatch the event so that the sprite(old overlay) is available;
@@ -168,25 +167,9 @@
 			// step1: find max distance pair.
 			//        these are diagonal reference points.
 			//
-			var refPoints:Array,maxDist:Number = 0;
-
-			for (var i:uint = 0; i < points.length - 1; ++i)
-			{
-				for (var j:uint=i; j<points.length; ++j)
-				{
-					var d:Number = dist(points[i],points[j]);
-					if (d > maxDist)
-					{
-						maxDist = d;
-						refPoints = [points[i],points[j]];
-					}
-				}
-			}
-
-			// remove reference points out of points[]
-			points = points.filter(function(elem:Object, i:int, arr:Array):Boolean{
-				return !( elem === refPoints[0] || elem === refPoints[1] );
-			});
+			var refPoints = extractMaxDistPair(points),
+			    maxDist = dist(refPoints[0], refPoints[1]);
+			
 			if (refPoints[0].y > refPoints[1].y)
 			{
 				// keep refPoints[0] 'higher' than refPoints[1]
@@ -327,7 +310,7 @@
 		}
 		private function touchDownHandler(event:TouchEvent)
 		{
-			addIsolatedPoint(event.tactualObject);
+			_isolatedPoints[event.tactualObject.id] = event.tactualObject;
 			trace('container.touchDown: ' + event.tactualObject.id + ", curretTarget = " + (event.currentTarget == this) );
 			clearTimeout(_newTagTimeoutHandler);
 			_newTagTimeoutHandler = setTimeout(newTagHandler,_touchThreshold);
@@ -384,17 +367,6 @@
 			return possiblePayloads;
 		}
 
-		// add new point to _isolatedPoints[]
-		internal function addIsolatedPoint(point:ITactualObject):void{
-			var id = point.id;
-			while(_isolatedPoints[id]) ++id; // prevent id duplication
-			_isolatedPoints[point.id] = point;
-		}
-
-		private function dist(a:Object, b:Object):Number
-		{
-			return Math.sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
-		}
 		private function midPointOf(a:Object, b:Object):Object
 		{
 			return {
