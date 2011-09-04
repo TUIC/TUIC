@@ -68,6 +68,7 @@
 			
 			// the decision of whether to remove the TUICSprite is left to the
 			// developer. Here we decide to remove the sprite.
+			container.removeChild(sprite.info);
 			container.removeChild(sprite);
 		}
 		
@@ -75,12 +76,14 @@
 			// since TUICEvent.ROTATE is fired from the TUICSprite,
 			// event.target refers to the TUICSprite.
 			var sprite = event.target;
+			updateInfoPanel(sprite);
 		}
 		
 		private function moveHandler(event:TUICEvent){
 			// since TUICEvent.MOVE is fired from the TUICSprite,
 			// event.target refers to the TUICSprite.
 			var sprite = event.target;
+			updateInfoPanel(sprite);
 		}
 		
 		private function drawSprite(sprite:TUICSprite){
@@ -97,9 +100,22 @@
 			sprite.graphics.drawCircle(-side/2, -side/2, 7);
 			sprite.graphics.endFill();
 			
+			// attach the info panel
+			var info:InfoPanel = new InfoPanel;
+			
+			// attach the info panel to sprite
+			// since TUICSprite is dynamic class, you can assiciate anything
+			// you want.
+			sprite.info = info; 
+			updateInfoPanel(sprite);
+			
+			// show the info panel
+			container.addChild(info);
+			
 			trace('New tag value: ', sprite.value);
 			trace('New tag side length: ', sprite.sideLength);
 		}
+		
 		// fills in the TUICContainerSprite so that its size 
 		// matches the stage size.
 		private function fillScreen(event:Event = undefined){
@@ -116,6 +132,17 @@
 			// Notice that after we MUST call the container's resizeOverlay method
 			// to resize the container's overlay !!
 			container.resizeOverlay();
+		}
+		
+		private function updateInfoPanel(sprite:TUICSprite){
+			sprite.info.txtRotation.text = sprite.rotation;
+			sprite.info.txtPosition.text = "[" + sprite.x + "," + sprite.y + "]";
+			sprite.info.txtSideLength.text = sprite.sideLength;
+			sprite.info.txtPayload.text = sprite.value;
+			sprite.info.txtInstanceName.text = sprite.name;
+			
+			sprite.info.x = sprite.x + sprite.sideLength/2;
+			sprite.info.y = sprite.y;
 		}
 	}
 }

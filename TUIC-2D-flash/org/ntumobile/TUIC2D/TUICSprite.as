@@ -13,7 +13,7 @@
 	* A new TUICSprite is created by TUICContainerSprite whenever a new TUIC tag
 	* is detected.
 	*/
-	public class TUICSprite extends TouchSprite
+	public dynamic class TUICSprite extends TouchSprite
 	{
 		// side length of the tag
 		internal var _sideLength:Number;
