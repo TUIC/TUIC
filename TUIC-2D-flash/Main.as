@@ -90,7 +90,7 @@
 			// in this demo, we draw a circle around the generated sprite.
 			// Notice that for sprite, coordinate (0,0) is its center.
 			// We can retrive the side length of the sprite via its sideLength method.
-			var side = sprite.sideLength * 1.1;
+			var side = sprite.sideLength * 1.3;
 			
 			sprite.graphics.lineStyle(20, 0xffffff, 0.5);
 			sprite.graphics.drawCircle(0,0, Math.SQRT2*side/2);
@@ -112,8 +112,8 @@
 			// show the info panel
 			container.addChild(info);
 			
-			trace('New tag value: ', sprite.value);
-			trace('New tag side length: ', sprite.sideLength);
+			//trace('New tag value: ', sprite.value);
+			//trace('New tag side length: ', sprite.sideLength);
 		}
 		
 		// fills in the TUICContainerSprite so that its size 
@@ -135,13 +135,14 @@
 		}
 		
 		private function updateInfoPanel(sprite:TUICSprite){
-			sprite.info.txtRotation.text = sprite.rotation;
-			sprite.info.txtPosition.text = "[" + sprite.x + "," + sprite.y + "]";
-			sprite.info.txtSideLength.text = sprite.sideLength;
-			sprite.info.txtPayload.text = sprite.value;
+			sprite.info.txtRotation.text = sprite.rotation.toString();
+			sprite.info.txtPosition.text = "[" + sprite.x.toString() + "," + sprite.y.toString() + "]";
+			sprite.info.txtSideLength.text = sprite.sideLength.toString();
+			sprite.info.txtPayload.text = sprite.value.toString();
 			sprite.info.txtInstanceName.text = sprite.name;
-			
-			sprite.info.x = sprite.x + sprite.sideLength/2;
+			trace(sprite.rotation.toString());
+			// move sprite.info around
+			sprite.info.x = sprite.x + sprite.sideLength*0.707;
 			sprite.info.y = sprite.y;
 		}
 	}
