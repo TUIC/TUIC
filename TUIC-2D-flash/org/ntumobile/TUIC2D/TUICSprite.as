@@ -31,7 +31,7 @@
 		// a boolean valueindicating that whether the tactual objects of reference 
 		// points are available. They are important when correcting the sprite's
 		// position.
-		private var _hasRefTactualObjects:Boolean; 
+		public var _hasRefTactualObjects:Boolean; 
 			
 		/**
 		* constructor of TUICSprite.

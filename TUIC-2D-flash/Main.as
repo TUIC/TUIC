@@ -140,7 +140,9 @@
 			sprite.info.txtSideLength.text = sprite.sideLength.toString();
 			sprite.info.txtPayload.text = sprite.value.toString();
 			sprite.info.txtInstanceName.text = sprite.name;
-			trace(sprite.rotation.toString());
+			sprite.info.txtDebug.text = sprite._hasRefTactualObjects.toString();
+			sprite.info.txtDebug.text += sprite.validPoints.toString();
+			
 			// move sprite.info around
 			sprite.info.x = sprite.x + sprite.sideLength*0.707;
 			sprite.info.y = sprite.y;
