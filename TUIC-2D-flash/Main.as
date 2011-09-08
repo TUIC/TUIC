@@ -96,7 +96,7 @@
 			sprite.graphics.drawCircle(0,0, Math.SQRT2*side/2);
 			
 			sprite.graphics.lineStyle(1, 0x0, 0.2);
-			sprite.graphics.beginFill(0xffffff, 0.7);
+			sprite.graphics.beginFill(0x3300ff, 0.9);
 			sprite.graphics.drawCircle(-side/2, -side/2, 7);
 			sprite.graphics.endFill();
 			
@@ -107,6 +107,9 @@
 			// since TUICSprite is dynamic class, you can assiciate anything
 			// you want.
 			sprite.info = info; 
+			sprite.info.txtSideLength.text = sprite.sideLength.toString();
+			sprite.info.txtPayload.text = sprite.value.toString();
+			sprite.info.txtInstanceName.text = sprite.name;
 			updateInfoPanel(sprite);
 			
 			// show the info panel
@@ -137,14 +140,11 @@
 		private function updateInfoPanel(sprite:TUICSprite){
 			sprite.info.txtRotation.text = sprite.rotation.toString();
 			sprite.info.txtPosition.text = "[" + sprite.x.toString() + "," + sprite.y.toString() + "]";
-			sprite.info.txtSideLength.text = sprite.sideLength.toString();
-			sprite.info.txtPayload.text = sprite.value.toString();
-			sprite.info.txtInstanceName.text = sprite.name;
 			sprite.info.txtDebug.text = sprite._hasRefTactualObjects.toString();
 			sprite.info.txtDebug.text += sprite.validPoints.toString();
 			
 			// move sprite.info around
-			sprite.info.x = sprite.x + sprite.sideLength*0.707;
+			sprite.info.x = sprite.x + sprite.sideLength;
 			sprite.info.y = sprite.y;
 		}
 	}
