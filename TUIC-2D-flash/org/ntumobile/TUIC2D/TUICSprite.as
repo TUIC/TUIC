@@ -128,7 +128,23 @@
 		* number of tactual points in the sprite
 		*/
 		public function numPoints():uint{
-			return validPoints.length;
+			return _validPoints.length;
+		}
+		
+		/**
+		* clear tactual points that has null container. (lingering points)
+		*/
+		internal function clearNullPoints():void{
+			// start from back so that we can delete points directly
+			for(var i:int = _validPoints.length - 1; i>=0; --i){
+				if(_validPoints[i].owner === null){
+					// we should delete this lingering point
+					_validPoints.splice(i, 1);
+					if(i < 2){ // ref points!
+						_hasRefTactualObjects = false;
+					}
+				}
+			}
 		}
 		
 		/**
@@ -198,6 +214,7 @@
 		*/
 		private function touchUpHandler(event:TouchEvent){
 			trace('sprite.touchUp: ' + event.tactualObject.id);
+			clearNullPoints(); // first clear these lingering points
 			var pointIndex = _validPoints.indexOf(event.tactualObject);
 			if(pointIndex > -1){
 				// remove the point form _validPoints[] only if the removed point is not
