@@ -94,11 +94,12 @@
     //[convexHull removeObjectAtIndex:[convexHull count]-1];
     NSLog(@"++++++++++++++Touches: %d",[unknownTouchSet count]);
     int numMatchDistance=0;
-    NSMutableArray* registPoint = [[NSMutableArray alloc] initWithCapacity:4];
+    NSMutableArray* registPoint = [[NSMutableArray alloc] initWithCapacity:15];
     //Finding regist points
     for (UITouch* touch1 in unknownTouchSet) {
         NSLog(@"-----------touch location: %f,%f",[touch1 locationInView:nil].x,[touch1 locationInView:nil].y);
-        CGFloat distances[2]={0,0};
+        CGFloat distances[12];
+        memset(distances, 0, 12);
         CGPoint P0 = [touch1 locationInView:nil];
         for (UITouch* touch2 in unknownTouchSet) {
             if (touch1 != touch2) {
@@ -150,6 +151,7 @@
                     }
                     [TUICObjects addObject:newTag];
                     NSLog(@"New Object Found!");
+                    break;
                 }
                 else
                     NSLog(@"C1, C2 not found");
