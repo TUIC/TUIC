@@ -9,7 +9,6 @@
 	import gl.events.TouchEvent;
 	import id.core.TouchSprite;
 
-	import com.actionscript_flash_guru.fireflashlite.Console;
 	import id.core.ITactualObject;
 	
 	/**

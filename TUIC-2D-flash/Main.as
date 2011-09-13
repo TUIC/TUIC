@@ -96,7 +96,7 @@
 			sprite.graphics.drawCircle(0,0, Math.SQRT2*side/2);
 			
 			sprite.graphics.lineStyle(1, 0x0, 0.2);
-			sprite.graphics.beginFill(0x3300ff, 0.9);
+			sprite.graphics.beginFill(0x333333, 0.9);
 			sprite.graphics.drawCircle(-side/2, -side/2, 7);
 			sprite.graphics.endFill();
 			
@@ -138,10 +138,10 @@
 		}
 		
 		private function updateInfoPanel(sprite:TUICSprite){
+			sprite.info.alpha = sprite._hasRefTactualObjects ? 1 : 0.2;
 			sprite.info.txtRotation.text = sprite.rotation.toString();
 			sprite.info.txtPosition.text = "[" + sprite.x.toString() + "," + sprite.y.toString() + "]";
-			sprite.info.txtDebug.text = sprite._hasRefTactualObjects.toString();
-			sprite.info.txtDebug.text += sprite.validPoints.toString();
+			sprite.info.txtDebug.text = sprite.validPoints.toString();
 			
 			// move sprite.info around
 			sprite.info.x = sprite.x + sprite.sideLength;

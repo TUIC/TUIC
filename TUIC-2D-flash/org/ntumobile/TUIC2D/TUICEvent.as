@@ -4,8 +4,6 @@
 	import gl.events.GestureEvent;
 	import gl.events.TouchEvent;
 
-	import com.actionscript_flash_guru.fireflashlite.Console;
-
 	/**
 	* Events of a TUIC tag
 	*/

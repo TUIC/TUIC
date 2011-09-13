@@ -6,8 +6,6 @@
 	import id.core.TouchSprite;
 	import id.core.TactualObject;
 
-	import com.actionscript_flash_guru.fireflashlite.Console;
-
 	/**
 	* a sprite that acts as a TUIC tag.
 	* A new TUICSprite is created by TUICContainerSprite whenever a new TUIC tag
@@ -153,7 +151,6 @@
 		*/
 		private function rotateHandler(event:GestureEvent){
 			this.rotation += event.value;
-			//Console.log(this.tactualObjectManager.tactualObjects);
 			  
 			// use the reference points (_validPoints[0] and _validPoints[1])
 			// to fix the position drifting problem
@@ -186,7 +183,7 @@
 			
 			// If reference points are lifted, check whether the reference
 			// points return to the tag.
-			if(!_hasRefTactualObjects){
+			if(!_hasRefTactualObjects && _validPoints.length >= 2){
 				var refPoints = extractMaxDistPair(_validPoints),
 				    maxDist = dist(refPoints[0], refPoints[1]),
 					legalMaxDist = Math.SQRT2 * _sideLength;
@@ -201,8 +198,6 @@
 				}
 			}
 			
-			trace('sprite.touchDown: ' + event.tactualObject.id + ", curretTarget = " + (event.currentTarget == this) );
-			
 			// prevent this event to propagate to TUICContainerSprite.
 			event.stopImmediatePropagation();
 		}
@@ -213,7 +208,6 @@
 		* If all points on a tag are lifted, TUICEvent.UP is fired.
 		*/
 		private function touchUpHandler(event:TouchEvent){
-			trace('sprite.touchUp: ' + event.tactualObject.id);
 			clearNullPoints(); // first clear these lingering points
 			var pointIndex = _validPoints.indexOf(event.tactualObject);
 			if(pointIndex > -1){
