@@ -102,12 +102,14 @@ public class TUICVolumeActivity extends Activity {
 		if (e.getAction() == MotionEvent.ACTION_MOVE) {
 			if (inRange(e.getX(), e.getY())) {
 				if (preY == -1 || y > 780 || y < 560) {
+					preY = y;
 				} else if (preY - y > th) {
 					volume(true, preY, y);
+					preY = y;
 				} else if (preY - y < -th) {
 					volume(false, preY, y);
+					preY = y;
 				}
-				preY = y;
 
 			}
 
