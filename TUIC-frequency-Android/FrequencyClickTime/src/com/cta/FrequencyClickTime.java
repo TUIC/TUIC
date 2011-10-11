@@ -2,11 +2,30 @@ package com.cta;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
 public class FrequencyClickTime extends Activity {
+
+	// 用來處理沒touch時將畫面清空
+	Handler myHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == 0x101) {
+				if (flagTouching) {
+					flagTouching = false;
+				} else {
+					((Circle) circle).showRGB = 0;
+					circle.invalidate();
+				}
+				Message m = new Message();
+				m.what = 0x101;
+				this.sendMessageDelayed(m, 500);
+			}
+		}
+	};
 	/** Called when the activity is first created. */
 	long time;
 	static Pointer pointer[];
@@ -14,6 +33,7 @@ public class FrequencyClickTime extends Activity {
 	static ClickedPoint cp;
 	View circle;
 	int pointers;
+	boolean flagTouching = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,10 +53,14 @@ public class FrequencyClickTime extends Activity {
 				LayoutParams.FILL_PARENT);
 		this.addContentView(circle, params);
 
+		Message m = new Message();
+		m.what = 0x101;
+		myHandler.sendMessageDelayed(m, 500);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		flagTouching = true;
 		// TODO Auto-generated method stub
 		int action = event.getActionMasked();
 		// action point status
@@ -75,7 +99,6 @@ public class FrequencyClickTime extends Activity {
 				pointer[event.getPointerId(i)].touchDown(event.getPointerId(i),
 						event.getX(i), event.getY(i), event.getPressure(i),
 						event.getSize(i), time);
-
 			}
 
 			break;
