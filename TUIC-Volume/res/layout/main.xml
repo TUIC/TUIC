@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
-<LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="match_parent">
-    <Button android:text="Play/Pause" android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-    <Button android:text="Stop" android:id="@+id/button2" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-    <TextView android:text="TextView" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24sp"></TextView>
-</LinearLayout>
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:background="#FFFFFF">
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="@string/hello" android:textColor="#000000"/>
+	<LinearLayout android:id="@+id/linearLayout1"
+		android:layout_height="wrap_content" android:layout_width="match_parent">
+		<ImageView android:layout_height="wrap_content" android:id="@+id/imageView1"
+			android:layout_width="wrap_content" android:src="@drawable/button_start"></ImageView>
+		<ImageView android:layout_height="wrap_content" android:id="@+id/imageView2"
+			android:layout_width="wrap_content" android:src="@drawable/button_stop"></ImageView>
+		<TextView android:text="TextView" android:id="@+id/textView1"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textSize="24sp" android:textColor="#000000"></TextView>
+	</LinearLayout>
 </LinearLayout>
