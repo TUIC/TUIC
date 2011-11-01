@@ -3,7 +3,7 @@
 //  TUIC-2D-iOS
 //
 //  Created by Xman on 11/8/15.
-//  Copyright 2011年 MHCI Lab All rights reserved.
+//  Copyright 2011年 MHCI Lab. All rights reserved.
 //
 
 #import "TUIC_2D_Window.h"
@@ -84,7 +84,6 @@
         }
 
     }
-    //[super sendEvent:event];
 }
 
 - (void)recognizeTouch{
@@ -146,7 +145,7 @@
                     newTag.tagID = 0;
                     [newTag.touchPoints addObject:touch1];
                     //Sort by clockwise direction
-                    if ([self isLeftwithP0:P0 andP1:C1 andP2:C2]<0) {
+                    if ([myMathFormulaUtil isLeftwithP0:P0 andP1:C1 andP2:C2]<0) {
                         [newTag.touchPoints addObject:[registPoint objectAtIndex:j]];
                         [newTag.touchPoints addObject:[registPoint objectAtIndex:i]];
                     }
@@ -155,7 +154,9 @@
                         [newTag.touchPoints addObject:[registPoint objectAtIndex:j]];
                     }
                     [TUICObjects addObject:newTag];
-                    //NSLog(@"New Object Found!");
+                    newTag.location = [myMathFormulaUtil calculateCenterWithC1:C1 andC2:C2];
+                    
+                    NSLog(@"New Object Found!");
                     break;
                 }
             }
@@ -183,9 +184,9 @@
             CGFloat distance = [myMathFormulaUtil calculatePtDistance:C0 andPoint2:P];
             
             if (distance<=kTUICObjectSize*sqrt(2.0)+kTUICObjectTolerance) {
-                if ([self isLeftwithP0:C0 andP1:C1 andP2:P]>0 && [self isLeftwithP0:C0 andP1:C2 andP2:P]<0) {
-                    int product1 = roundf([self isLeftwithP0:C0 andP1:C1 andP2:P]/kGridSize);
-                    int product2 = -roundf([self isLeftwithP0:C0 andP1:C2 andP2:P]/kGridSize);
+                if ([myMathFormulaUtil isLeftwithP0:C0 andP1:C1 andP2:P]>0 && [myMathFormulaUtil isLeftwithP0:C0 andP1:C2 andP2:P]<0) {
+                    int product1 = roundf([myMathFormulaUtil isLeftwithP0:C0 andP1:C1 andP2:P]/kGridSize);
+                    int product2 = -roundf([myMathFormulaUtil isLeftwithP0:C0 andP1:C2 andP2:P]/kGridSize);
                     //NSLog(@"product1: %d, product2: %d",product1,product2);
                     
                     //Set id by payload bit postion.

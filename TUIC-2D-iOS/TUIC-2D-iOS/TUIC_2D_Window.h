@@ -3,7 +3,7 @@
 //  TUIC-2D-iOS
 //
 //  Created by Xman on 11/8/15.
-//  Copyright 2011年 MHCI Lab All rights reserved.
+//  Copyright 2011年 MHCI Lab. All rights reserved.
 //
 
 
@@ -18,8 +18,5 @@
 @property (nonatomic, retain) NSMutableArray* TUICObjects;
 
 - (void) recognizeTouch;
-
-- (NSMutableArray*)simpleHull_2DwithV:(NSArray*)V andN:(NSInteger)n;
-- (CGFloat) isLeftwithP0:(CGPoint) P0 andP1:(CGPoint)P1 andP2:(CGPoint) P2;
 
 @end

@@ -3,7 +3,7 @@
 //  TUIC-2D-iOS
 //
 //  Created by Xman on 11/8/15.
-//  Copyright 2011年 MHCI Lab All rights reserved.
+//  Copyright 2011年 MHCI Lab. All rights reserved.
 //
 
 

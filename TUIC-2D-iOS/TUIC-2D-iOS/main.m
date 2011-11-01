@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TUIC_2D_iOSAppDelegate.h"
 
 int main(int argc, char *argv[])
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    int retVal = UIApplicationMain(argc, argv, nil, nil);
+    int retVal = UIApplicationMain(argc, argv, nil, NSStringFromClass([TUIC_2D_iOSAppDelegate class]));
     [pool release];
     return retVal;
 }
