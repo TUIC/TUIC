@@ -2,8 +2,8 @@
 //  TUIC_Object.m
 //  TUIC-2D-iOS
 //
-//  Created by  on 11/8/15.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by Xman on 11/8/15.
+//  Copyright 2011年 MHCI Lab All rights reserved.
 //
 
 #import "TUIC_Object.h"

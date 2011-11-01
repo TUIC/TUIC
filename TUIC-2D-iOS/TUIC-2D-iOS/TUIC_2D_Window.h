@@ -2,8 +2,8 @@
 //  TUIC_2D_Window.h
 //  TUIC-2D-iOS
 //
-//  Created by  on 11/8/15.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by Xman on 11/8/15.
+//  Copyright 2011年 MHCI Lab All rights reserved.
 //
 
 
@@ -21,4 +21,5 @@
 
 - (NSMutableArray*)simpleHull_2DwithV:(NSArray*)V andN:(NSInteger)n;
 - (CGFloat) isLeftwithP0:(CGPoint) P0 andP1:(CGPoint)P1 andP2:(CGPoint) P2;
+
 @end

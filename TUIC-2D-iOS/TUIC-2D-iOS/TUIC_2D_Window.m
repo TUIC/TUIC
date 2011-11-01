@@ -2,8 +2,8 @@
 //  TUIC_2D_Window.m
 //  TUIC-2D-iOS
 //
-//  Created by  on 11/8/15.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by Xman on 11/8/15.
+//  Copyright 2011年 MHCI Lab All rights reserved.
 //
 
 #import "TUIC_2D_Window.h"
@@ -32,48 +32,51 @@
 @synthesize checkedTouchSet;
 @synthesize unknownTouchSet;
 @synthesize TUICObjects;
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        // Initialization code here.
-    }
-    
-    return self;
-}
 
 - (void)becomeKeyWindow{
+    //Initialization.
     unknownTouchSet = [[NSMutableSet alloc] initWithCapacity:10];
     checkedTouchSet = [[NSMutableSet alloc] initWithCapacity:10];
     TUICObjects = [[NSMutableArray alloc] initWithCapacity:3];
+    //Recognize touches by polling.
     [NSTimer scheduledTimerWithTimeInterval:kTouchDelayTimer target:self selector:@selector(recognizeTouch) userInfo:nil repeats:YES];
+    
     [super becomeKeyWindow];
 }
 
 - (void)sendEvent:(UIEvent *)event{
+    //Classify touches into different set.
     for (UITouch* touch in [event allTouches]) {
+        //Skip if checked. 
         if ([checkedTouchSet containsObject:touch])
             continue;
         
-        BOOL touchInObject = NO;
-        int index;
-        for (index=0 ; index< [TUICObjects count]; index++) {
-            TUIC_Object* tag = [TUICObjects objectAtIndex:index];
-            if ([tag.touchPoints indexOfObject:touch] != NSNotFound) {
-                touchInObject = YES;
+        BOOL touchFromObject = NO;
+        //Check if touch from an object
+        TUIC_Object* object;
+        for (object in TUICObjects){
+            if ([object.touchPoints indexOfObject:touch]!=NSNotFound) {
+                touchFromObject = YES;
                 break;
             }
         }
-        if (touchInObject) {
-            TUIC_Object* tag = [TUICObjects objectAtIndex:index];
-            if (touch.phase == UITouchPhaseEnded || touch.phase == UITouchPhaseCancelled)
-                if ([tag.touchPoints indexOfObject:touch]<3) {
-                    [TUICObjects removeObject:tag];
+        
+        if (touchFromObject) {
+            if (touch.phase == UITouchPhaseEnded || touch.phase == UITouchPhaseCancelled){
+                if ([object.touchPoints indexOfObject:touch]<3) {
+                    //Delete the object which register point have been removed.
+                    [TUICObjects removeObject:object];
                 }
+                else{
+                    [object.touchPoints removeObject:touch];
+                }
+            }
         }
         else{
             if (touch.phase == UITouchPhaseEnded || touch.phase == UITouchPhaseCancelled){
+                //touch may be unknown or checked.
                 [unknownTouchSet removeObject:touch];
+                [checkedTouchSet removeObject:touch];
             }
             else{
                 [unknownTouchSet addObject:touch];
@@ -85,50 +88,52 @@
 }
 
 - (void)recognizeTouch{
+    //Return if less than 3 touch points. 
     if ([unknownTouchSet count]<3) {
         return;
     }
     
-    //NSArray* V = [[NSArray alloc] initWithArray:[unknownTouchSet allObjects]];
-    //NSMutableArray* convexHull = [self simpleHull_2DwithV:V andN:[V count]];
-    //[convexHull removeObjectAtIndex:[convexHull count]-1];
-    NSLog(@"++++++++++++++Touches: %d",[unknownTouchSet count]);
     int numMatchDistance=0;
-    NSMutableArray* registPoint = [[NSMutableArray alloc] initWithCapacity:15];
-    //Finding regist points
+    NSMutableArray* registPoint = [[NSMutableArray alloc] initWithCapacity:3];
+    
+    //Find regist points by comparing distances between each others.
     for (UITouch* touch1 in unknownTouchSet) {
-        NSLog(@"-----------touch location: %f,%f",[touch1 locationInView:nil].x,[touch1 locationInView:nil].y);
+        //NSLog(@"-----------touch location: %f,%f",[touch1 locationInView:nil].x,[touch1 locationInView:nil].y);
         CGFloat distances[12];
-        memset(distances, 0, 12);
         CGPoint P0 = [touch1 locationInView:nil];
         for (UITouch* touch2 in unknownTouchSet) {
             if (touch1 != touch2) {
-                
                 CGPoint P1 = [touch2 locationInView:nil];
                 CGFloat distance = [myMathFormulaUtil calculatePtDistance:P0 andPoint2:P1];
-                NSLog(@"distance: %f",distance);
+                //NSLog(@"distance: %f",distance);
+                
+                //Add as register point, if match the given size. 
                 if (distance<=kTUICObjectSize+kTUICObjectTolerance &&
                     distance>=kTUICObjectSize-kTUICObjectTolerance) {
                     distances[numMatchDistance] = distance;
                     numMatchDistance++;
                     [registPoint addObject:touch2];
-                    NSLog(@"insert index: %d",[registPoint indexOfObject:touch2]);
+                    //NSLog(@"insert index: %d",[registPoint indexOfObject:touch2]);
                 }
             }
         }
-        //Two corners were finded
+        
+        //When it comes the corner- only the corner point would match twice
+        //check if it match TUIC form.
         if (numMatchDistance >= 2){
             CGPoint C1,C2;
             CGFloat distance;
             BOOL find = NO;
             int i,j;
+            
+            //Check the other two register points distance.
             for (i =0 ; i<[registPoint count]-1; i++) {
                 for (j=i+1; j<[registPoint count]; j++) {
                     C1 = [[registPoint objectAtIndex:i] locationInView:nil];
                     C2 = [[registPoint objectAtIndex:j] locationInView:nil];
                     distance = [myMathFormulaUtil calculatePtDistance:C1 andPoint2:C2];
-                    NSLog(@"c1c2 distance:%f",distance);
-                    //Only right triangle would be recognize
+                    //NSLog(@"c1c2 distance:%f",distance);
+                    
                     if (distance<=(kTUICObjectSize+kTUICObjectTolerance)*sqrt(2.0) &&
                         distance>=(kTUICObjectSize-kTUICObjectTolerance)*sqrt(2.0)){ 
                         find = YES;
@@ -150,16 +155,12 @@
                         [newTag.touchPoints addObject:[registPoint objectAtIndex:j]];
                     }
                     [TUICObjects addObject:newTag];
-                    NSLog(@"New Object Found!");
+                    //NSLog(@"New Object Found!");
                     break;
                 }
-                else
-                    NSLog(@"C1, C2 not found");
             }
         }
-        else
-            NSLog(@"numMatchDistance:%d",numMatchDistance);
-        //Reset for next point
+        //Reset for next iteration
         [registPoint removeAllObjects];
         numMatchDistance = 0;
     }
@@ -170,8 +171,8 @@
         }
     }
     
+    [checkedTouchSet addObjectsFromArray:[unknownTouchSet allObjects]]; 
     
-    [checkedTouchSet addObjectsFromArray:[unknownTouchSet allObjects]];    
     //Find payLoad points
     for (TUIC_Object* tag in TUICObjects) {
         for (UITouch* touch in unknownTouchSet) {
@@ -186,6 +187,8 @@
                     int product1 = roundf([self isLeftwithP0:C0 andP1:C1 andP2:P]/kGridSize);
                     int product2 = -roundf([self isLeftwithP0:C0 andP1:C2 andP2:P]/kGridSize);
                     //NSLog(@"product1: %d, product2: %d",product1,product2);
+                    
+                    //Set id by payload bit postion.
                     switch (product2) {
                         case 1:
                             switch (product1) {
@@ -203,7 +206,7 @@
                             }
                             break;
                         case 2:
-                            switch (product2) {
+                            switch (product1) {
                                 case 1:
                                     tag.tagID |= B3;
                                     break;
@@ -218,7 +221,7 @@
                             }
                             break;
                         case 3:
-                            switch (product2) {
+                            switch (product1) {
                                 case 1:
                                     tag.tagID |= B6;
                                     break;
@@ -242,120 +245,12 @@
                 }
             }
         }
-        NSLog(@"tagID: %d", tag.tagID);
+        //NSLog(@"tagID: %d", tag.tagID);
     }
     [unknownTouchSet removeAllObjects];
     
     [registPoint release];
-    NSLog(@"Recognizer finish++++++++++++");
-    //[V release];
 }
-
-// isLeft(): test if a point is Left|On|Right of an infinite line.
-//    Input:  three points P0, P1, and P2
-//    Return: <0 for P2 left of the line through P0 and P1
-//            =0 for P2 on the line
-//            >0 for P2 right of the line
-//    See: the January 2001 Algorithm on Area of Triangles
-- (CGFloat) isLeftwithP0:(CGPoint) P0 andP1:(CGPoint)P1 andP2:(CGPoint) P2
-{
-    return (P1.x - P0.x)*(P2.y - P0.y) - (P2.x - P0.x)*(P1.y - P0.y);
-}
-
-// simpleHull_2D():
-//    Input:  V[] = polyline array of 2D vertex points 
-//            n   = the number of points in V[]
-//    Output: H[] = output convex hull array of vertices (max is n)
-//    Return: h   = the number of points in H[]
-- (NSMutableArray*)simpleHull_2DwithV:(NSArray*)V andN:(NSInteger)n
-{
-    // initialize a deque D[] from bottom to top so that the
-    // 1st three vertices of V[] are a counterclockwise triangle
-    NSMutableArray* D = [[NSMutableArray alloc] initWithCapacity:2*n+1];
-    for (int i =0; i<2*n+1; i++) {
-        [D addObject:@"0"];
-    }
-    int bot = n-2, top = bot+3;   // initial bottom and top deque indices
-    //D[bot] = D[top] = V[2];       // 3rd vertex is at both bot and top
-    [D replaceObjectAtIndex:top withObject:[V objectAtIndex:2]];
-    [D replaceObjectAtIndex:bot withObject:[D objectAtIndex:top]];
-    
-    CGPoint P0 = [[V objectAtIndex:0] locationInView:nil];
-    CGPoint P1 = [[V objectAtIndex:1] locationInView:nil];
-    CGPoint P2 = [[V objectAtIndex:2] locationInView:nil];
-    
-    if ([self isLeftwithP0:P0 andP1:P1 andP2:P2]<0) {
-        [D replaceObjectAtIndex:bot+1 withObject:[V objectAtIndex:0]];
-        [D replaceObjectAtIndex:bot+2 withObject:[V objectAtIndex:1]];
-    }
-    else{
-        [D replaceObjectAtIndex:bot+1 withObject:[V objectAtIndex:1]];
-        [D replaceObjectAtIndex:bot+2 withObject:[V objectAtIndex:0]];
-    }
-    /*
-    if ([self isLeft(V[0], V[1], V[2])] > 0) {
-        D[bot+1] = V[0];
-        D[bot+2] = V[1];          // ccw vertices are: 2,0,1,2
-    }
-    else {
-        D[bot+1] = V[1];
-        D[bot+2] = V[0];          // ccw vertices are: 2,1,0,2
-    }*/
-    
-    // compute the hull on the deque D[]
-    for (int i=3; i < n; i++) {   // process the rest of vertices
-        // test if next vertex is inside the deque hull
-        CGPoint D_bot = [[D objectAtIndex:bot] locationInView:nil];
-        CGPoint D_bot_1 = [[D objectAtIndex:bot+1] locationInView:nil];
-        CGPoint V_i = [[V objectAtIndex:i] locationInView:nil];
-        CGPoint D_top_1 = [[D objectAtIndex:top-1] locationInView:nil];
-        CGPoint D_top = [[D objectAtIndex:top] locationInView:nil];
-        
-        if ([self isLeftwithP0:D_bot andP1:D_bot_1 andP2:V_i]<0 &&
-            [self isLeftwithP0:D_top_1 andP1:D_top andP2:V_i]<0) {
-            continue;
-        }
-        /*
-        if ((isLeft(D[bot], D[bot+1], V[i]) > 0) &&
-            (isLeft(D[top-1], D[top], V[i]) > 0) )
-            continue;         // skip an interior vertex
-        */
-        // incrementally add an exterior vertex to the deque hull
-        // get the rightmost tangent at the deque bot
-        while ([self isLeftwithP0:D_bot andP1:D_bot_1 andP2:V_i]>=0) {
-            ++bot;
-            D_bot = [[D objectAtIndex:bot] locationInView:nil];
-            D_bot_1 = [[D objectAtIndex:bot+1] locationInView:nil];
-        }
-        //while (isLeft(D[bot], D[bot+1], V[i]) <= 0)
-        //    ++bot;                // remove bot of deque
-        [D replaceObjectAtIndex:--bot withObject:[V objectAtIndex:i]];
-        //D[--bot] = V[i];          // insert V[i] at bot of deque
-        
-        while ([self isLeftwithP0:D_top_1 andP1:D_top andP2:V_i]>=0) {
-            --top;
-            D_top_1 = [[D objectAtIndex:top-1] locationInView:nil];
-            D_top = [[D objectAtIndex:top] locationInView:nil];
-        }
-        // get the leftmost tangent at the deque top
-       // while (isLeft(D[top-1], D[top], V[i]) <= 0)
-        //    --top;                // pop top of deque
-        [D replaceObjectAtIndex:++top withObject:[V objectAtIndex:i]];
-        //D[++top] = V[i];          // push V[i] onto top of deque
-    }
-    
-    // transcribe deque D[] to the output hull array H[]
-    NSMutableArray* H = [[NSMutableArray alloc] initWithCapacity:top-bot+1];
-    for (int i=0; i<top-bot+1; i++) {
-        [H addObject:@"0"];
-    }
-    int h;
-    for (h=0; h <=(top-bot); h++){
-        [H replaceObjectAtIndex:h withObject:[D objectAtIndex:bot+h]];
-    }
-    return H;
-}
-
 
 - (void)dealloc {
     [checkedTouchSet release];    

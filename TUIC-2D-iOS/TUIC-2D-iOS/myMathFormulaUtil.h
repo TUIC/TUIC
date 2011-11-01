@@ -12,4 +12,7 @@
 +(CGFloat)calculatePtDistance:(CGPoint)point1 andPoint2:(CGPoint)point2;
 +(float)calculateDirecionAngle:(float)adjacent andOpposite:(float)opposite;
 
++ (CGFloat) isLeftwithP0:(CGPoint) P0 andP1:(CGPoint)P1 andP2:(CGPoint) P2;
++ (NSMutableArray*)simpleHull_2DwithV:(NSArray*)V andN:(NSInteger)n;
+
 @end
