@@ -7,6 +7,8 @@
 //
 
 @interface myMathFormulaUtil:NSObject
++ (CGFloat) pointPairToBearingDegrees:(CGPoint)startingPoint secondPoint:(CGPoint) endingPoint;
+
 
 +(CGPoint)calculateCenterWithC1:(CGPoint)point1 andC2:(CGPoint)point2;
 +(CGFloat)calculatePtDistance:(CGPoint)point1 andPoint2:(CGPoint)point2;

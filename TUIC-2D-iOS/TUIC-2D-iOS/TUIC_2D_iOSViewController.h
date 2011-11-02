@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TUIC_2DTrackingView.h"
 
-@interface TUIC_2D_iOSViewController : UIViewController
+@interface TUIC_2D_iOSViewController : UIViewController{
+    
+}
 
 @end

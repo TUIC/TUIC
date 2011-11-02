@@ -8,24 +8,11 @@
 
 #import "TUIC_2D_Window.h"
 #import "TUIC_Object.h"
+#import "TUIC_2D_Constant.h"
+
 #import "myMathFormulaUtil.h"
 
-#define kTouchDelayTimer 0.5
 
-#define kTUICObjectSize 200.0
-#define kTUICObjectTolerance 20
-
-#define kGridSize 10000
-
-#define B0 1
-#define B1 2
-#define B2 4
-#define B3 8
-#define B4 16
-#define B5 32
-#define B6 64
-#define B7 128
-#define B8 256
 
 @implementation TUIC_2D_Window
 
@@ -71,6 +58,9 @@
                     [object.touchPoints removeObject:touch];
                 }
             }
+            else{
+                [object updateObject];
+            }
         }
         else{
             if (touch.phase == UITouchPhaseEnded || touch.phase == UITouchPhaseCancelled){
@@ -82,8 +72,8 @@
                 [unknownTouchSet addObject:touch];
             }
         }
-
     }
+    [super sendEvent:event];
 }
 
 - (void)recognizeTouch{
@@ -94,6 +84,7 @@
     
     int numMatchDistance=0;
     NSMutableArray* registPoint = [[NSMutableArray alloc] initWithCapacity:3];
+    NSMutableArray* objects = [[NSMutableArray alloc] initWithCapacity:3];
     
     //Find regist points by comparing distances between each others.
     for (UITouch* touch1 in unknownTouchSet) {
@@ -104,7 +95,7 @@
             if (touch1 != touch2) {
                 CGPoint P1 = [touch2 locationInView:nil];
                 CGFloat distance = [myMathFormulaUtil calculatePtDistance:P0 andPoint2:P1];
-                //NSLog(@"distance: %f",distance);
+                NSLog(@"distance: %f",distance);
                 
                 //Add as register point, if match the given size. 
                 if (distance<=kTUICObjectSize+kTUICObjectTolerance &&
@@ -153,9 +144,9 @@
                         [newTag.touchPoints addObject:[registPoint objectAtIndex:i]];
                         [newTag.touchPoints addObject:[registPoint objectAtIndex:j]];
                     }
-                    [TUICObjects addObject:newTag];
+                    [objects addObject:newTag];
                     newTag.location = [myMathFormulaUtil calculateCenterWithC1:C1 andC2:C2];
-                    
+                    [newTag release];
                     NSLog(@"New Object Found!");
                     break;
                 }
@@ -166,7 +157,7 @@
         numMatchDistance = 0;
     }
     
-    for (TUIC_Object* tag in TUICObjects) {
+    for (TUIC_Object* tag in objects) {
         for (UITouch* touch in tag.touchPoints) {
             [unknownTouchSet removeObject:touch];
         }
@@ -175,7 +166,7 @@
     [checkedTouchSet addObjectsFromArray:[unknownTouchSet allObjects]]; 
     
     //Find payLoad points
-    for (TUIC_Object* tag in TUICObjects) {
+    for (TUIC_Object* tag in objects) {
         for (UITouch* touch in unknownTouchSet) {
             CGPoint C0 = [[tag.touchPoints objectAtIndex:0] locationInView:nil];
             CGPoint C1 = [[tag.touchPoints objectAtIndex:1] locationInView:nil];
@@ -249,8 +240,9 @@
         //NSLog(@"tagID: %d", tag.tagID);
     }
     [unknownTouchSet removeAllObjects];
-    
+    [TUICObjects addObjectsFromArray:objects];
     [registPoint release];
+    [objects release];
 }
 
 - (void)dealloc {

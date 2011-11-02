@@ -25,9 +25,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view = [[TUIC_2DTrackingView alloc] init];
-	[self.view setNeedsDisplay];
-
 }
 
 

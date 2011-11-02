@@ -11,6 +11,16 @@
 #import "myMathFormulaUtil.h"
 
 @implementation myMathFormulaUtil
+
++ (CGFloat) pointPairToBearingDegrees:(CGPoint)startingPoint secondPoint:(CGPoint) endingPoint
+{
+    CGPoint originPoint = CGPointMake(endingPoint.x - startingPoint.x, endingPoint.y - startingPoint.y); // get origin point to origin by subtracting end from start
+    float bearingRadians = atan2f(originPoint.y, originPoint.x); // get bearing in radians
+    float bearingDegrees = bearingRadians * (180.0 / M_PI); // convert to degrees
+    bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)); // correct discontinuity
+    return bearingDegrees;
+}
+
 +(CGPoint)calculateCenterWithC1:(CGPoint)point1 andC2:(CGPoint)point2
 {
     CGFloat x = (point2.x + point1.x)/2;

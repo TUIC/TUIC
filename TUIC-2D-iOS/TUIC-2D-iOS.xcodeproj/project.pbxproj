@@ -29,6 +29,7 @@
 		1036CE7813F9449E00791BDB /* TUIC_2D_Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_2D_Window.m; sourceTree = "<group>"; };
 		1036CE7B13F95F2D00791BDB /* TUIC_Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_Object.h; sourceTree = "<group>"; };
 		1036CE7C13F95F2D00791BDB /* TUIC_Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_Object.m; sourceTree = "<group>"; };
+		109A99D31460E10D00E80BDA /* TUIC_2D_Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2D_Constant.h; sourceTree = "<group>"; };
 		10C2560E146020A8003972DF /* TouchImageView_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchImageView_Private.h; sourceTree = "<group>"; };
 		10C2560F146020A8003972DF /* TouchImageView_Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchImageView_Private.m; sourceTree = "<group>"; };
 		10C25610146020A8003972DF /* TouchImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchImageView.h; sourceTree = "<group>"; };
@@ -101,6 +102,10 @@
 			children = (
 				3724A9E313F7BCE6009ACFA8 /* TUIC_2DTagPoint.h */,
 				3724A9E413F7BCE6009ACFA8 /* TUIC_2DTagPoint.m */,
+				10C2560E146020A8003972DF /* TouchImageView_Private.h */,
+				10C2560F146020A8003972DF /* TouchImageView_Private.m */,
+				10C25610146020A8003972DF /* TouchImageView.h */,
+				10C25611146020A8003972DF /* TouchImageView.m */,
 				3724A9D813F784DB009ACFA8 /* TUIC_2DTrackingView */,
 				3724A9D113F77D4E009ACFA8 /* TUIC_2DView */,
 				3724A9B513F7793A009ACFA8 /* Supporting Files */,
@@ -110,14 +115,11 @@
 				1036CE7813F9449E00791BDB /* TUIC_2D_Window.m */,
 				1036CE7B13F95F2D00791BDB /* TUIC_Object.h */,
 				1036CE7C13F95F2D00791BDB /* TUIC_Object.m */,
-				10C2560E146020A8003972DF /* TouchImageView_Private.h */,
-				10C2560F146020A8003972DF /* TouchImageView_Private.m */,
-				10C25610146020A8003972DF /* TouchImageView.h */,
-				10C25611146020A8003972DF /* TouchImageView.m */,
 				3724A9BD13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.h */,
 				3724A9BE13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m */,
 				3724A9C313F7793A009ACFA8 /* TUIC_2D_iOSViewController.h */,
 				3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */,
+				109A99D31460E10D00E80BDA /* TUIC_2D_Constant.h */,
 			);
 			path = "TUIC-2D-iOS";
 			sourceTree = "<group>";

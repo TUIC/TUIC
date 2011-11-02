@@ -7,6 +7,8 @@
 //
 
 #import "TUIC_Object.h"
+#import "TUIC_2D_Constant.h"
+#import "myMathFormulaUtil.h"
 
 #define kPayloadBit 9
 
@@ -27,8 +29,16 @@
 }
 
 - (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [touchPoints release];
     [super dealloc];
+}
+
+
+- (void)updateObject{
+    location = [myMathFormulaUtil calculateCenterWithC1:[[touchPoints objectAtIndex:1] locationInView:nil] andC2:[[touchPoints objectAtIndex:2] locationInView:nil]];
+    orientationAngle = [myMathFormulaUtil pointPairToBearingDegrees:self.location secondPoint:[[touchPoints objectAtIndex:0] locationInView:nil]];
+    [delegate TUIC_ObjectdidUpdate];
 }
 
 @end
