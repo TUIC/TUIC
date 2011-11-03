@@ -8,18 +8,21 @@
 
 #import "TUIC_2D_iOSAppDelegate.h"
 
-#import "TUIC_2D_iOSViewController.h"
-
 @implementation TUIC_2D_iOSAppDelegate
 
 @synthesize window = _window;
-@synthesize viewController = _viewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-     
-    self.window.rootViewController = self.viewController;
+    CGRect screen = [[UIScreen mainScreen] bounds];
+    _window = [[UIWindow alloc] initWithFrame:screen];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    
+    TUIC_2D_iOSViewController* viewController = [[TUIC_2D_iOSViewController alloc] init];
+    self.window.rootViewController = viewController;
+    
+    [viewController release];
+    
     [self.window makeKeyAndVisible];
     return YES;
 }

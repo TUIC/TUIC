@@ -7,22 +7,91 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1036CE7913F9449F00791BDB /* TUIC_2D_Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 1036CE7813F9449E00791BDB /* TUIC_2D_Window.m */; };
+		1036CE7D13F95F2E00791BDB /* TUIC_Object.m in Sources */ = {isa = PBXBuildFile; fileRef = 1036CE7C13F95F2D00791BDB /* TUIC_Object.m */; };
+		109428C91462AAD8003FF10A /* Clown Fish.png in Resources */ = {isa = PBXBuildFile; fileRef = 109428C61462AAD8003FF10A /* Clown Fish.png */; };
+		109428CA1462AAD8003FF10A /* Flowing Rock.png in Resources */ = {isa = PBXBuildFile; fileRef = 109428C71462AAD8003FF10A /* Flowing Rock.png */; };
+		109428CB1462AAD8003FF10A /* Stones.png in Resources */ = {isa = PBXBuildFile; fileRef = 109428C81462AAD8003FF10A /* Stones.png */; };
+		109428E91462AE15003FF10A /* 1907-LesDemoisellesdAvignon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428CD1462AE15003FF10A /* 1907-LesDemoisellesdAvignon.jpg */; };
+		109428EA1462AE15003FF10A /* 1912-StillLifewithChairCaning.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428CE1462AE15003FF10A /* 1912-StillLifewithChairCaning.jpg */; };
+		109428EB1462AE15003FF10A /* 1921-ThreeMusicians.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428CF1462AE15003FF10A /* 1921-ThreeMusicians.jpg */; };
+		109428EC1462AE15003FF10A /* 1931-FourWomenInFlight.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428D01462AE15003FF10A /* 1931-FourWomenInFlight.jpg */; };
+		109428ED1462AE15003FF10A /* 1931-WomanWithYellowHair.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428D11462AE15003FF10A /* 1931-WomanWithYellowHair.jpg */; };
+		109428EE1462AE15003FF10A /* 1937-Guernica.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428D21462AE15003FF10A /* 1937-Guernica.jpg */; };
+		109428EF1462AE15003FF10A /* 1937-WeepingWoman.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428D31462AE15003FF10A /* 1937-WeepingWoman.jpg */; };
+		109428F01462AE15003FF10A /* Picasso-1907.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428D51462AE15003FF10A /* Picasso-1907.jpg */; };
+		109428F11462AE15003FF10A /* Picasso-1912.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428D61462AE15003FF10A /* Picasso-1912.jpg */; };
+		109428F21462AE15003FF10A /* Picasso-1921.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428D71462AE15003FF10A /* Picasso-1921.jpg */; };
+		109428F31462AE15003FF10A /* Picasso-1931.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428D81462AE15003FF10A /* Picasso-1931.jpg */; };
+		109428F41462AE15003FF10A /* Picasso-1937.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428D91462AE15003FF10A /* Picasso-1937.jpg */; };
+		109428F51462AE15003FF10A /* Vangogh-1882.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428DA1462AE15003FF10A /* Vangogh-1882.jpg */; };
+		109428F61462AE15003FF10A /* Vangogh-1887.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428DB1462AE15003FF10A /* Vangogh-1887.jpg */; };
+		109428F71462AE15003FF10A /* Vangogh-1888.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428DC1462AE15003FF10A /* Vangogh-1888.jpg */; };
+		109428F81462AE15003FF10A /* Vangogh-1889.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428DD1462AE15003FF10A /* Vangogh-1889.jpg */; };
+		109428F91462AE15003FF10A /* Vangogh-1890.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428DE1462AE15003FF10A /* Vangogh-1890.jpg */; };
+		109428FA1462AE15003FF10A /* 1882-ViewOfTheHagueWithTheNewChurch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428E01462AE15003FF10A /* 1882-ViewOfTheHagueWithTheNewChurch.jpg */; };
+		109428FB1462AE15003FF10A /* 1887-APairofShoes.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428E11462AE15003FF10A /* 1887-APairofShoes.jpg */; };
+		109428FC1462AE15003FF10A /* 1888-SunFlower.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428E21462AE15003FF10A /* 1888-SunFlower.jpg */; };
+		109428FD1462AE15003FF10A /* 1889-selfPortrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428E31462AE15003FF10A /* 1889-selfPortrait.jpg */; };
+		109428FE1462AE15003FF10A /* 1889-StarryNight.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428E41462AE15003FF10A /* 1889-StarryNight.jpg */; };
+		109428FF1462AE15003FF10A /* 1890-FirstStepsAfterMillet.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428E51462AE15003FF10A /* 1890-FirstStepsAfterMillet.jpg */; };
+		109429001462AE15003FF10A /* 1890-PeasantWoman.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428E61462AE15003FF10A /* 1890-PeasantWoman.jpg */; };
+		109429011462AE15003FF10A /* 1890-self.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428E71462AE15003FF10A /* 1890-self.jpg */; };
+		109429021462AE15003FF10A /* selfPortrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 109428E81462AE15003FF10A /* selfPortrait.jpg */; };
+		10C25612146020A8003972DF /* TouchImageView_Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 10C2560F146020A8003972DF /* TouchImageView_Private.m */; };
+		10C25613146020A8003972DF /* TouchImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10C25611146020A8003972DF /* TouchImageView.m */; };
+		10DBC27C146129E10036BD49 /* TUIC_TrackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10DBC27B146129E10036BD49 /* TUIC_TrackingView.m */; };
 		3724A9AF13F7793A009ACFA8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724A9AE13F77939009ACFA8 /* UIKit.framework */; };
 		3724A9B113F7793A009ACFA8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724A9B013F7793A009ACFA8 /* Foundation.framework */; };
 		3724A9B313F7793A009ACFA8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3724A9B213F7793A009ACFA8 /* CoreGraphics.framework */; };
 		3724A9B913F7793A009ACFA8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3724A9B713F7793A009ACFA8 /* InfoPlist.strings */; };
 		3724A9BB13F7793A009ACFA8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9BA13F7793A009ACFA8 /* main.m */; };
 		3724A9BF13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9BE13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m */; };
-		3724A9C213F7793A009ACFA8 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724A9C013F7793A009ACFA8 /* MainWindow.xib */; };
 		3724A9C513F7793A009ACFA8 /* TUIC_2D_iOSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */; };
-		3724A9C813F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724A9C613F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib */; };
-		3724A9D713F77DAC009ACFA8 /* TUIC_2DView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9D613F77DAC009ACFA8 /* TUIC_2DView.m */; };
-		3724A9DB13F784FD009ACFA8 /* TUIC_2DTrackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9DA13F784FD009ACFA8 /* TUIC_2DTrackingView.m */; };
 		3724A9DE13F79802009ACFA8 /* myMathFormulaUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9DD13F79802009ACFA8 /* myMathFormulaUtil.m */; };
-		3724A9E513F7BCE6009ACFA8 /* TUIC_2DTagPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A9E413F7BCE6009ACFA8 /* TUIC_2DTagPoint.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1036CE7713F9449E00791BDB /* TUIC_2D_Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2D_Window.h; sourceTree = "<group>"; };
+		1036CE7813F9449E00791BDB /* TUIC_2D_Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_2D_Window.m; sourceTree = "<group>"; };
+		1036CE7B13F95F2D00791BDB /* TUIC_Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_Object.h; sourceTree = "<group>"; };
+		1036CE7C13F95F2D00791BDB /* TUIC_Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_Object.m; sourceTree = "<group>"; };
+		109428C61462AAD8003FF10A /* Clown Fish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Clown Fish.png"; sourceTree = "<group>"; };
+		109428C71462AAD8003FF10A /* Flowing Rock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flowing Rock.png"; sourceTree = "<group>"; };
+		109428C81462AAD8003FF10A /* Stones.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Stones.png; sourceTree = "<group>"; };
+		109428CD1462AE15003FF10A /* 1907-LesDemoisellesdAvignon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1907-LesDemoisellesdAvignon.jpg"; sourceTree = "<group>"; };
+		109428CE1462AE15003FF10A /* 1912-StillLifewithChairCaning.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1912-StillLifewithChairCaning.jpg"; sourceTree = "<group>"; };
+		109428CF1462AE15003FF10A /* 1921-ThreeMusicians.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1921-ThreeMusicians.jpg"; sourceTree = "<group>"; };
+		109428D01462AE15003FF10A /* 1931-FourWomenInFlight.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1931-FourWomenInFlight.jpg"; sourceTree = "<group>"; };
+		109428D11462AE15003FF10A /* 1931-WomanWithYellowHair.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1931-WomanWithYellowHair.jpg"; sourceTree = "<group>"; };
+		109428D21462AE15003FF10A /* 1937-Guernica.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1937-Guernica.jpg"; sourceTree = "<group>"; };
+		109428D31462AE15003FF10A /* 1937-WeepingWoman.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1937-WeepingWoman.jpg"; sourceTree = "<group>"; };
+		109428D51462AE15003FF10A /* Picasso-1907.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Picasso-1907.jpg"; sourceTree = "<group>"; };
+		109428D61462AE15003FF10A /* Picasso-1912.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Picasso-1912.jpg"; sourceTree = "<group>"; };
+		109428D71462AE15003FF10A /* Picasso-1921.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Picasso-1921.jpg"; sourceTree = "<group>"; };
+		109428D81462AE15003FF10A /* Picasso-1931.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Picasso-1931.jpg"; sourceTree = "<group>"; };
+		109428D91462AE15003FF10A /* Picasso-1937.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Picasso-1937.jpg"; sourceTree = "<group>"; };
+		109428DA1462AE15003FF10A /* Vangogh-1882.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Vangogh-1882.jpg"; sourceTree = "<group>"; };
+		109428DB1462AE15003FF10A /* Vangogh-1887.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Vangogh-1887.jpg"; sourceTree = "<group>"; };
+		109428DC1462AE15003FF10A /* Vangogh-1888.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Vangogh-1888.jpg"; sourceTree = "<group>"; };
+		109428DD1462AE15003FF10A /* Vangogh-1889.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Vangogh-1889.jpg"; sourceTree = "<group>"; };
+		109428DE1462AE15003FF10A /* Vangogh-1890.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Vangogh-1890.jpg"; sourceTree = "<group>"; };
+		109428E01462AE15003FF10A /* 1882-ViewOfTheHagueWithTheNewChurch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1882-ViewOfTheHagueWithTheNewChurch.jpg"; sourceTree = "<group>"; };
+		109428E11462AE15003FF10A /* 1887-APairofShoes.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1887-APairofShoes.jpg"; sourceTree = "<group>"; };
+		109428E21462AE15003FF10A /* 1888-SunFlower.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1888-SunFlower.jpg"; sourceTree = "<group>"; };
+		109428E31462AE15003FF10A /* 1889-selfPortrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1889-selfPortrait.jpg"; sourceTree = "<group>"; };
+		109428E41462AE15003FF10A /* 1889-StarryNight.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1889-StarryNight.jpg"; sourceTree = "<group>"; };
+		109428E51462AE15003FF10A /* 1890-FirstStepsAfterMillet.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1890-FirstStepsAfterMillet.jpg"; sourceTree = "<group>"; };
+		109428E61462AE15003FF10A /* 1890-PeasantWoman.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1890-PeasantWoman.jpg"; sourceTree = "<group>"; };
+		109428E71462AE15003FF10A /* 1890-self.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "1890-self.jpg"; sourceTree = "<group>"; };
+		109428E81462AE15003FF10A /* selfPortrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = selfPortrait.jpg; sourceTree = "<group>"; };
+		109A99D31460E10D00E80BDA /* TUIC_2D_Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2D_Constant.h; sourceTree = "<group>"; };
+		10C2560E146020A8003972DF /* TouchImageView_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchImageView_Private.h; sourceTree = "<group>"; };
+		10C2560F146020A8003972DF /* TouchImageView_Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchImageView_Private.m; sourceTree = "<group>"; };
+		10C25610146020A8003972DF /* TouchImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchImageView.h; sourceTree = "<group>"; };
+		10C25611146020A8003972DF /* TouchImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchImageView.m; sourceTree = "<group>"; };
+		10DBC27A146129E10036BD49 /* TUIC_TrackingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_TrackingView.h; sourceTree = "<group>"; };
+		10DBC27B146129E10036BD49 /* TUIC_TrackingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_TrackingView.m; sourceTree = "<group>"; };
 		3724A9AA13F77939009ACFA8 /* TUIC-2D-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TUIC-2D-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3724A9AE13F77939009ACFA8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3724A9B013F7793A009ACFA8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -33,18 +102,10 @@
 		3724A9BC13F7793A009ACFA8 /* TUIC-2D-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TUIC-2D-iOS-Prefix.pch"; sourceTree = "<group>"; };
 		3724A9BD13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIC_2D_iOSAppDelegate.h; sourceTree = "<group>"; };
 		3724A9BE13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIC_2D_iOSAppDelegate.m; sourceTree = "<group>"; };
-		3724A9C113F7793A009ACFA8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		3724A9C313F7793A009ACFA8 /* TUIC_2D_iOSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIC_2D_iOSViewController.h; sourceTree = "<group>"; };
 		3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIC_2D_iOSViewController.m; sourceTree = "<group>"; };
-		3724A9C713F7793A009ACFA8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TUIC_2D_iOSViewController.xib; sourceTree = "<group>"; };
-		3724A9D513F77DAC009ACFA8 /* TUIC_2DView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2DView.h; sourceTree = "<group>"; };
-		3724A9D613F77DAC009ACFA8 /* TUIC_2DView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_2DView.m; sourceTree = "<group>"; };
-		3724A9D913F784FD009ACFA8 /* TUIC_2DTrackingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2DTrackingView.h; sourceTree = "<group>"; };
-		3724A9DA13F784FD009ACFA8 /* TUIC_2DTrackingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_2DTrackingView.m; sourceTree = "<group>"; };
 		3724A9DC13F79802009ACFA8 /* myMathFormulaUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myMathFormulaUtil.h; sourceTree = "<group>"; };
 		3724A9DD13F79802009ACFA8 /* myMathFormulaUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myMathFormulaUtil.m; sourceTree = "<group>"; };
-		3724A9E313F7BCE6009ACFA8 /* TUIC_2DTagPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIC_2DTagPoint.h; sourceTree = "<group>"; };
-		3724A9E413F7BCE6009ACFA8 /* TUIC_2DTagPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIC_2DTagPoint.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +122,66 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		109428C51462AAD8003FF10A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				109428CC1462AE15003FF10A /* Picasso */,
+				109428D41462AE15003FF10A /* thumbnails */,
+				109428DF1462AE15003FF10A /* Vangogh */,
+				109428C61462AAD8003FF10A /* Clown Fish.png */,
+				109428C71462AAD8003FF10A /* Flowing Rock.png */,
+				109428C81462AAD8003FF10A /* Stones.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		109428CC1462AE15003FF10A /* Picasso */ = {
+			isa = PBXGroup;
+			children = (
+				109428CD1462AE15003FF10A /* 1907-LesDemoisellesdAvignon.jpg */,
+				109428CE1462AE15003FF10A /* 1912-StillLifewithChairCaning.jpg */,
+				109428CF1462AE15003FF10A /* 1921-ThreeMusicians.jpg */,
+				109428D01462AE15003FF10A /* 1931-FourWomenInFlight.jpg */,
+				109428D11462AE15003FF10A /* 1931-WomanWithYellowHair.jpg */,
+				109428D21462AE15003FF10A /* 1937-Guernica.jpg */,
+				109428D31462AE15003FF10A /* 1937-WeepingWoman.jpg */,
+			);
+			path = Picasso;
+			sourceTree = "<group>";
+		};
+		109428D41462AE15003FF10A /* thumbnails */ = {
+			isa = PBXGroup;
+			children = (
+				109428D51462AE15003FF10A /* Picasso-1907.jpg */,
+				109428D61462AE15003FF10A /* Picasso-1912.jpg */,
+				109428D71462AE15003FF10A /* Picasso-1921.jpg */,
+				109428D81462AE15003FF10A /* Picasso-1931.jpg */,
+				109428D91462AE15003FF10A /* Picasso-1937.jpg */,
+				109428DA1462AE15003FF10A /* Vangogh-1882.jpg */,
+				109428DB1462AE15003FF10A /* Vangogh-1887.jpg */,
+				109428DC1462AE15003FF10A /* Vangogh-1888.jpg */,
+				109428DD1462AE15003FF10A /* Vangogh-1889.jpg */,
+				109428DE1462AE15003FF10A /* Vangogh-1890.jpg */,
+			);
+			path = thumbnails;
+			sourceTree = "<group>";
+		};
+		109428DF1462AE15003FF10A /* Vangogh */ = {
+			isa = PBXGroup;
+			children = (
+				109428E01462AE15003FF10A /* 1882-ViewOfTheHagueWithTheNewChurch.jpg */,
+				109428E11462AE15003FF10A /* 1887-APairofShoes.jpg */,
+				109428E21462AE15003FF10A /* 1888-SunFlower.jpg */,
+				109428E31462AE15003FF10A /* 1889-selfPortrait.jpg */,
+				109428E41462AE15003FF10A /* 1889-StarryNight.jpg */,
+				109428E51462AE15003FF10A /* 1890-FirstStepsAfterMillet.jpg */,
+				109428E61462AE15003FF10A /* 1890-PeasantWoman.jpg */,
+				109428E71462AE15003FF10A /* 1890-self.jpg */,
+				109428E81462AE15003FF10A /* selfPortrait.jpg */,
+			);
+			path = Vangogh;
+			sourceTree = "<group>";
+		};
 		3724A99F13F77939009ACFA8 = {
 			isa = PBXGroup;
 			children = (
@@ -91,19 +212,25 @@
 		3724A9B413F7793A009ACFA8 /* TUIC-2D-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				3724A9E313F7BCE6009ACFA8 /* TUIC_2DTagPoint.h */,
-				3724A9E413F7BCE6009ACFA8 /* TUIC_2DTagPoint.m */,
-				3724A9D813F784DB009ACFA8 /* TUIC_2DTrackingView */,
-				3724A9D113F77D4E009ACFA8 /* TUIC_2DView */,
-				3724A9BD13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.h */,
-				3724A9BE13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m */,
-				3724A9C013F7793A009ACFA8 /* MainWindow.xib */,
-				3724A9C313F7793A009ACFA8 /* TUIC_2D_iOSViewController.h */,
-				3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */,
-				3724A9C613F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib */,
+				109428C51462AAD8003FF10A /* Resources */,
+				10C2560E146020A8003972DF /* TouchImageView_Private.h */,
+				10C2560F146020A8003972DF /* TouchImageView_Private.m */,
+				10C25610146020A8003972DF /* TouchImageView.h */,
+				10C25611146020A8003972DF /* TouchImageView.m */,
 				3724A9B513F7793A009ACFA8 /* Supporting Files */,
 				3724A9DC13F79802009ACFA8 /* myMathFormulaUtil.h */,
 				3724A9DD13F79802009ACFA8 /* myMathFormulaUtil.m */,
+				1036CE7713F9449E00791BDB /* TUIC_2D_Window.h */,
+				1036CE7813F9449E00791BDB /* TUIC_2D_Window.m */,
+				1036CE7B13F95F2D00791BDB /* TUIC_Object.h */,
+				1036CE7C13F95F2D00791BDB /* TUIC_Object.m */,
+				3724A9BD13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.h */,
+				3724A9BE13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m */,
+				3724A9C313F7793A009ACFA8 /* TUIC_2D_iOSViewController.h */,
+				3724A9C413F7793A009ACFA8 /* TUIC_2D_iOSViewController.m */,
+				10DBC27A146129E10036BD49 /* TUIC_TrackingView.h */,
+				10DBC27B146129E10036BD49 /* TUIC_TrackingView.m */,
+				109A99D31460E10D00E80BDA /* TUIC_2D_Constant.h */,
 			);
 			path = "TUIC-2D-iOS";
 			sourceTree = "<group>";
@@ -117,24 +244,6 @@
 				3724A9BC13F7793A009ACFA8 /* TUIC-2D-iOS-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		3724A9D113F77D4E009ACFA8 /* TUIC_2DView */ = {
-			isa = PBXGroup;
-			children = (
-				3724A9D513F77DAC009ACFA8 /* TUIC_2DView.h */,
-				3724A9D613F77DAC009ACFA8 /* TUIC_2DView.m */,
-			);
-			name = TUIC_2DView;
-			sourceTree = "<group>";
-		};
-		3724A9D813F784DB009ACFA8 /* TUIC_2DTrackingView */ = {
-			isa = PBXGroup;
-			children = (
-				3724A9D913F784FD009ACFA8 /* TUIC_2DTrackingView.h */,
-				3724A9DA13F784FD009ACFA8 /* TUIC_2DTrackingView.m */,
-			);
-			name = TUIC_2DTrackingView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,6 +271,9 @@
 /* Begin PBXProject section */
 		3724A9A113F77939009ACFA8 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 3724A9A413F77939009ACFA8 /* Build configuration list for PBXProject "TUIC-2D-iOS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -185,8 +297,35 @@
 			buildActionMask = 2147483647;
 			files = (
 				3724A9B913F7793A009ACFA8 /* InfoPlist.strings in Resources */,
-				3724A9C213F7793A009ACFA8 /* MainWindow.xib in Resources */,
-				3724A9C813F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib in Resources */,
+				109428C91462AAD8003FF10A /* Clown Fish.png in Resources */,
+				109428CA1462AAD8003FF10A /* Flowing Rock.png in Resources */,
+				109428CB1462AAD8003FF10A /* Stones.png in Resources */,
+				109428E91462AE15003FF10A /* 1907-LesDemoisellesdAvignon.jpg in Resources */,
+				109428EA1462AE15003FF10A /* 1912-StillLifewithChairCaning.jpg in Resources */,
+				109428EB1462AE15003FF10A /* 1921-ThreeMusicians.jpg in Resources */,
+				109428EC1462AE15003FF10A /* 1931-FourWomenInFlight.jpg in Resources */,
+				109428ED1462AE15003FF10A /* 1931-WomanWithYellowHair.jpg in Resources */,
+				109428EE1462AE15003FF10A /* 1937-Guernica.jpg in Resources */,
+				109428EF1462AE15003FF10A /* 1937-WeepingWoman.jpg in Resources */,
+				109428F01462AE15003FF10A /* Picasso-1907.jpg in Resources */,
+				109428F11462AE15003FF10A /* Picasso-1912.jpg in Resources */,
+				109428F21462AE15003FF10A /* Picasso-1921.jpg in Resources */,
+				109428F31462AE15003FF10A /* Picasso-1931.jpg in Resources */,
+				109428F41462AE15003FF10A /* Picasso-1937.jpg in Resources */,
+				109428F51462AE15003FF10A /* Vangogh-1882.jpg in Resources */,
+				109428F61462AE15003FF10A /* Vangogh-1887.jpg in Resources */,
+				109428F71462AE15003FF10A /* Vangogh-1888.jpg in Resources */,
+				109428F81462AE15003FF10A /* Vangogh-1889.jpg in Resources */,
+				109428F91462AE15003FF10A /* Vangogh-1890.jpg in Resources */,
+				109428FA1462AE15003FF10A /* 1882-ViewOfTheHagueWithTheNewChurch.jpg in Resources */,
+				109428FB1462AE15003FF10A /* 1887-APairofShoes.jpg in Resources */,
+				109428FC1462AE15003FF10A /* 1888-SunFlower.jpg in Resources */,
+				109428FD1462AE15003FF10A /* 1889-selfPortrait.jpg in Resources */,
+				109428FE1462AE15003FF10A /* 1889-StarryNight.jpg in Resources */,
+				109428FF1462AE15003FF10A /* 1890-FirstStepsAfterMillet.jpg in Resources */,
+				109429001462AE15003FF10A /* 1890-PeasantWoman.jpg in Resources */,
+				109429011462AE15003FF10A /* 1890-self.jpg in Resources */,
+				109429021462AE15003FF10A /* selfPortrait.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,10 +339,12 @@
 				3724A9BB13F7793A009ACFA8 /* main.m in Sources */,
 				3724A9BF13F7793A009ACFA8 /* TUIC_2D_iOSAppDelegate.m in Sources */,
 				3724A9C513F7793A009ACFA8 /* TUIC_2D_iOSViewController.m in Sources */,
-				3724A9D713F77DAC009ACFA8 /* TUIC_2DView.m in Sources */,
-				3724A9DB13F784FD009ACFA8 /* TUIC_2DTrackingView.m in Sources */,
 				3724A9DE13F79802009ACFA8 /* myMathFormulaUtil.m in Sources */,
-				3724A9E513F7BCE6009ACFA8 /* TUIC_2DTagPoint.m in Sources */,
+				1036CE7913F9449F00791BDB /* TUIC_2D_Window.m in Sources */,
+				1036CE7D13F95F2E00791BDB /* TUIC_Object.m in Sources */,
+				10C25612146020A8003972DF /* TouchImageView_Private.m in Sources */,
+				10C25613146020A8003972DF /* TouchImageView.m in Sources */,
+				10DBC27C146129E10036BD49 /* TUIC_TrackingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,22 +357,6 @@
 				3724A9B813F7793A009ACFA8 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		3724A9C013F7793A009ACFA8 /* MainWindow.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3724A9C113F7793A009ACFA8 /* en */,
-			);
-			name = MainWindow.xib;
-			sourceTree = "<group>";
-		};
-		3724A9C613F7793A009ACFA8 /* TUIC_2D_iOSViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3724A9C713F7793A009ACFA8 /* en */,
-			);
-			name = TUIC_2D_iOSViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -258,7 +383,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -277,7 +402,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -289,6 +414,7 @@
 				GCC_PREFIX_HEADER = "TUIC-2D-iOS/TUIC-2D-iOS-Prefix.pch";
 				INFOPLIST_FILE = "TUIC-2D-iOS/TUIC-2D-iOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -300,6 +426,7 @@
 				GCC_PREFIX_HEADER = "TUIC-2D-iOS/TUIC-2D-iOS-Prefix.pch";
 				INFOPLIST_FILE = "TUIC-2D-iOS/TUIC-2D-iOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -323,6 +450,7 @@
 				3724A9CD13F7793A009ACFA8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
