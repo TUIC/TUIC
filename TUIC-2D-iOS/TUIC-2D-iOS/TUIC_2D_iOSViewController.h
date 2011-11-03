@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TUIC_Object.h"
 
-@interface TUIC_2D_iOSViewController : UIViewController{
-    
+@interface TUIC_2D_iOSViewController : UIViewController<TUIC_ObjectDelegate>{
 }
 
 @end

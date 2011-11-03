@@ -15,7 +15,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     CGRect screen = [[UIScreen mainScreen] bounds];
-    _window = [[TUIC_2D_Window alloc] initWithFrame:screen];
+    _window = [[UIWindow alloc] initWithFrame:screen];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     
     TUIC_2D_iOSViewController* viewController = [[TUIC_2D_iOSViewController alloc] init];

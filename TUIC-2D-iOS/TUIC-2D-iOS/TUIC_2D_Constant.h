@@ -6,11 +6,12 @@
 //  Copyright (c) 2011年 MHCI Lab. All rights reserved.
 //
 
-#define kTouchDelayTimer 0.5
+#define kTouchDelayTimer 0.1
 
 #define kTUICObjectSize 200.0
-#define kTUICObjectTolerance 20
+#define kTUICObjectTolerance 50
 
+#define kGridRation (kTUICObjectSize/200.0)
 #define kGridSize 10000
 
 #define kUpdateTouch @"kUpdateTouch"

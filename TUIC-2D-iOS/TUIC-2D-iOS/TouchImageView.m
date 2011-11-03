@@ -23,7 +23,6 @@
     touchBeginPoints = CFDictionaryCreateMutable(NULL, 0, NULL, NULL);
     self.userInteractionEnabled = YES;
     self.multipleTouchEnabled = YES;
-    self.exclusiveTouch = YES;
 
     return self;
 }

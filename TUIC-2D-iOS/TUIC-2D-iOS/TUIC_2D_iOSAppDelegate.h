@@ -14,6 +14,6 @@
     TUIC_2D_iOSViewController *_viewController;
 
 }
-@property (nonatomic, retain)TUIC_2D_Window* window;
+@property (nonatomic, retain)UIWindow* window;
 
 @end

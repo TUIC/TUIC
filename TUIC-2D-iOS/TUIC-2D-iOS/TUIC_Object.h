@@ -9,7 +9,9 @@
 @protocol TUIC_ObjectDelegate <NSObject>
 
 @optional
-- (void) TUIC_ObjectdidUpdate;
+- (void) TUIC_ObjectdidUpdate: (id)sender;
+- (void) TUIC_ObjectdidRecognized:(id)sender;
+- (void) TUIC_ObjectWillRemove:(id)sender;
 
 @end
 
@@ -27,6 +29,7 @@
 @property (assign) int tagID;
 @property (assign) float orientationAngle;
 @property (nonatomic, retain) NSMutableArray* touchPoints;
+@property (nonatomic, retain) id<TUIC_ObjectDelegate> delegate;
 - (void)updateObject;
 @end
 
