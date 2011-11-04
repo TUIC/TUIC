@@ -296,7 +296,7 @@ int state;
 }
 - (void)TUIC_ObjectdidUpdate:(id)sender{
     TUIC_Object* object = (TUIC_Object*)sender;
-    UIImage* image;
+    UIImage* image = nil;
     int currentState;
     //Update Image
     switch (object.tagID) {
@@ -350,7 +350,7 @@ int state;
         default:
             break;
     }
-    if (currentState != state) {
+    if (currentState != state && image != nil) {
         TouchImageView* imageView = [imageDictionary objectForKey:[NSNumber numberWithInt:object.tagID]];
         [UIView beginAnimations:@"animate" context:NULL];
         [UIView setAnimationDuration:0.3];
