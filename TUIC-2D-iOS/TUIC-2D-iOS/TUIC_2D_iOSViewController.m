@@ -98,12 +98,18 @@ int state;
             imageView3.tag = object.tagID;
             imageView4.tag = object.tagID;
             
-            imageView0.center = CGPointMake(object.location.x, object.location.y-IMAGE_SPACE);
-            imageView1.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2-72*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2-72*M_PI/180));
-            imageView2.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2+72*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2+72*M_PI/180));
-            imageView3.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2-144*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2-144*M_PI/180));
-            imageView4.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2+144*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2+144*M_PI/180));
-
+            imageView0.center = CGPointMake(object.location.x, object.location.y);
+            imageView1.center = CGPointMake(object.location.x, object.location.y);
+            imageView2.center = CGPointMake(object.location.x, object.location.y);
+            imageView3.center = CGPointMake(object.location.x, object.location.y);
+            imageView4.center = CGPointMake(object.location.x, object.location.y);
+            
+            imageView0.alpha = 0;
+            imageView1.alpha = 0;
+            imageView2.alpha = 0;
+            imageView3.alpha = 0;
+            imageView4.alpha = 0;
+            
             imageView0.transform = CGAffineTransformMakeRotation(M_PI_2);
             imageView1.transform = CGAffineTransformMakeRotation(M_PI_2-72*M_PI/180);
             imageView2.transform = CGAffineTransformMakeRotation(M_PI_2+72*M_PI/180);
@@ -115,6 +121,21 @@ int state;
             [self.view addSubview:imageView2];
             [self.view addSubview:imageView3];
             [self.view addSubview:imageView4];
+            
+            [UIView beginAnimations:@"animate" context:NULL];
+            [UIView setAnimationDuration:0.3];
+            imageView0.center = CGPointMake(object.location.x, object.location.y-IMAGE_SPACE);
+            imageView1.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2-72*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2-72*M_PI/180));
+            imageView2.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2+72*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2+72*M_PI/180));
+            imageView3.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2-144*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2-144*M_PI/180));
+            imageView4.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2+144*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2+144*M_PI/180));
+            
+            imageView0.alpha = 1;
+            imageView1.alpha = 1;
+            imageView2.alpha = 1;
+            imageView3.alpha = 1;
+            imageView4.alpha = 1;
+            [UIView commitAnimations];
             
             [imageView0 release];
             [imageView1 release];
@@ -187,11 +208,17 @@ int state;
             imageView3.tag = object.tagID;
             imageView4.tag = object.tagID;
             
-            imageView0.center = CGPointMake(object.location.x, object.location.y-IMAGE_SPACE);
-            imageView1.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2-72*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2-72*M_PI/180));
-            imageView2.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2+72*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2+72*M_PI/180));
-            imageView3.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2-144*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2-144*M_PI/180));
-            imageView4.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2+144*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2+144*M_PI/180));
+            imageView0.center = CGPointMake(object.location.x, object.location.y);
+            imageView1.center = CGPointMake(object.location.x, object.location.y);
+            imageView2.center = CGPointMake(object.location.x, object.location.y);
+            imageView3.center = CGPointMake(object.location.x, object.location.y);
+            imageView4.center = CGPointMake(object.location.x, object.location.y);
+            
+            imageView0.alpha = 0;
+            imageView1.alpha = 0;
+            imageView2.alpha = 0;
+            imageView3.alpha = 0;
+            imageView4.alpha = 0;
             
             imageView0.transform = CGAffineTransformMakeRotation(M_PI_2);
             imageView1.transform = CGAffineTransformMakeRotation(M_PI_2-72*M_PI/180);
@@ -204,6 +231,22 @@ int state;
             [self.view addSubview:imageView2];
             [self.view addSubview:imageView3];
             [self.view addSubview:imageView4];
+            
+            [UIView beginAnimations:@"animate" context:NULL];
+            [UIView setAnimationDuration:0.3];
+            imageView0.center = CGPointMake(object.location.x, object.location.y-IMAGE_SPACE);
+            imageView1.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2-72*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2-72*M_PI/180));
+            imageView2.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2+72*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2+72*M_PI/180));
+            imageView3.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2-144*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2-144*M_PI/180));
+            imageView4.center = CGPointMake(object.location.x-IMAGE_SPACE*cos(M_PI_2+144*M_PI/180), object.location.y-IMAGE_SPACE*sin(M_PI_2+144*M_PI/180));
+            
+            imageView0.alpha = 1;
+            imageView1.alpha = 1;
+            imageView2.alpha = 1;
+            imageView3.alpha = 1;
+            imageView4.alpha = 1;
+            
+            [UIView commitAnimations];
             
             [imageView0 release];
             [imageView1 release];
@@ -310,11 +353,25 @@ int state;
     if (currentState != state) {
         TouchImageView* imageView = [imageDictionary objectForKey:[NSNumber numberWithInt:object.tagID]];
         [UIView beginAnimations:@"animate" context:NULL];
-        [UIView setAnimationDuration:0.6];
+        [UIView setAnimationDuration:0.3];
         imageView.alpha = 0;
-        imageView.image = image;
-        imageView.alpha = 1;
         [UIView commitAnimations];
+        [imageView removeFromSuperview];
+        
+        CGRect imageRect = CGRectMake(0.0, 0.0, IMAGE_WIDTH_LARGE, 0.0);
+        imageRect.size.height = IMAGE_WIDTH_LARGE * image.size.height / image.size.width;
+        TouchImageView *touchImageView = [[TouchImageView alloc] initWithFrame:imageRect];
+        touchImageView.image = image;
+        touchImageView.tag = 99999;
+        touchImageView.alpha = 0;
+        [self.view addSubview:touchImageView];
+        [UIView beginAnimations:@"animate" context:NULL];
+        [UIView setAnimationDuration:0.3];
+        touchImageView.alpha = 1;
+        [UIView commitAnimations];
+        [imageDictionary setObject:touchImageView forKey:[NSNumber numberWithInt:object.tagID]];
+        [touchImageView release];
+        
         state = currentState;
     }
     
