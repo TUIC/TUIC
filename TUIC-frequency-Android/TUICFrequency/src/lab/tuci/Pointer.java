@@ -90,11 +90,19 @@ public class Pointer {
 
 		}
 
-		// // �Y���O�ܤp�Y���}
-		// else if (inp < 0.3 && pressure - inp > 0.2 && clicked) {
-		// clicked = false;
-		// FrequencyClickTime.cp.add(new Pointer(this));
-		// }
+		else if (inp - pressure > 0.2 && clicked) {
+			// clicked = false;
+			// TUICFrequencyActivity.cp.add(new Pointer(this));
+			// Log.e("inp!", inp + "");
+			// setPoint(TUICFrequencyActivity.cp.getPoint(inx, iny));
+			// clickCnt++;
+			// Log.e("clickCnt", clickCnt + "");
+			touchUp();
+			clickCnt++;
+			clicked = true;
+			exist = true;
+
+		}
 		id = inId;
 		x = inx;
 		y = iny;
@@ -108,10 +116,15 @@ public class Pointer {
 		clicked = false;
 		pressure = 0;
 		size = 0;
-		// ����up���ɶ�
-		upTime.add(new Long(System.currentTimeMillis()));
-
-		// �p�⥭���I���ɶ�
+		long ti = System.currentTimeMillis();
+		if (upTime.size() > 0) {
+			if (ti - upTime.get(upTime.size() - 1) > 150) {
+//				Log.e("time",ti - upTime.get(upTime.size() - 1)+"");
+				upTime.clear();
+				showHz = 0;
+			}
+		}
+		upTime.add(ti);
 
 		long t = 0;
 		for (int i = 0; i < upTime.size() - 1; i++) {

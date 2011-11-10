@@ -26,7 +26,7 @@ public class ClickedPoint {
 					}
 
 					if (((p.x - inP.x) * (p.x - inP.x) + (p.y - inP.y)
-							* (p.y - inP.y)) < 500) {
+							* (p.y - inP.y)) < 1000) {
 						flag = true;
 						list.remove(p);
 
@@ -48,7 +48,7 @@ public class ClickedPoint {
 		Long now = System.currentTimeMillis();
 		for (Pointer p : list) {
 
-			if (((p.x - inX) * (p.x - inX) + (p.y - inY) * (p.y - inY)) < 500
+			if (((p.x - inX) * (p.x - inX) + (p.y - inY) * (p.y - inY)) < 1000
 					&& now - p.startTime <= 500) {
 				r = new Pointer(p);
 				break;

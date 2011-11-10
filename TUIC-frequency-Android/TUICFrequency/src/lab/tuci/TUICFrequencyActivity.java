@@ -29,7 +29,14 @@ public class TUICFrequencyActivity extends Activity {
 						// rgb = 8;
 						// }
 						// ((Circle) circle).showRGB = rgb - 5;
-
+						int tmp = 0;
+						for (int i = 0; i < hzcnt; i++) {
+							tmp += hza[i];
+						}
+						tmp /= hzcnt;
+						((Circle) circle).showRGB = tmp - 5;
+						Log.e("hz", tmp - 5 + " " + hzcnt);
+						hzcnt = 0;
 						((Circle) circle).flagIsLighting = false;
 						flagIsLighting = false;
 						// Log.e("tap2", ((Circle) circle).tapping + "");
@@ -62,6 +69,8 @@ public class TUICFrequencyActivity extends Activity {
 	static Pointer pointer[];
 	static Pointer clicked[];
 	int id = 0;
+	int hza[] = new int[10];
+	int hzcnt = 0;
 	int rgb = 100;
 	static ClickedPoint cp;
 	View circle;
@@ -157,6 +166,14 @@ public class TUICFrequencyActivity extends Activity {
 					}
 
 				}
+				if (flagIsLighting) {
+					if (hz > 6 && hz < 11 && hzcnt < 10) {
+						hza[hzcnt] = hz;
+						hzcnt++;
+
+						Log.e("hz", hz + "");
+					}
+				}
 				// if (rgb > hz) {
 				//
 				// rgb = hz;
@@ -184,9 +201,11 @@ public class TUICFrequencyActivity extends Activity {
 					}
 					if (flagIsLighting == false) {
 						// Log.e("fa", hz + " " + flagIsLighting);
-						Log.e("rgb", (hz - 5) + "");
+						// Log.e("rgb", (hz - 5) + "");
 						flagIsLighting = true;
-						((Circle) circle).showRGB = hz - 5;
+						hza[hzcnt] = hz;
+						hzcnt++;
+						// ((Circle) circle).showRGB = hz - 5;
 						// Log.e("fa", "" + flagIsLighting);
 						myHandler.sendEmptyMessage(0x102);
 
