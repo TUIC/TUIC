@@ -37,6 +37,8 @@ public class Circle extends View {
 	float rx = 0;
 	float ry = 0;
 	int tapping = 0;
+	boolean flagDrawCircle = false;
+	boolean flagDrawText = false;
 
 	public Circle(Context context) {
 		super(context);
@@ -150,6 +152,12 @@ public class Circle extends View {
 
 				if (p.exist) {
 					e++;
+
+					if (p.x > rx) {
+						rx = p.x;
+						ry = p.y;
+					}
+
 					// if (p.clickCnt > cnt) {
 					// if (p.showHz != 0) {
 					// cnt = p.clickCnt;
@@ -161,27 +169,29 @@ public class Circle extends View {
 					//
 					// }
 					Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-					if (p.pressure > 1) {
-						paint.setColor(Color.RED);
-					} else {
-						paint.setColor(Color.rgb(255,
-								255 - (int) (255 * p.pressure),
-								255 - (int) (255 * p.pressure)));
-					}
-					paint.setAntiAlias(true);
-					paint.setStyle(Style.FILL);
+					if (flagDrawCircle) {
+						if (p.pressure > 1) {
+							paint.setColor(Color.RED);
+						} else {
+							paint.setColor(Color.rgb(255,
+									255 - (int) (255 * p.pressure),
+									255 - (int) (255 * p.pressure)));
+						}
 
-					canvas.drawCircle(p.x, p.y, 30.0f + 30.0f * p.size, paint);
-					if (p.x > rx) {
-						rx = p.x;
-						ry = p.y;
-					}
-					paint.setColor(Color.BLACK);
-					paint.setTextSize(24);
+						paint.setAntiAlias(true);
+						paint.setStyle(Style.FILL);
 
-					if (time != p.startTime) {
-						canvas.drawText(p.clickCnt + "=>" + p.nowHz, p.x, p.y,
+						canvas.drawCircle(p.x, p.y, 30.0f + 30.0f * p.size,
 								paint);
+					}
+
+					if (flagDrawText) {
+						paint.setColor(Color.BLACK);
+						paint.setTextSize(24);
+
+						if (time != p.startTime) {
+							canvas.drawText("" + p.nowHz, p.x, p.y + 50, paint);
+						}
 					}
 				}
 			}
@@ -195,22 +205,24 @@ public class Circle extends View {
 			if (ry > 350 && ry < 600) {
 				x += 6;
 			}
-			if (showRGB == 3) {
-				canvas.drawBitmap(flagBitmap[0], rx + 100, ry-50, null);
-				canvas.drawText(name[0][x], rx + 100, ry + 150, l);
+			if (rx > 1000) {
+				rx = rx - 600;
 			}
 
-			else if (showRGB == 4) {
-				canvas.drawBitmap(flagBitmap[1], rx + 100, ry-50, null);
+			if (showRGB == 4) {
+				canvas.drawBitmap(flagBitmap[1], rx + 100, ry - 50, null);
 				canvas.drawText(name[1][x], rx + 100, ry + 150, l);
-			} else {
-				canvas.drawBitmap(flagBitmap[2], rx + 100, ry-50, null);
+			} else if (showRGB >= 5) {
+				canvas.drawBitmap(flagBitmap[2], rx + 100, ry - 50, null);
 				canvas.drawText(name[2][x], rx + 100, ry + 150, l);
+			} else if (showRGB <= 3) {
+				canvas.drawBitmap(flagBitmap[0], rx + 100, ry - 50, null);
+				canvas.drawText(name[0][x], rx + 100, ry + 150, l);
 			}
 
 			// canvas.drawCircle(rx + 100, ry, 50, l);
 
-//			Log.e("xy", rx + " " + ry);
+			// Log.e("xy", rx + " " + ry);
 
 		}
 		// Log.e("cir",e+"");

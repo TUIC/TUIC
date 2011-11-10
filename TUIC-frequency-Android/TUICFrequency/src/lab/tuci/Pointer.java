@@ -8,7 +8,7 @@ public class Pointer {
 	int id;
 	int clickCnt;
 	int clickPre;
-	int windowsize = 5;
+	int windowsize = 3;
 	int showHz;
 	float x;
 	float y;
@@ -153,5 +153,7 @@ public class Pointer {
 		}
 		TUICFrequencyActivity.cp.add(new Pointer(this));
 	}
+	
+	
 
 }

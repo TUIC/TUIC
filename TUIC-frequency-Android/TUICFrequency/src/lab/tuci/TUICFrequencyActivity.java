@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -24,17 +26,19 @@ public class TUICFrequencyActivity extends Activity {
 				} else {
 					if (((Circle) circle).tapping == 1) {
 						((Circle) circle).tapping = 2;
+						// flagcnt = 0;
 						// Log.e("rgb", (rgb - 5) + "");
 						// if (rgb < 8) {
 						// rgb = 8;
 						// }
 						// ((Circle) circle).showRGB = rgb - 5;
-						int tmp = 0;
+						float tmp = 0;
 						for (int i = 0; i < hzcnt; i++) {
 							tmp += hza[i];
 						}
-						tmp /= hzcnt;
-						((Circle) circle).showRGB = tmp - 5;
+						tmp = (float) ((tmp + 0.5) / (float) hzcnt);
+
+						((Circle) circle).showRGB = (int) (tmp - 5);
 						Log.e("hz", tmp - 5 + " " + hzcnt);
 						hzcnt = 0;
 						((Circle) circle).flagIsLighting = false;
@@ -75,6 +79,7 @@ public class TUICFrequencyActivity extends Activity {
 	static ClickedPoint cp;
 	View circle;
 	int pointers;
+	// int flagcnt = 0;
 	boolean flagTouching = false;
 	boolean flagIsLighting = false;
 
@@ -120,13 +125,17 @@ public class TUICFrequencyActivity extends Activity {
 		switch (action) {
 		// 更新pointer的內容
 		case MotionEvent.ACTION_DOWN:
+			// if (flagIsLighting && flagcnt < 100) {
 			flagTouching = true;
+			// }
 			pointer[actionPointIndex].touchDown(actionPointIndex, actionPointX,
 					actionPointY, actionPointPressure, actionPointSize, time);
 
 			break;
 		case MotionEvent.ACTION_POINTER_DOWN:
+			// if (flagIsLighting && flagcnt < 100) {
 			flagTouching = true;
+			// }
 			pointer[actionPointIndex].touchDown(actionPointIndex, actionPointX,
 					actionPointY, actionPointPressure, actionPointSize, time);
 
@@ -151,13 +160,16 @@ public class TUICFrequencyActivity extends Activity {
 
 				int hz = 100;
 				int e = 0;
-
+				String s = "! ";
 				for (int j = 0; j < 10; j++) {
 
 					if (pointer[j].exist) {
-
+//						int tmp = (int) ((pointer[j].nowHz + 5) / 10);
 						if (hz > pointer[j].showHz && pointer[j].showHz != 0) {
+							// if (hz > tmp && tmp != 0) {
 							hz = pointer[j].showHz;
+//							hz = tmp;
+							s = s + hz + " ";
 							rgb = hz;
 							((Circle) circle).id = e;
 							id = j;
@@ -166,13 +178,22 @@ public class TUICFrequencyActivity extends Activity {
 					}
 
 				}
+				// Log.e("hz", s);
 				if (flagIsLighting) {
 					if (hz > 6 && hz < 11 && hzcnt < 10) {
 						hza[hzcnt] = hz;
 						hzcnt++;
-
-						Log.e("hz", hz + "");
+						// flagcnt = 0;
+						Log.e("+hz", hz + "");
 					}
+					// else if (hz > 15 || hz < 4) {
+					// Log.e("cnt", flagcnt + "");
+					// flagcnt++;
+					// if (flagcnt > 100) {
+					//
+					// flagTouching = false;
+					// }
+					// }
 				}
 				// if (rgb > hz) {
 				//
@@ -203,8 +224,11 @@ public class TUICFrequencyActivity extends Activity {
 						// Log.e("fa", hz + " " + flagIsLighting);
 						// Log.e("rgb", (hz - 5) + "");
 						flagIsLighting = true;
-						hza[hzcnt] = hz;
-						hzcnt++;
+						Log.e("+hz", hz + "");
+						if (hzcnt < 10) {
+							hza[hzcnt] = hz;
+							hzcnt++;
+						}
 						// ((Circle) circle).showRGB = hz - 5;
 						// Log.e("fa", "" + flagIsLighting);
 						myHandler.sendEmptyMessage(0x102);
@@ -220,6 +244,31 @@ public class TUICFrequencyActivity extends Activity {
 		// 重新繪圖
 		circle.invalidate();
 		return super.onTouchEvent(event);
+	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		// 參數1:群組id, 參數2:itemId, 參數3:item順序, 參數4:item名稱
+		menu.add(0, 0, 0, "顯示觸控點");
+		menu.add(0, 1, 1, "顯示頻率");
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+		case 0:
+		((Circle)circle).flagDrawCircle=!((Circle)circle).flagDrawCircle;
+			break;
+		case 1:
+			((Circle)circle).flagDrawText=!((Circle)circle).flagDrawText;
+
+			break;
+		}
+		return true;
 	}
 
 }
