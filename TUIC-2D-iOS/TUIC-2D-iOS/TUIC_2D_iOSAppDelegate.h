@@ -7,18 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TUIC_2D_Window.h"
+#import "TUIC_2D_iOSViewController.h"
 
-@class TUIC_2D_iOSViewController;
-
-@interface TUIC_2D_iOSAppDelegate : NSObject <UIApplicationDelegate>
-{
-    UIWindow *_window;
+@interface TUIC_2D_iOSAppDelegate : NSObject <UIApplicationDelegate>{
     TUIC_2D_iOSViewController *_viewController;
 
 }
-
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-
-@property (nonatomic, retain) IBOutlet TUIC_2D_iOSViewController *viewController;
+@property (nonatomic, retain)UIWindow* window;
 
 @end
